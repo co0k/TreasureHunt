@@ -1,4 +1,7 @@
-package treasure;
+package data_structures.treasure;
+
+import data_structures.ExperiencePointHolder;
+import data_structures.IdHolder;
 
 public class Treasure implements ExperiencePointHolder, IdHolder {
 	private int id;

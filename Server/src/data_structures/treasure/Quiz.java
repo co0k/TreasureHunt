@@ -1,4 +1,4 @@
-package treasure;
+package data_structures.treasure;
 
 public class Quiz implements Treasure.Type {
 	private int id;
