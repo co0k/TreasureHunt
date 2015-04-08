@@ -1,13 +1,10 @@
 package data_structures.treasure;
 
-import data_structures.ExperiencePointHolder;
-
-public class GeoLocation implements ExperiencePointHolder{
+public class GeoLocation {
 	private double lat;
 	private double lon;
-	private int experience;
 
-	public GeoLocation(double lat, double lon, int experience) {
+	public GeoLocation(double lat, double lon) {
 		this.lat = lat;
 		this.lon = lon;
 	}
@@ -26,10 +23,5 @@ public class GeoLocation implements ExperiencePointHolder{
 
 	public void setLon(double lon) {
 		this.lon = lon;
-	}
-
-	@Override
-	public int getXP() {
-		return experience;
 	}
 }
