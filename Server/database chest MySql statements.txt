@@ -28,6 +28,7 @@ primary key (Tid)
 create table size (
 Sid int NOT NULL AUTO_INCREMENT,
 sizeXP int,
+size int,
 primary key (Sid)
 );
 

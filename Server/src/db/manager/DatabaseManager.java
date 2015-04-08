@@ -93,7 +93,8 @@ public class DatabaseManager {
 		for (Record r : result) {
 			Integer id = r.getValue(SIZE.SID);
 			Integer exp = r.getValue(SIZE.SIZEXP);
-			Size tmp = new Size(id,exp, 0); //TODO at the moment third value 0 because no in DB included
+			Integer size = r.getValue(SIZE.SIZE_);
+			Size tmp = new Size(id,exp, size);
 			out.add(tmp);
 		}
 
@@ -155,15 +156,15 @@ public class DatabaseManager {
 			Type type = null;
 			Size size = getSizeFromId(sid);
 			Content content = null;
-			if (cid != null) {
+			/*if (cid != null) {
 				 content = getConntentFromId(cid);
-			}
+			}*/
 			if (qid != null) {
 				Quiz quiz = getQuizFromId(qid);
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 			
-			Treasure tmp = new Treasure(id, 0, location, type, size, content); //TODO exp not set, model??
+			Treasure tmp = new Treasure(id, 0, location, type, size, null); //exp not  yet set
 			out.add(tmp);
 		}
 		

@@ -16,7 +16,7 @@ package db.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Size extends org.jooq.impl.TableImpl<db.generated.tables.records.SizeRecord> {
 
-	private static final long serialVersionUID = 608270498;
+	private static final long serialVersionUID = -1125470600;
 
 	/**
 	 * The reference instance of <code>library.size</code>
@@ -40,6 +40,11 @@ public class Size extends org.jooq.impl.TableImpl<db.generated.tables.records.Si
 	 * The column <code>library.size.sizeXP</code>.
 	 */
 	public final org.jooq.TableField<db.generated.tables.records.SizeRecord, java.lang.Integer> SIZEXP = createField("sizeXP", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
+	 * The column <code>library.size.size</code>.
+	 */
+	public final org.jooq.TableField<db.generated.tables.records.SizeRecord, java.lang.Integer> SIZE_ = createField("size", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>library.size</code> table reference
