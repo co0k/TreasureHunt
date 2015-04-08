@@ -20,6 +20,7 @@ primary key (Qid)
 
 create table type (
 Tid int NOT NULL AUTO_INCREMENT,
+name varchar(256),
 typeXP int,
 primary key (Tid)
 );
@@ -30,17 +31,26 @@ sizeXP int,
 primary key (Sid)
 );
 
+create table content (
+Cid int NOT NULL AUTO_INCREMENT,
+content varchar(1024),
+contentXP int,
+primary key (Cid)
+);
+
 create table box (
 Bid int NOT NULL AUTO_INCREMENT,
 Lid int,
 Tid int,
 Sid int,
 Qid int,
+Cid int,
 primary key (Bid),
 foreign key (Lid) references location (Lid),
 foreign key (Tid) references type (Tid),
 foreign key (Sid) references size (Sid),
-foreign key (Qid) references quiz (Qid)
+foreign key (Qid) references quiz (Qid),
+foreign key (Cid) references content (Cid)
 );
 
 
