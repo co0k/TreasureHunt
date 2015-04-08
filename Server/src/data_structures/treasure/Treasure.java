@@ -71,6 +71,18 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		private int id;
 		private String name;
 		
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
 		@Override
 		public int getId() {
 			return id;
@@ -124,7 +136,7 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		private int experience;
 		private int size;
 
-		Size(int id, int exp, int size) {
+		public Size(int id, int exp, int size) {
 			this.id = id;
 			this.experience = exp;
 			this.size = size;

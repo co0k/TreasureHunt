@@ -23,8 +23,8 @@ public class Quiz extends Treasure.Type {
 	 * @param answer5
 	 * @param answer6
 	 */
-	public Quiz(int id, String question, String answer1, String answer2, String answer3, String answer4, String answer5,
-			String answer6) {
+	public Quiz(int id, String question, String answer1, String answer2,
+			String answer3, String answer4, String answer5, String answer6) {
 		this.id = id;
 		this.question = question;
 		this.answer1 = answer1;
@@ -35,7 +35,8 @@ public class Quiz extends Treasure.Type {
 		this.answer6 = answer6;
 	}
 
-	public Quiz(String question, String answer1, String answer2, String answer3, String answer4, String answer5, String answer6) {
+	public Quiz(String question, String answer1, String answer2,
+			String answer3, String answer4, String answer5, String answer6) {
 		this(-1, question, answer1, answer2, answer3, answer4, answer5, answer6);
 	}
 
@@ -69,6 +70,16 @@ public class Quiz extends Treasure.Type {
 
 	public int getQuizId() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "Tid: " + this.getId() + "\n" + "name: " + this.getName() + "\n"
+				+ "exp: " + this.getXP() + "\n" + "Qid: " + id + "\n" + "q: "
+				+ question + "\n" + "1: " + answer1 + "\n" + "2: " + answer2
+				+ "\n" + "3: " + answer3 + "\n" + "4: " + answer4 + "\n"
+				+ "5: " + answer5 + "\n" + "6: " + answer6 + "\n";
+
 	}
 
 }
