@@ -15,7 +15,6 @@ public class Quiz extends Treasure.Type {
 	 * needed, the rest should be filled with 'null'
 	 * 
 	 * @param id
-	 * @param exp
 	 * @param question
 	 * @param answer1
 	 * @param answer2

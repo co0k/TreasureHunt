@@ -75,6 +75,11 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		public int getId() {
 			return id;
 		}
+		
+		public void setXP(int xp) {
+			this.experience = xp;
+		}
+		
 		@Override
 		public int getXP() {
 			return experience;
