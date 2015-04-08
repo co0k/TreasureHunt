@@ -1,8 +1,7 @@
 package data_structures.treasure;
 
-public class Quiz implements Treasure.Type {
+public class Quiz extends Treasure.Type {
 	private int id;
-	private int experience;
 	private String question;
 	private String answer1;
 	private String answer2;
@@ -25,10 +24,9 @@ public class Quiz implements Treasure.Type {
 	 * @param answer5
 	 * @param answer6
 	 */
-	public Quiz(int id, int exp, String question, String answer1, String answer2, String answer3, String answer4, String answer5,
+	public Quiz(int id, String question, String answer1, String answer2, String answer3, String answer4, String answer5,
 			String answer6) {
 		this.id = id;
-		this.experience = exp;
 		this.question = question;
 		this.answer1 = answer1;
 		this.answer2 = answer2;
@@ -38,8 +36,8 @@ public class Quiz implements Treasure.Type {
 		this.answer6 = answer6;
 	}
 
-	public Quiz(int exp, String question, String answer1, String answer2, String answer3, String answer4, String answer5, String answer6) {
-		this(-1, exp, question, answer1, answer2, answer3, answer4, answer5, answer6);
+	public Quiz(String question, String answer1, String answer2, String answer3, String answer4, String answer5, String answer6) {
+		this(-1, question, answer1, answer2, answer3, answer4, answer5, answer6);
 	}
 
 	public String getQuestion() {
@@ -70,18 +68,8 @@ public class Quiz implements Treasure.Type {
 		return answer6;
 	}
 
-	@Override
-	public int getId() {
+	public int getQuizId() {
 		return id;
 	}
 
-	@Override
-	public int getXP() {
-		return experience;
-	}
-
-	@Override
-	public String getType() {
-		return "QUIZ";
-	}
 }

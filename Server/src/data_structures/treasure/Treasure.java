@@ -66,8 +66,22 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 
 	/****************** (sub-)interfaces and classes ******************/
 
-	public interface Type extends IdHolder, ExperiencePointHolder {
-		String getType();
+	public static abstract class  Type implements IdHolder, ExperiencePointHolder {
+		private int experience;
+		private int id;
+		private String name;
+		
+		@Override
+		public int getId() {
+			return id;
+		}
+		@Override
+		public int getXP() {
+			return experience;
+		}
+		public String getType() {
+			return name;
+		}
 	}
 
 	public interface Content extends IdHolder, ExperiencePointHolder {

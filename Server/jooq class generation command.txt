@@ -1,0 +1,1 @@
+java -classpath jooq-3.5.3.jar:jooq-meta-3.5.3.jar:jooq-codegen-3.5.3.jar:mysql-connector-java-5.1.35-bin.jar:. org.jooq.util.GenerationTool library.xml
