@@ -11,23 +11,25 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 	private Type type;
 	private Size size;
 	private Content content;
+	private int last_userid;
 
-	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, boolean isActive) {
+	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid, boolean isActive) {
 		this.id = id;
 		this.experience = exp;
 		this.location = location;
 		this.type = type;
 		this.size = size;
 		this.content = content;
+		this.last_userid = last_userid;
 		this.isActive = isActive;
 	}
 
-	public Treasure(int id, int exp, Location location, Type type, Size size, Content content) {
-		this(id, exp, location, type, size, content, false);
+	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid) {
+		this(id, exp, location, type, size, content, last_userid, false);
 	}
 
-	public Treasure(int exp, Location location, Type type, Size size, Content content) {
-		this(-1, exp, location, type, size, content, false);
+	public Treasure(int exp, Location location, Type type, Size size, Content content, int last_userid) {
+		this(-1, exp, location, type, size, content,last_userid, false);
 	}
 
 	public boolean isActive() {
@@ -52,6 +54,10 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 
 	public Content getContent() {
 		return content;
+	}
+	
+	public int getLastUserId(){
+		return last_userid;
 	}
 
 	@Override
