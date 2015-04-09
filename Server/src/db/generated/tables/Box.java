@@ -16,7 +16,7 @@ package db.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Box extends org.jooq.impl.TableImpl<db.generated.tables.records.BoxRecord> {
 
-	private static final long serialVersionUID = -1628141806;
+	private static final long serialVersionUID = -1367964143;
 
 	/**
 	 * The reference instance of <code>library.box</code>
@@ -60,6 +60,11 @@ public class Box extends org.jooq.impl.TableImpl<db.generated.tables.records.Box
 	 * The column <code>library.box.Cid</code>.
 	 */
 	public final org.jooq.TableField<db.generated.tables.records.BoxRecord, java.lang.Integer> CID = createField("Cid", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
+	 * The column <code>library.box.last_userid</code>.
+	 */
+	public final org.jooq.TableField<db.generated.tables.records.BoxRecord, java.lang.Integer> LAST_USERID = createField("last_userid", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>library.box</code> table reference

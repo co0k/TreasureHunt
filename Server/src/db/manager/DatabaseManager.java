@@ -151,7 +151,7 @@ public class DatabaseManager {
 			Integer sid = r.getValue(BOX.SID);
 			Integer qid = r.getValue(BOX.QID);
 			Integer cid = r.getValue(BOX.CID);
-			
+			Integer last_userid = r.getValue(BOX.LAST_USERID);
 			Location location = getLocationFromId(lid);
 			Type type = null;
 			Size size = getSizeFromId(sid);
@@ -164,7 +164,7 @@ public class DatabaseManager {
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 			
-			Treasure tmp = new Treasure(id, 0, location, type, size, null); //exp not  yet set
+			Treasure tmp = new Treasure(id, 0, location, type, size, null, last_userid); //exp not  yet set
 			out.add(tmp);
 		}
 		
