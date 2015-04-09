@@ -171,5 +171,20 @@ public class DatabaseManager {
 		conn.close();
 		return out.get(0);
 	}
+	
+	public static Location getLocationFromBid (int bid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Result<Record> result = create.select().from(BOX)
+				.where(BOX.BID.equal(bid)).fetch();
+		ArrayList<Integer> lid = new ArrayList<Integer>(); 
+		
+		for (Record r : result) {
+			lid.add(r.getValue(BOX.LID));
+		}
+		
+		
+		return getLocationFromId(lid.get(0));
+	}
 
 }
