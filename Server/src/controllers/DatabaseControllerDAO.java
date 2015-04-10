@@ -1,13 +1,10 @@
 package controllers;
 
 import java.util.List;
-
-import com.sun.org.apache.xml.internal.security.encryption.Reference;
-
 import data_structures.treasure.*;
 import data_structures.user.*;
 
-public interface DatabaseController {
+public interface DatabaseControllerDAO {
 	/*********************** Treasure ***********************/
 	List<Treasure> getAllTreasures(boolean onlyActive);
 
