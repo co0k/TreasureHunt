@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import com.sun.org.apache.xml.internal.security.encryption.Reference;
+
 import data_structures.treasure.*;
 import data_structures.user.*;
 
@@ -11,18 +13,43 @@ public interface DatabaseController {
 
 	Treasure getTreasure(int treasureId);
 
+	/**
+	 * returns a list of all treasures within the given radius
+	 * 
+	 * @param location
+	 *            the center of the circle that holds the treasures
+	 * @param radius
+	 * @param onlyActive
+	 *            decides if only active treasures should be returned, if false,
+	 *            all treasures will be returned
+	 * @return the list of treasures
+	 */
 	List<Treasure> getTreasures(GeoLocation location, double radius, boolean onlyActive);
 
 	/**
 	 * returns id of saved treasure, -1 otherwise
 	 * 
 	 * @param treasure
-	 * @return
+	 *            the treasure to be saved, should hold all items, either per id
+	 *            or per object
+	 * @return the id of the saved treasure
 	 */
 	int saveTreasure(Treasure treasure);
 
+	/**
+	 * deletes the treasure by the reference of the id
+	 * 
+	 * @param id
+	 * @return if everything succeeded, return true otherwise false
+	 */
 	boolean deleteTreasure(int id);
 
+	/**
+	 * obviously deletes all treasures in the database, should only be used for
+	 * test cases
+	 * 
+	 * @return
+	 */
 	boolean deleteAllTreasures();
 
 	/**
@@ -73,6 +100,12 @@ public interface DatabaseController {
 	 */
 	boolean checkUserLogin(User user);
 
+	/**
+	 * deletes the user by reference of the id
+	 * 
+	 * @param id
+	 * @return
+	 */
 	boolean deleteUser(int id);
 
 	/**
@@ -107,16 +140,35 @@ public interface DatabaseController {
 	 */
 	User getUserProfile(String name);
 
+	/**
+	 * returns the complete user inventory by reference of the user id
+	 * 
+	 * @param uId
+	 *            the user Id
+	 * @return the user inventory
+	 */
 	Inventory getUserInventory(int uId);
 
 	/**
-	 * returns a list of treasures, the treasures only need to be filled
-	 * partly...
+	 * returns a list of treasures, the treasures only need to be filled partly
+	 * like size, id, type experience...
 	 * 
 	 * @param uId
 	 * @return
 	 */
 	List<Treasure> getTreasureHistory(int uId);
 
+	/**
+	 * returns a highscore list within the given range. E.g. from the third to
+	 * the 20th rank
+	 * 
+	 * @param minRange
+	 *            the upper bound(e.g. the first place) if it is lower than 1
+	 *            the first place will be used
+	 * @param maxRange
+	 *            the lower bound(e.g. the last place) if it is higher than the
+	 *            last place the last place will be used
+	 * @return the list of highscores
+	 */
 	HighscoreList getHighscoreList(int minRange, int maxRange);
 }
