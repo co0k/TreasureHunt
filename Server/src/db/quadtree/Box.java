@@ -1,4 +1,4 @@
-package org.apptirol.innsbruckmastermeter.model.quadTree;
+package db.quadtree;
 
 /* *********************************************************************** *
  * Box.java                                                                *
