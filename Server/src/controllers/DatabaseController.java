@@ -1,122 +1,137 @@
 package controllers;
 
 import java.util.List;
-
 import data_structures.treasure.*;
 import data_structures.user.*;
 
-public interface DatabaseController {
-	/*********************** Treasure ***********************/
-	List<Treasure> getAllTreasures(boolean onlyActive);
+public class DatabaseController implements DatabaseControllerDAO {
+    private DatabaseController() { }
 
-	Treasure getTreasure(int treasureId);
+    /**
+     * Initializes singleton.
+     *
+     * DatabaseControllerHolder is loaded on the first execution of DatabaseController.getInstance()
+     * or the first access to DatabaseController.INSTANCE, not before.
+     */
+    private static class DatabaseControllerHolder {
+            private static final DatabaseController INSTANCE = new DatabaseController();
+    }
 
-	List<Treasure> getTreasures(GeoLocation location, double radius, boolean onlyActive);
+    public static DatabaseController getInstance() {
+            return DatabaseControllerHolder.INSTANCE;
+    }
 
-	/**
-	 * returns id of saved treasure, -1 otherwise
-	 * 
-	 * @param treasure
-	 * @return
-	 */
-	int saveTreasure(Treasure treasure);
+	@Override
+	public List<Treasure> getAllTreasures(boolean onlyActive) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	boolean deleteTreasure(int id);
+	@Override
+	public Treasure getTreasure(int treasureId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	boolean deleteAllTreasures();
+	@Override
+	public List<Treasure> getTreasures(GeoLocation location, double radius, boolean onlyActive) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	/**
-	 * returns list of Treasures where only id and Location is used (rest is
-	 * null)
-	 * 
-	 * @param location
-	 * @param radius
-	 * @param onlyActive
-	 * @return
-	 */
-	List<Treasure> getLocationData(GeoLocation location, double radius, boolean onlyActive);
+	@Override
+	public int saveTreasure(Treasure treasure) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	/**
-	 * returns list of Treasures where only id and Location is used (rest is
-	 * null)
-	 * 
-	 * @param onlyActive
-	 * @return
-	 */
-	List<Treasure> getAllLocationData(boolean onlyActive);
+	@Override
+	public boolean deleteTreasure(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	/**
-	 * returns a quiz object for the given Treasure id, -1 otherwise needed ?
-	 * since its possible to get a whole Treasure with 'getTreasure(...)'
-	 * 
-	 * @param treasureId
-	 * @return
-	 */
-	Quiz getQuiz(int treasureId);
+	@Override
+	public boolean deleteAllTreasures() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	/*********************** User ***********************/
-	/**
-	 * returns id of created User, -1 otherwise
-	 * 
-	 * @param user
-	 * @return
-	 */
-	int addUser(User user);
+	@Override
+	public List<Treasure> getLocationData(GeoLocation location, double radius, boolean onlyActive) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	/**
-	 * returns true on success, false otherwise (in 'user' only passwordHash and
-	 * name is available) maybe not needed since this could be done with
-	 * 'getUserProfile(...)' in the Core-model
-	 * 
-	 * @param user
-	 * @return
-	 */
-	boolean checkUserLogin(User user);
+	@Override
+	public List<Treasure> getAllLocationData(boolean onlyActive) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	boolean deleteUser(int id);
+	@Override
+	public Quiz getQuiz(int treasureId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	/**
-	 * returns user and all user connected data
-	 * 
-	 * @param id
-	 * @return
-	 */
-	User getUser(int id);
+	@Override
+	public int addUser(User user) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	/**
-	 * returns user and all user connected data
-	 * 
-	 * @param id
-	 * @return
-	 */
-	User getUser(String name);
+	@Override
+	public boolean checkUserLogin(User user) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	/**
-	 * returns only the basic information(name, email, rank, email)
-	 * 
-	 * @param id
-	 * @return
-	 */
-	User getUserProfile(int id);
+	@Override
+	public boolean deleteUser(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	/**
-	 * returns only the basic information(id, email, rank, email)
-	 * 
-	 * @param name
-	 * @return
-	 */
-	User getUserProfile(String name);
+	@Override
+	public User getUser(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	Inventory getUserInventory(int uId);
+	@Override
+	public User getUser(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	/**
-	 * returns a list of treasures, the treasures only need to be filled
-	 * partly...
-	 * 
-	 * @param uId
-	 * @return
-	 */
-	List<Treasure> getTreasureHistory(int uId);
+	@Override
+	public User getUserProfile(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	HighscoreList getHighscoreList(int minRange, int maxRange);
+	@Override
+	public User getUserProfile(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Inventory getUserInventory(int uId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Treasure> getTreasureHistory(int uId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HighscoreList getHighscoreList(int minRange, int maxRange) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
