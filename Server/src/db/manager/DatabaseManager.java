@@ -46,7 +46,7 @@ public class DatabaseManager {
 		ArrayList<Quiz> out = new ArrayList<Quiz>();
 
 		for (Record r : result) {
-			Integer id = r.getValue(QUIZ.QID);
+			int id = r.getValue(QUIZ.QID);
 			String question = r.getValue(QUIZ.QUESTION);
 			String answer1 = r.getValue(QUIZ.ANSWER1);
 			String answer2 = r.getValue(QUIZ.ANSWER2);
@@ -54,7 +54,8 @@ public class DatabaseManager {
 			String answer4 = r.getValue(QUIZ.ANSWER4);
 			String answer5 = r.getValue(QUIZ.ANSWER5);
 			String answer6 = r.getValue(QUIZ.ANSWER6);
-			Quiz tmp = new Quiz(id, question, answer1, answer2, answer3, answer4, answer5, answer6);
+			int lid = r.getValue(QUIZ.LID);
+			Quiz tmp = new Quiz(id, question, answer1, answer2, answer3, answer4, answer5, answer6, lid);
 			out.add(tmp);
 		}
 

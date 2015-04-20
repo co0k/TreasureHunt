@@ -9,6 +9,7 @@ public class Quiz extends Treasure.Type {
 	private String answer4;
 	private String answer5;
 	private String answer6;
+	private int lid;
 
 	/**
 	 * answers can be partially filled, if for example only 2 answers are
@@ -24,7 +25,7 @@ public class Quiz extends Treasure.Type {
 	 * @param answer6
 	 */
 	public Quiz(int id, String question, String answer1, String answer2,
-			String answer3, String answer4, String answer5, String answer6) {
+			String answer3, String answer4, String answer5, String answer6, int lid) {
 		this.id = id;
 		this.question = question;
 		this.answer1 = answer1;
@@ -33,6 +34,7 @@ public class Quiz extends Treasure.Type {
 		this.answer4 = answer4;
 		this.answer5 = answer5;
 		this.answer6 = answer6;
+		this.lid = lid;
 	}
 
 	public Quiz(String question, String answer1, String answer2,
@@ -74,7 +76,7 @@ public class Quiz extends Treasure.Type {
 
 	@Override
 	public String toString() {
-		return "Tid: " + this.getId() + "\n" + "name: " + this.getName() + "\n"
+		return "Tid: " + this.getId() + "\n" + "Lid: " + lid + "\n" + "name: " + this.getName() + "\n"
 				+ "exp: " + this.getXP() + "\n" + "Qid: " + id + "\n" + "q: "
 				+ question + "\n" + "1: " + answer1 + "\n" + "2: " + answer2
 				+ "\n" + "3: " + answer3 + "\n" + "4: " + answer4 + "\n"

@@ -16,7 +16,7 @@ package db.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Quiz extends org.jooq.impl.TableImpl<db.generated.tables.records.QuizRecord> {
 
-	private static final long serialVersionUID = -115705652;
+	private static final long serialVersionUID = 118310281;
 
 	/**
 	 * The reference instance of <code>library.quiz</code>
@@ -72,6 +72,11 @@ public class Quiz extends org.jooq.impl.TableImpl<db.generated.tables.records.Qu
 	public final org.jooq.TableField<db.generated.tables.records.QuizRecord, java.lang.String> ANSWER6 = createField("answer6", org.jooq.impl.SQLDataType.VARCHAR.length(1024), this, "");
 
 	/**
+	 * The column <code>library.quiz.Lid</code>.
+	 */
+	public final org.jooq.TableField<db.generated.tables.records.QuizRecord, java.lang.Integer> LID = createField("Lid", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
 	 * Create a <code>library.quiz</code> table reference
 	 */
 	public Quiz() {
@@ -115,6 +120,14 @@ public class Quiz extends org.jooq.impl.TableImpl<db.generated.tables.records.Qu
 	@Override
 	public java.util.List<org.jooq.UniqueKey<db.generated.tables.records.QuizRecord>> getKeys() {
 		return java.util.Arrays.<org.jooq.UniqueKey<db.generated.tables.records.QuizRecord>>asList(db.generated.Keys.KEY_QUIZ_PRIMARY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public java.util.List<org.jooq.ForeignKey<db.generated.tables.records.QuizRecord, ?>> getReferences() {
+		return java.util.Arrays.<org.jooq.ForeignKey<db.generated.tables.records.QuizRecord, ?>>asList(db.generated.Keys.QUIZ_IBFK_1);
 	}
 
 	/**

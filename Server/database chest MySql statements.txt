@@ -15,7 +15,9 @@ answer3 varchar(1024),
 answer4 varchar(1024),
 answer5 varchar(1024),
 answer6 varchar(1024),
-primary key (Qid)
+Lid int,
+primary key (Qid),
+foreign key (Lid) references location (Lid)
 );
 
 create table type (

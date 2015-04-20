@@ -48,6 +48,7 @@ public class Keys {
 	public static final org.jooq.ForeignKey<db.generated.tables.records.BoxRecord, db.generated.tables.records.SizeRecord> BOX_IBFK_3 = ForeignKeys0.BOX_IBFK_3;
 	public static final org.jooq.ForeignKey<db.generated.tables.records.BoxRecord, db.generated.tables.records.QuizRecord> BOX_IBFK_4 = ForeignKeys0.BOX_IBFK_4;
 	public static final org.jooq.ForeignKey<db.generated.tables.records.BoxRecord, db.generated.tables.records.ContentRecord> BOX_IBFK_5 = ForeignKeys0.BOX_IBFK_5;
+	public static final org.jooq.ForeignKey<db.generated.tables.records.QuizRecord, db.generated.tables.records.LocationRecord> QUIZ_IBFK_1 = ForeignKeys0.QUIZ_IBFK_1;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -77,5 +78,6 @@ public class Keys {
 		public static final org.jooq.ForeignKey<db.generated.tables.records.BoxRecord, db.generated.tables.records.SizeRecord> BOX_IBFK_3 = createForeignKey(db.generated.Keys.KEY_SIZE_PRIMARY, db.generated.tables.Box.BOX, db.generated.tables.Box.BOX.SID);
 		public static final org.jooq.ForeignKey<db.generated.tables.records.BoxRecord, db.generated.tables.records.QuizRecord> BOX_IBFK_4 = createForeignKey(db.generated.Keys.KEY_QUIZ_PRIMARY, db.generated.tables.Box.BOX, db.generated.tables.Box.BOX.QID);
 		public static final org.jooq.ForeignKey<db.generated.tables.records.BoxRecord, db.generated.tables.records.ContentRecord> BOX_IBFK_5 = createForeignKey(db.generated.Keys.KEY_CONTENT_PRIMARY, db.generated.tables.Box.BOX, db.generated.tables.Box.BOX.CID);
+		public static final org.jooq.ForeignKey<db.generated.tables.records.QuizRecord, db.generated.tables.records.LocationRecord> QUIZ_IBFK_1 = createForeignKey(db.generated.Keys.KEY_LOCATION_PRIMARY, db.generated.tables.Quiz.QUIZ, db.generated.tables.Quiz.QUIZ.LID);
 	}
 }
