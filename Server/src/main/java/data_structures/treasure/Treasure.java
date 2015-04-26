@@ -3,7 +3,7 @@ package data_structures.treasure;
 import data_structures.ExperiencePointHolder;
 import data_structures.IdHolder;
 
-public class Treasure implements ExperiencePointHolder, IdHolder {
+public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Treasure> {
 	private int id;
 	private int experience;
 	private boolean isActive;
@@ -101,6 +101,11 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		result = 31 * result + (content != null ? content.hashCode() : 0);
 		result = 31 * result + last_userid;
 		return result;
+	}
+
+	@Override
+	public int compareTo(Treasure treasure) {
+			return Integer.compare(this.id, treasure.id);
 	}
 
 	/**
