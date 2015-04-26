@@ -1,0 +1,3 @@
+allprojects {
+    task check << { task -> println "Checking $task.project.name" }
+}
