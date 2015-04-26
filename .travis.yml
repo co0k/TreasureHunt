@@ -4,7 +4,11 @@
 # Enabling container based infrastructure hoping it will help the build speed
 # see http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 
-sudo: true 
+sudo: false 
 language: java
 jdk:
-- oraclejdk7
+        - oraclejdk7
+        - openjdk7
+ 
+before_install:
+ - chmod +x gradlew
