@@ -28,8 +28,9 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		this(id, exp, location, type, size, content, last_userid, false);
 	}
 
+
 	public Treasure(int exp, Location location, Type type, Size size, Content content, int last_userid) {
-		this(-1, exp, location, type, size, content,last_userid, false);
+		this(-1, exp, location, type, size, content, last_userid, false);
 	}
 
 	public boolean isActive() {
@@ -55,8 +56,8 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 	public Content getContent() {
 		return content;
 	}
-	
-	public int getLastUserId(){
+
+	public int getLastUserId() {
 		return last_userid;
 	}
 
@@ -70,13 +71,47 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		return experience;
 	}
 
-	/****************** (sub-)interfaces and classes ******************/
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-	public static abstract class  Type implements IdHolder, ExperiencePointHolder {
+		Treasure treasure = (Treasure) o;
+
+		if (id != treasure.id) return false;
+		if (experience != treasure.experience) return false;
+		if (isActive != treasure.isActive) return false;
+		if (last_userid != treasure.last_userid) return false;
+		if (!location.equals(treasure.location)) return false;
+		if (!type.equals(treasure.type)) return false;
+		if (!size.equals(treasure.size)) return false;
+		if (content != null ? !content.equals(treasure.content) : treasure.content != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id;
+		result = 31 * result + experience;
+		result = 31 * result + (isActive ? 1 : 0);
+		result = 31 * result + location.hashCode();
+		result = 31 * result + type.hashCode();
+		result = 31 * result + size.hashCode();
+		result = 31 * result + (content != null ? content.hashCode() : 0);
+		result = 31 * result + last_userid;
+		return result;
+	}
+
+	/**
+	 * *************** (sub-)interfaces and classes *****************
+	 */
+
+	public static abstract class Type implements IdHolder, ExperiencePointHolder {
 		private int experience;
 		private int id;
 		private String name;
-		
+
 		public String getName() {
 			return name;
 		}
@@ -93,17 +128,38 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		public int getId() {
 			return id;
 		}
-		
+
 		public void setXP(int xp) {
 			this.experience = xp;
 		}
-		
+
 		@Override
 		public int getXP() {
 			return experience;
 		}
+
 		public String getType() {
 			return name;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Type type = (Type) o;
+
+			if (experience != type.experience) return false;
+			if (id != type.id) return false;
+			return !(name != null ? !name.equals(type.name) : type.name != null);
+		}
+
+		@Override
+		public int hashCode() {
+			int result = experience;
+			result = 31 * result + id;
+			result = 31 * result + (name != null ? name.hashCode() : 0);
+			return result;
 		}
 	}
 
@@ -135,6 +191,26 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 			return id;
 		}
 
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			if (!super.equals(o)) return false;
+
+			Location location = (Location) o;
+
+			if (id != location.id) return false;
+			return experience == location.experience;
+
+		}
+
+		@Override
+		public int hashCode() {
+			int result = super.hashCode();
+			result = 31 * result + id;
+			result = 31 * result + experience;
+			return result;
+		}
 	}
 
 	public static class Size implements IdHolder, ExperiencePointHolder {
@@ -164,6 +240,27 @@ public class Treasure implements ExperiencePointHolder, IdHolder {
 		@Override
 		public int getId() {
 			return id;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Size size1 = (Size) o;
+
+			if (id != size1.id) return false;
+			if (experience != size1.experience) return false;
+			return size == size1.size;
+
+		}
+
+		@Override
+		public int hashCode() {
+			int result = id;
+			result = 31 * result + experience;
+			result = 31 * result + size;
+			return result;
 		}
 	}
 }
