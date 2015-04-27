@@ -1,6 +1,6 @@
-package db.manager;
+package main.java.db.manager;
 
-import static db.generated.Tables.*;
+import static main.java.db.generated.Tables.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,8 +13,8 @@ import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
-import data_structures.treasure.*;
-import data_structures.treasure.Treasure.*;
+import main.java.data_structures.treasure.*;
+import main.java.data_structures.treasure.Treasure.*;
 
 public class DatabaseManager {
 	public static void main(String[] args) {
@@ -131,8 +131,8 @@ public class DatabaseManager {
 			String answer4 = r.getValue(QUIZ.ANSWER4);
 			String answer5 = r.getValue(QUIZ.ANSWER5);
 			String answer6 = r.getValue(QUIZ.ANSWER6);
-			int lid = r.getValue(QUIZ.LID);
-			Quiz tmp = new Quiz(id, question, answer1, answer2, answer3, answer4, answer5, answer6, lid);
+			Integer lid = r.getValue(QUIZ.LID);
+			Quiz tmp = new Quiz(id, lid, question, answer1, answer2, answer3, answer4, answer5, answer6);
 			out.add(tmp);
 		}
 

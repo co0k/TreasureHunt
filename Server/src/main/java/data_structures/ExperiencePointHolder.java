@@ -1,4 +1,4 @@
-package data_structures;
+package main.java.data_structures;
 
 public interface ExperiencePointHolder {
 	int getXP();

@@ -1,8 +1,7 @@
-package data_structures.treasure;
+package main.java.data_structures.treasure;
 
 public class Quiz extends Treasure.Type {
 	private int id;
-	private int correctAnswer;
 	private String question;
 	private String answer1;
 	private String answer2;
@@ -10,7 +9,7 @@ public class Quiz extends Treasure.Type {
 	private String answer4;
 	private String answer5;
 	private String answer6;
-	private int lid;
+	private Integer lid;
 
 	/**
 	 * answers can be partially filled, if for example only 2 answers are
@@ -26,8 +25,8 @@ public class Quiz extends Treasure.Type {
 	 * @param answer5
 	 * @param answer6
 	 */
-	public Quiz(int id, int lid, String question, String answer1, String answer2,
-			String answer3, String answer4, String answer5, String answer6, int correctAnswer) {
+	public Quiz(int id, Integer lid, String question, String answer1, String answer2,
+			String answer3, String answer4, String answer5, String answer6) {
 		this.id = id;
 		this.lid = lid;
 		this.question = question;
@@ -37,12 +36,11 @@ public class Quiz extends Treasure.Type {
 		this.answer4 = answer4;
 		this.answer5 = answer5;
 		this.answer6 = answer6;
-		this.correctAnswer = correctAnswer;
 	}
 
 	public Quiz(String question, String answer1, String answer2,
-			String answer3, String answer4, String answer5, String answer6, int correctAnswer) {
-		this(-1, -1, question, answer1, answer2, answer3, answer4, answer5, answer6,correctAnswer);
+			String answer3, String answer4, String answer5, String answer6) {
+		this(-1, -1, question, answer1, answer2, answer3, answer4, answer5, answer6);
 	}
 
 	public String getQuestion() {
@@ -87,9 +85,6 @@ public class Quiz extends Treasure.Type {
 
 	}
 
-	public int getCorrectAnswer() {
-		return correctAnswer;
-	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -100,7 +95,6 @@ public class Quiz extends Treasure.Type {
 		Quiz quiz = (Quiz) o;
 
 		if (id != quiz.id) return false;
-		if (correctAnswer != quiz.correctAnswer) return false;
 		if (!question.equals(quiz.question)) return false;
 		if (answer1 != null ? !answer1.equals(quiz.answer1) : quiz.answer1 != null) return false;
 		if (answer2 != null ? !answer2.equals(quiz.answer2) : quiz.answer2 != null) return false;
@@ -115,7 +109,6 @@ public class Quiz extends Treasure.Type {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 31 * result + id;
-		result = 31 * result + correctAnswer;
 		result = 31 * result + question.hashCode();
 		result = 31 * result + (answer1 != null ? answer1.hashCode() : 0);
 		result = 31 * result + (answer2 != null ? answer2.hashCode() : 0);

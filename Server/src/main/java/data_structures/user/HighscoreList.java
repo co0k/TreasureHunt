@@ -1,9 +1,9 @@
-package data_structures.user;
+package main.java.data_structures.user;
 
 import java.util.List;
 
-import data_structures.ExperiencePointHolder;
-import data_structures.IdHolder;
+import main.java.data_structures.ExperiencePointHolder;
+import main.java.data_structures.IdHolder;
 
 public class HighscoreList {
 	private int minRange;

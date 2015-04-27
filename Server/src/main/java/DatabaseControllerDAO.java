@@ -1,6 +1,8 @@
+package main.java;
+
 import java.util.List;
-import data_structures.treasure.*;
-import data_structures.user.*;
+import main.java.data_structures.treasure.*;
+import main.java.data_structures.user.*;
 
 public interface DatabaseControllerDAO {
 	/*********************** Treasure ***********************/

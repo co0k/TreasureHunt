@@ -1,4 +1,4 @@
-package db.quadtree;
+package main.java.db.quadtree;
 
 /* *********************************************************************** *
  * Box.java                                                                *

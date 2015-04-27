@@ -1,12 +1,12 @@
-package db.manager;
+package main.java.db.manager;
 
 import java.sql.SQLException;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 
-import data_structures.treasure.Treasure;
-import data_structures.treasure.Treasure.*;
-import db.quadtree.*;
+import main.java.data_structures.treasure.Treasure;
+import main.java.data_structures.treasure.Treasure.*;
+import main.java.db.quadtree.*;
 
 public class DatabaseSupervisor {
 	private QuadTree<Integer> activeTree = null;

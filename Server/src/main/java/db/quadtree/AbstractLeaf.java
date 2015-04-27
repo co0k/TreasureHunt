@@ -1,7 +1,7 @@
-package db.quadtree;
+package main.java.db.quadtree;
 
 /* *********************************************************************** *
- * AbstractDouble.java                                                     *
+ * AbstractLeaf.java                                                       *
  * *********************************************************************** *
  * date created    : August, 2012                                          *
  * email           : info@kirstywilliams.co.uk                             *
@@ -9,10 +9,10 @@ package db.quadtree;
  * version         : 1.0                                                   *
  * *********************************************************************** */
 
-public class AbstractDouble {
-	public double value;
+public class AbstractLeaf<T> {
+	public QuadLeaf<T> value;
 
-	public AbstractDouble(double value) {
+	public AbstractLeaf(QuadLeaf<T> value) {
 		this.value = value;
 	}
 }
