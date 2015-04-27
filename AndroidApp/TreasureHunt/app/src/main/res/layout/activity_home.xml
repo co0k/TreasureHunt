@@ -24,6 +24,7 @@
         android:layout_marginStart="48dp"
         android:layout_below="@+id/main_menu"
         android:layout_alignParentLeft="true"
+        android:onClick="onButtonPlayClick"
         android:layout_alignParentStart="true" />
 
     <Button

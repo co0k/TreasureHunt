@@ -60,4 +60,9 @@ public class HomeActivity extends ActionBarActivity {
         Intent actSwitch = new Intent(this, InventoryActivity.class);
         startActivity(actSwitch);
     }
+
+    public void onButtonPlayClick(View v){
+        Intent actSwitch = new Intent(this, MapsActivity.class);
+        startActivity(actSwitch);
+    }
 }
