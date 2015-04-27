@@ -28,6 +28,83 @@ public class DatabaseManager {
 		}
 
 	}
+	
+	public boolean deleteTreasure (int tid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(BOX).where(BOX.TID.equal(tid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean deleteLocation (int lid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(LOCATION).where(LOCATION.LID.equal(lid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean deleteType (int tid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(TYPE).where(TYPE.TID.equal(tid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean deleteSize (int sid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(SIZE).where(SIZE.SID.equal(sid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean deleteQuiz (int qid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(QUIZ).where(QUIZ.QID.equal(qid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean deleteContent (int cid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(CONTENT).where(CONTENT.CID.equal(cid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public void deleteAll () throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		create.truncate(BOX);
+		create.truncate(LOCATION);
+		create.truncate(QUIZ);
+		create.truncate(SIZE);
+		create.truncate(TYPE);
+		create.truncate(CONTENT);
+	}
 
 	private static Connection getConnection() throws SQLException {
 		String userName = "root";

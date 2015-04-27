@@ -39,7 +39,7 @@ public class Quiz extends Treasure.Type {
 
 	public Quiz(String question, String answer1, String answer2,
 			String answer3, String answer4, String answer5, String answer6) {
-		this(-1, question, answer1, answer2, answer3, answer4, answer5, answer6);
+		this(-1, question, answer1, answer2, answer3, answer4, answer5, answer6, -1);
 	}
 
 	public String getQuestion() {
