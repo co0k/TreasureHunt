@@ -45,6 +45,27 @@ public class HighscoreList {
 		return -1;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		HighscoreList that = (HighscoreList) o;
+
+		if (minRange != that.minRange) return false;
+		if (maxRange != that.maxRange) return false;
+		return !(list != null ? !list.equals(that.list) : that.list != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = minRange;
+		result = 31 * result + maxRange;
+		result = 31 * result + (list != null ? list.hashCode() : 0);
+		return result;
+	}
+
 	/****************** (sub-)interfaces and classes ******************/
 
 	public static enum Order {
@@ -86,6 +107,31 @@ public class HighscoreList {
 		@Override
 		public int getId() {
 			return id;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Entry entry = (Entry) o;
+
+			if (uId != entry.uId) return false;
+			if (id != entry.id) return false;
+			if (rank != entry.rank) return false;
+			if (experience != entry.experience) return false;
+			return !(name != null ? !name.equals(entry.name) : entry.name != null);
+
+		}
+
+		@Override
+		public int hashCode() {
+			int result = uId;
+			result = 31 * result + id;
+			result = 31 * result + (name != null ? name.hashCode() : 0);
+			result = 31 * result + rank;
+			result = 31 * result + experience;
+			return result;
 		}
 	}
 }
