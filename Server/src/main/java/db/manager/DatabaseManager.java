@@ -1,6 +1,6 @@
-package main.java.db.manager;
+package db.manager;
 
-import static main.java.db.generated.Tables.*;
+import static db.generated.Tables.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,8 +13,8 @@ import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
-import main.java.data_structures.treasure.*;
-import main.java.data_structures.treasure.Treasure.*;
+import data_structures.treasure.*;
+import data_structures.treasure.Treasure.*;
 
 public class DatabaseManager {
 	public static void main(String[] args) {
@@ -108,7 +108,7 @@ public class DatabaseManager {
 
 	private static Connection getConnection() throws SQLException {
 		String userName = "root";
-		String password = "test";
+		String password = "";
 		String url = "jdbc:mysql://localhost:3306/library";
 
 		Connection conn = DriverManager.getConnection(url, userName, password);
@@ -137,6 +137,8 @@ public class DatabaseManager {
 		}
 
 		conn.close();
+		if(out.isEmpty())
+			return null;
 		return out.get(0);
 
 	}
@@ -158,6 +160,8 @@ public class DatabaseManager {
 		}
 
 		conn.close();
+		if(out.isEmpty())
+			return null;
 		return out.get(0);
 	}
 	
@@ -177,6 +181,8 @@ public class DatabaseManager {
 		}
 
 		conn.close();
+		if(out.isEmpty())
+			return null;
 		return out.get(0);
 	}
 	
@@ -196,6 +202,8 @@ public class DatabaseManager {
 			//out.add(tmp);
 		}
 		conn.close();
+		if(out.isEmpty())
+			return null;
 		return out.get(0);
 	}
 
@@ -247,6 +255,8 @@ public class DatabaseManager {
 		}
 		
 		conn.close();
+		if(out.isEmpty())
+			return null;
 		return out.get(0);
 	}
 	

@@ -11,4 +11,9 @@ jdk:
         - openjdk7
  
 before_install:
- - chmod +x gradlew
+        - chmod +x gradlew
+        - mysql -e 'create database IF NOT EXISTS library;' -uroot
+script:
+        - ./gradlew assemble
+        - ./gradlew check
+        - java -jar Server/build/libs/Server-all-0.1.jar 

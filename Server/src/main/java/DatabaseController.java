@@ -1,8 +1,8 @@
 package main.java;
 
 import java.util.List;
-import main.java.data_structures.treasure.*;
-import main.java.data_structures.user.*;
+import data_structures.treasure.*;
+import data_structures.user.*;
 
 
 public class DatabaseController implements DatabaseControllerDAO {

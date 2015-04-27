@@ -1,7 +1,7 @@
-package main.java.data_structures.treasure;
+package data_structures.treasure;
 
-import main.java.data_structures.ExperiencePointHolder;
-import main.java.data_structures.IdHolder;
+import data_structures.ExperiencePointHolder;
+import data_structures.IdHolder;
 
 public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Treasure> {
 	private int id;

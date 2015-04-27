@@ -1,7 +1,7 @@
-package main.java.data_structures.user;
+package data_structures.user;
 
-import main.java.data_structures.ExperiencePointHolder;
-import main.java.data_structures.IdHolder;
+import data_structures.ExperiencePointHolder;
+import data_structures.IdHolder;
 
 public class User implements IdHolder, ExperiencePointHolder {
 	private int id;

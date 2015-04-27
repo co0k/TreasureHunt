@@ -1,11 +1,11 @@
-package main.java.data_structures.user;
+package data_structures.user;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.data_structures.IdHolder;
-import main.java.data_structures.treasure.Treasure;
-import main.java.data_structures.treasure.Treasure.Content;
+import data_structures.IdHolder;
+import data_structures.treasure.Treasure;
+import data_structures.treasure.Treasure.Content;
 
 
 public class Inventory {

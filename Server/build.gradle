@@ -1,14 +1,88 @@
-//// File: build.gradle
+// Configure the Java plugin and the dependencies
+// ----------------------------------------------
 apply plugin: 'java'
+
+version = '0.1'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile 'junit:junit:[4,)'
+    compile 'org.jooq:jooq:3.6.0'
+    compile 'mysql:mysql-connector-java:+'
+    runtime 'com.h2database:h2:1.4.177'
+    testCompile'junit:junit:[4,)'
+}
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Server for SEPM',
+                'Implementation-Version': version,
+                'Main-Class': 'db.manager.DatabaseManager'
+    }
+}
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Server for the TreasureHunt App',
+        	'Implementation-Version': version,
+        	'Main-Class': 'db.manager.DatabaseManager'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.jooq:jooq-codegen:3.6.0'
+        classpath 'com.h2database:h2:1.4.177'
+        classpath 'mysql:mysql-connector-java:+'
+    }
 }
 
+task generate << {
+
+    // Use your favourite XML builder to construct the code generation configuration file
+    // ----------------------------------------------------------------------------------
+    def writer = new StringWriter()
+    def xml = new groovy.xml.MarkupBuilder(writer)
+            .configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.6.0.xsd') {
+        jdbc() {
+            driver('com.mysql.jdbc.Driver')
+            url('jdbc:mysql://localhost:3306/library')
+            user('root')
+            password('')
+        }
+        generator() {
+            database() {
+                name('org.jooq.util.mysql.MySQLDatabase')
+                includes('.*')
+                inputSchema('library')
+            }
+            generate() {
+            }
+            target() {
+                packageName('db.generated')
+                directory('src/main/java')
+            }
+        }
+    }
+
+    // Run the code generator
+    // ----------------------
+    org.jooq.util.GenerationTool.main(
+            javax.xml.bind.JAXB.unmarshal(
+                    new StringReader(writer.toString()),
+                    org.jooq.util.jaxb.Configuration.class
+            )
+    )
+}
+task cleanGeneratedFiles << {
+    delete fileTree(dir: "src/main/java/db/generated")
+}
 test {
     testLogging {
         events 'passed'
@@ -16,4 +90,6 @@ test {
         showCauses true
     }
 }
-
+compileJava.dependsOn(generate)
+clean.dependsOn(cleanGeneratedFiles)
+assemble.dependsOn(fatJar)

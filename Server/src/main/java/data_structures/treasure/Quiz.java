@@ -1,4 +1,4 @@
-package main.java.data_structures.treasure;
+package data_structures.treasure;
 
 public class Quiz extends Treasure.Type {
 	private int id;

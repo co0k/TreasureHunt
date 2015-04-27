@@ -1,4 +1,4 @@
-package main.java.db.quadtree;
+package db.quadtree;
 
 /* *********************************************************************** *
  * QuadLeaf.java                                                           *
