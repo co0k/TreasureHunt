@@ -33,7 +33,25 @@ public class Inventory {
 		inventoryList.add(entry);
 	}
 
-	/****************** (sub-)interfaces and classes ******************/
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Inventory inventory = (Inventory) o;
+
+		return !(inventoryList != null ? !inventoryList.equals(inventory.inventoryList) : inventory.inventoryList != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return inventoryList != null ? inventoryList.hashCode() : 0;
+	}
+
+	/**
+	 * *************** (sub-)interfaces and classes *****************
+	 */
 
 	public static class Entry implements IdHolder {
 		private int id;
@@ -59,5 +77,25 @@ public class Inventory {
 			return content;
 		}
 
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Entry entry = (Entry) o;
+
+			if (id != entry.id) return false;
+			if (count != entry.count) return false;
+			return !(content != null ? !content.equals(entry.content) : entry.content != null);
+
+		}
+
+		@Override
+		public int hashCode() {
+			int result = id;
+			result = 31 * result + count;
+			result = 31 * result + (content != null ? content.hashCode() : 0);
+			return result;
+		}
 	}
 }
