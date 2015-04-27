@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 mysql -e 'create database IF NOT EXISTS library;' -uroot
 mysql -e "use library;
 create table if not exists location (

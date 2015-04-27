@@ -109,7 +109,7 @@ public class DatabaseManager {
 	private static Connection getConnection() throws SQLException {
 		String userName = "root";
 		String password = "";
-		String url = "jdbc:mysql://localhost:3306/library";
+		String url = "jdbc:mysql://127.0.0.1:3306/library";
 
 		Connection conn = DriverManager.getConnection(url, userName, password);
 		return conn;
