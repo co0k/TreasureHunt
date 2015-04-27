@@ -1,0 +1,61 @@
+#!/bin/bash
+mysql -e 'create database IF NOT EXISTS library;' -uroot
+mysql -e "use library;
+create table if not exists location (
+Lid int NOT NULL AUTO_INCREMENT,
+x float,
+y float,
+outXP int,
+primary key (Lid)
+);
+
+create table if not exists quiz (
+Qid int NOT NULL AUTO_INCREMENT,
+question varchar(1024),
+answer1 varchar(1024),
+answer2 varchar(1024),
+answer3 varchar(1024),
+answer4 varchar(1024),
+answer5 varchar(1024),
+answer6 varchar(1024),
+Lid int,
+primary key (Qid),
+foreign key (Lid) references location (Lid)
+);
+
+create table if not exists type (
+Tid int NOT NULL AUTO_INCREMENT,
+name varchar(256),
+typeXP int,
+primary key (Tid)
+);
+
+create table if not exists size (
+Sid int NOT NULL AUTO_INCREMENT,
+sizeXP int,
+size int,
+primary key (Sid)
+);
+
+create table if not exists content (
+Cid int NOT NULL AUTO_INCREMENT,
+content varchar(1024),
+contentXP int,
+primary key (Cid)
+);
+
+create table if not exists box (
+Bid int NOT NULL AUTO_INCREMENT,
+Lid int,
+Tid int,
+Sid int,
+Qid int,
+Cid int,
+last_userid int,
+primary key (Bid),
+foreign key (Lid) references location (Lid),
+foreign key (Tid) references type (Tid),
+foreign key (Sid) references size (Sid),
+foreign key (Qid) references quiz (Qid),
+foreign key (Cid) references content (Cid)
+);" -uroot
