@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import at.tba.treasurehunt.R;
 
@@ -40,18 +41,23 @@ public class HomeActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void buttonUserProfileClick(){
+    public void onButtonUserProfileClick(View v){
         Intent actSwitch = new Intent(this, UserProfileActivity.class);
         startActivity(actSwitch);
     }
 
-    public void buttonSettingsClick(){
+    public void onButtonSettingsClick(View v){
         Intent actSwitch = new Intent(this, SettingsActivity.class);
         startActivity(actSwitch);
     }
 
-    public void buttonHighscoresClick(){
+    public void onButtonHighscoresClick(View v){
         Intent actSwitch = new Intent(this, HighscoresActivity.class);
+        startActivity(actSwitch);
+    }
+
+    public void onButtonInventoryClick(View v){
+        Intent actSwitch = new Intent(this, InventoryActivity.class);
         startActivity(actSwitch);
     }
 }
