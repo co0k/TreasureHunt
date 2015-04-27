@@ -4,16 +4,25 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.controller.UserDataController;
+import at.tba.treasurehunt.datastructures.user.User;
 
 
 public class UserProfileActivity extends ActionBarActivity {
+
+
+    TextView f_userName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        initLayoutFields();
+        fillUserData();
     }
 
 
@@ -37,5 +46,19 @@ public class UserProfileActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /**
+     * Uses the UserDataController to get the current Users data
+     */
+    private void fillUserData(){
+        User userData = UserDataController.getInstance().getCurrentUserData();
+        f_userName.setText(userData.getName());
+    }
+
+
+    private void initLayoutFields(){
+        this.f_userName = (TextView) this.findViewById(R.id.editText);
     }
 }

@@ -3,22 +3,26 @@ package at.tba.treasurehunt.activities;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.utils.GPSTracker;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GPSTracker gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_maps);
         setUpMapIfNeeded();
+
     }
 
     @Override
@@ -62,6 +66,13 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+       // mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        updateMapPosition();
+    }
+
+    private void updateMapPosition(){
+        GPSTracker gps = new GPSTracker(this);
+        mMap.addMarker(new MarkerOptions().position(new LatLng(gps.getLatitude(), gps.getLongitude())).title("Your Position"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(gps.getLatitude(), gps.getLongitude())));
     }
 }
