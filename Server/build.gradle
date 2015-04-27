@@ -52,7 +52,7 @@ task generate << {
             .configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.6.0.xsd') {
         jdbc() {
             driver('com.mysql.jdbc.Driver')
-            url('jdbc:mysql://localhost:3306/library')
+            url('jdbc:mysql://127.0.0.1:3306/library')
             user('root')
             password('')
         }

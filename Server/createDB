@@ -59,3 +59,4 @@ foreign key (Sid) references size (Sid),
 foreign key (Qid) references quiz (Qid),
 foreign key (Cid) references content (Cid)
 );" -uroot
+mysql -e 'use library; show tables;' -uroot
