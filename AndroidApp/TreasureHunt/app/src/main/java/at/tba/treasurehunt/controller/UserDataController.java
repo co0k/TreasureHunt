@@ -6,6 +6,7 @@ package at.tba.treasurehunt.controller;
 
 import at.tba.treasurehunt.datastructures.user.Inventory;
 import at.tba.treasurehunt.datastructures.user.User;
+import at.tba.treasurehunt.utils.DummyDataProvider;
 
 /**
  * Singleton
@@ -24,11 +25,9 @@ public class UserDataController {
 
 
     public User getCurrentUserData(){
-        return getDummyUser();
+        return DummyDataProvider.getDummyUserData();
     }
 
-    private User getDummyUser(){
-        return new User(1,"Testuser","test111","test@email",1,200, new Inventory(null));
-    }
+
 
 }

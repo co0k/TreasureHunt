@@ -1,18 +1,22 @@
 package at.tba.treasurehunt.activities;
 
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.utils.GPSTracker;
+import at.tba.treasurehunt.utils.GPSUpdateHandler;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GPSTracker gpsTracker;
@@ -66,13 +70,23 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-       // mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-        updateMapPosition();
+       mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Init position"));
+        GPSUpdateHandler gpsUpdate = new GPSUpdateHandler();
+        gpsUpdate.startHandler();
+       initMapAndLocations();
     }
 
-    private void updateMapPosition(){
-        GPSTracker gps = new GPSTracker(this);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(gps.getLatitude(), gps.getLongitude())).title("Your Position"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(gps.getLatitude(), gps.getLongitude())));
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        initMapAndLocations();
     }
+
+    private void initMapAndLocations(){
+        gpsTracker = new GPSTracker(this);
+        LocationController.getInstance().setMapAndGps(mMap, gpsTracker);
+        LocationController.getInstance().initialSetLocations();
+    }
+
+
 }

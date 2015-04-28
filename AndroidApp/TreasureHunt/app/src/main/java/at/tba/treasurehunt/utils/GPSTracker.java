@@ -7,6 +7,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import at.tba.treasurehunt.controller.LocationController;
+
 /**
  * Created by dAmihl on 27.04.15.
  */
@@ -125,6 +127,7 @@ public class GPSTracker implements LocationListener {
     }
     @Override
     public void onLocationChanged(Location location) {
+        LocationController.getInstance().updateMyLocation();
     }
 
     @Override
