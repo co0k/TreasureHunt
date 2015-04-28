@@ -70,16 +70,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-       mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Init position"));
-        GPSUpdateHandler gpsUpdate = new GPSUpdateHandler();
-        gpsUpdate.startHandler();
+       GPSUpdateHandler gpsUpdate = new GPSUpdateHandler(this);
+       gpsUpdate.startHandler();
        initMapAndLocations();
     }
 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        initMapAndLocations();
+
     }
 
     private void initMapAndLocations(){

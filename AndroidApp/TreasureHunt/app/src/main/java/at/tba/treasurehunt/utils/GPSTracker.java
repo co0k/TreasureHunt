@@ -127,7 +127,6 @@ public class GPSTracker implements LocationListener {
     }
     @Override
     public void onLocationChanged(Location location) {
-        LocationController.getInstance().updateMyLocation();
     }
 
     @Override

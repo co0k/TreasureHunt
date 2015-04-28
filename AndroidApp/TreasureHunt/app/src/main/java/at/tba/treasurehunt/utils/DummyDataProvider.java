@@ -30,10 +30,16 @@ public class DummyDataProvider {
     /**
      * Returns a dummy location in Innsbruck.
      * The latitude of Innsbruck, Tyrol, Austria is 47.259659, and the longitude is 11.400375
+     *
+     * Uni Technik Location Bauingenieur:
+     * 47.2641234/11.3451889
      * @return
      */
    public static Treasure.Location getDummyTreasureHuntLocation(){
-        return new Treasure.Location(1, 100, 47.259659, 11.400375);
+       //Innsbruck Goldenes Dachl
+       // return new Treasure.Location(1, 100, 47.259659, 11.400375);
+       // Innsbruck Technik Hess Haus 47.264097, 11.343373
+       return new Treasure.Location(1, 100, 47.264097, 11.343373);
    }
 
    public static Quiz getDummyQuiz(){
