@@ -23,8 +23,8 @@ public class DummyDataProvider {
        return new User(1,"Testuser","test111","test@email",1,200, new Inventory(null));
    }
 
-   public static Treasure getDummyTreasureData(){
-       return new Treasure(1,20,getDummyTreasureHuntLocation(),getDummyQuiz(),new Treasure.Size(1,20,1),null,0);
+   public static Treasure getDummyTreasureData(int pos){
+       return new Treasure(1,20,getDummyTreasureHuntLocation(pos),getDummyQuiz(),new Treasure.Size(1,20,1),null,0);
    }
 
     /**
@@ -35,7 +35,12 @@ public class DummyDataProvider {
      * 47.2641234/11.3451889
      * @return
      */
-   public static Treasure.Location getDummyTreasureHuntLocation(){
+   public static Treasure.Location getDummyTreasureHuntLocation(int pos){
+       switch (pos){
+           case 0: return new Treasure.Location(1, 100, 47.259659, 11.400375);
+           case 1: return new Treasure.Location(1, 100, 47.264097, 11.343373);
+           case 2: return new Treasure.Location(1, 100, 47.319443, 11.073080);
+       }
        //Innsbruck Goldenes Dachl
        // return new Treasure.Location(1, 100, 47.259659, 11.400375);
        // Innsbruck Technik Hess Haus 47.264097, 11.343373

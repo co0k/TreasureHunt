@@ -31,22 +31,66 @@ public class TreasureChestHolder {
     private ArrayList<Treasure> treasureList;
 
     private Treasure currentTreasureInRange = null;
+    private Treasure nearestTreasure = null;
+    private double distanceToNearestTreasure = 0;
 
 
     /**
-     * Returns the (first in list) Treasure object which is in range of the UserPos given
+     * Returns the nearest Treasure object if it is in range.
+     * Nearest treasure gets updated by updateNearestTreasure
      * @param userPos the current users Position
      * @return the Treasure object, which is in range of UserPos
      */
     private Treasure treasureChestInRange(LatLng userPos){
-        for (Treasure t: treasureList){
+        if (nearestTreasure == null) return null;
+        LatLng treasurePos = new LatLng(nearestTreasure.getLocation().getLat(), nearestTreasure.getLocation().getLon());
+        if (MapLocationHelper.isInRange(userPos,treasurePos, 100)){
+            return nearestTreasure;
+        }
+        return null;
+        /*for (Treasure t: treasureList){
             LatLng treasurePos = new LatLng(t.getLocation().getLat(), t.getLocation().getLon());
-            if (MapLocationHelper.isInRange(userPos,treasurePos, 10)){
+            if (MapLocationHelper.isInRange(userPos,treasurePos, 100)){
                 return t;
             }
         }
-        return null;
+        return null;*/
     }
+
+
+    /**
+     * Iterates all treasures in lists and saves the nearest treasure with its distance
+     * @param userPos the current users Position
+     */
+    public void updateNearestTreasure(LatLng userPos){
+        double dist = -1;
+        Treasure temp = null;
+        if (treasureList.size() < 1) return;
+        else{
+            temp = treasureList.get(0);
+            LatLng treasurePos = new LatLng(temp.getLocation().getLat(), temp.getLocation().getLon());
+            dist = MapLocationHelper.distanceBetween(userPos, treasurePos);
+        }
+
+        for (Treasure t: treasureList){
+            if (t == temp) continue;
+            LatLng treasurePos = new LatLng(t.getLocation().getLat(), t.getLocation().getLon());
+            double newDist = MapLocationHelper.distanceBetween(userPos, treasurePos);
+            if (newDist <= dist){
+                dist = newDist;
+                temp = t;
+            };
+        }
+        nearestTreasure = temp;
+        distanceToNearestTreasure = dist;
+    }
+
+
+
+    public double getNearestTreasureDistance(){
+        return distanceToNearestTreasure;
+    }
+
 
 
     /**
@@ -54,6 +98,7 @@ public class TreasureChestHolder {
      * if true, then save the current treasure in range
      */
     public void updateTreasuresInRange(LatLng userPos){
+        updateNearestTreasure(userPos);
         currentTreasureInRange = treasureChestInRange(userPos);
     }
 

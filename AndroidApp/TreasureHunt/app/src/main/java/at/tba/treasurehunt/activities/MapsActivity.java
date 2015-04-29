@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -101,6 +102,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onButtonOpenTreasureClick(View v){
         ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
+    }
+
+    public void updateHotColdDistance(double distance){
+        TextView t = (TextView) findViewById(R.id.textViewDistToTreasure);
+        t.setText("Distance to next Treasure: "+distance);
     }
 
 }

@@ -39,6 +39,7 @@ public class GPSUpdateHandler {
                 LocationController.getInstance().updateMyLocation();
                 LatLng userPos = LocationController.getInstance().getMyPosition();
                 TreasureChestHolder.getInstance().updateTreasuresInRange(userPos);
+                mapsActivity.updateHotColdDistance(TreasureChestHolder.getInstance().getNearestTreasureDistance());
                 if (TreasureChestHolder.getInstance().isTreasureInRange()){
                     mapsActivity.onTreasureInRange();
                 }

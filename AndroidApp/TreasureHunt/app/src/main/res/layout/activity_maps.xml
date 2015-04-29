@@ -22,6 +22,14 @@
         android:onClick="onButtonOpenTreasureClick"
         android:visibility="invisible" />
 
+    <TextView
+        android:layout_width="121dp"
+        android:layout_height="74dp"
+        android:text="Distance to next treasure: "
+        android:id="@+id/textViewDistToTreasure"
+        android:layout_gravity="left|top"
+        android:textStyle="bold" />
+
 </FrameLayout>
 
 <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"

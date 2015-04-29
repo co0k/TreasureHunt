@@ -32,15 +32,33 @@ public class MapLocationHelper {
         compute the real radius by dividing by 1000
         only look at the 0.00x position
          */
-        double realRadius = (double) radius / 1000;
+
+        return distanceBetween(myLocation, targetLocation) <= radius;
+
+        /*double realRadius = (double) radius / 1000;
 
         double diffLat = Math.abs((myLocation.latitude - targetLocation.latitude));
         double diffLong = Math.abs((myLocation.longitude - targetLocation.longitude));
 
         return diffLat <= realRadius &&
                diffLong <= realRadius;
-
+        */
     }
+
+    public static double distanceBetween(LatLng pos1, LatLng pos2){
+        Location loc1 = new Location("");
+        loc1.setLatitude(pos1.latitude);
+        loc1.setLongitude(pos1.longitude);
+
+        Location loc2 = new Location("");
+        loc2.setLatitude(pos2.latitude);
+        loc2.setLongitude(pos2.longitude);
+        double distance = loc2.distanceTo(loc1);
+        Log.i("LOCHLP", "Distance to : "+distance);
+        return distance;
+    }
+
+
 
 
 

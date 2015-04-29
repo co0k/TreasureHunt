@@ -24,7 +24,9 @@ public class TreasureChestsProvider {
      */
     public ArrayList<Treasure> getTreasureChestsList(){
         ArrayList<Treasure> result = new ArrayList<Treasure>();
-        result.add(DummyDataProvider.getDummyTreasureData());
+        result.add(DummyDataProvider.getDummyTreasureData(0));
+        result.add(DummyDataProvider.getDummyTreasureData(1));
+        result.add(DummyDataProvider.getDummyTreasureData(2));
         return result;
     }
 
