@@ -1,6 +1,7 @@
 package at.tba.treasurehunt.utils;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -29,11 +30,15 @@ public class MapLocationHelper {
          */
         /*
         compute the real radius by dividing by 1000
+        only look at the 0.00x position
          */
-        double realRadius = radius / 1000;
+        double realRadius = (double) radius / 1000;
 
-        return Math.abs((myLocation.latitude - targetLocation.latitude)) <= realRadius &&
-                Math.abs((myLocation.longitude - targetLocation.longitude)) <= realRadius;
+        double diffLat = Math.abs((myLocation.latitude - targetLocation.latitude));
+        double diffLong = Math.abs((myLocation.longitude - targetLocation.longitude));
+
+        return diffLat <= realRadius &&
+               diffLong <= realRadius;
 
     }
 

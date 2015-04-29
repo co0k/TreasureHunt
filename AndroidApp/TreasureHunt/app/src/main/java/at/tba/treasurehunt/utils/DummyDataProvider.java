@@ -39,7 +39,9 @@ public class DummyDataProvider {
        //Innsbruck Goldenes Dachl
        // return new Treasure.Location(1, 100, 47.259659, 11.400375);
        // Innsbruck Technik Hess Haus 47.264097, 11.343373
-       return new Treasure.Location(1, 100, 47.264097, 11.343373);
+       //return new Treasure.Location(1, 100, 47.264097, 11.343373);
+       // Telfs 47.319443, 11.073080
+       return new Treasure.Location(1, 100, 47.319443, 11.073080);
    }
 
    public static Quiz getDummyQuiz(){

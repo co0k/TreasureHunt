@@ -4,6 +4,7 @@ package at.tba.treasurehunt.controller;
  * Created by dAmihl on 27.04.15.
  */
 
+import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
 
@@ -58,23 +59,25 @@ public class LocationController {
     public void initialSetLocations(){
         initialMyLocation();
         initialChestLocations();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myPosCircle.getCenter(), 40));
     }
 
     private void initialMyLocation(){
+        gpsTracker.getLocation();
         if (gpsTracker.canGetLocation()) {
-            gpsTracker.getLocation();
-            myPosCircle = mMap.addCircle(new CircleOptions().center(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())).radius(2));
+            myPosCircle = mMap.addCircle(new CircleOptions()
+                    .center(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()))
+                    .radius(5)
+                    .fillColor(Color.BLUE)
+                    .strokeColor(Color.BLUE));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myPosCircle.getCenter(), 15));
             Log.i("LocCon", "UpdateMyLocation: " + gpsTracker.getLatitude() + "/" + gpsTracker.getLongitude());
         }
     }
 
     public void updateMyLocation(){
         if (gpsTracker.canGetLocation() && myPosCircle != null) {
-            gpsTracker.getLocation();
             myPosCircle.setCenter(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())));
             Log.i("LocCon", "UpdateMyLocation: " + gpsTracker.getLatitude() + "/" + gpsTracker.getLongitude());
         }
     }

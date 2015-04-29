@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import at.tba.treasurehunt.activities.MapsActivity;
 import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.datastructures.treasure.Treasure;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
@@ -14,7 +17,7 @@ import at.tba.treasurehunt.treasures.TreasureChestHolder;
  * A handler to start, which updates every x ms the current gps location
  *
  */
-public class GPSUpdateHandler extends Handler {
+public class GPSUpdateHandler {
 
 
     // 10 seconds per update
@@ -23,10 +26,10 @@ public class GPSUpdateHandler extends Handler {
 
     private Handler handler;
     private Runnable runnable;
-    private Context context;
+    private MapsActivity mapsActivity;
 
-    public GPSUpdateHandler(Context c){
-        this.context = c;
+    public GPSUpdateHandler(MapsActivity c){
+        this.mapsActivity = c;
         handler = new Handler();
 
         runnable = new Runnable(){
@@ -34,10 +37,10 @@ public class GPSUpdateHandler extends Handler {
             @Override
             public void run() {
                 LocationController.getInstance().updateMyLocation();
-                Treasure treasureInRange = TreasureChestHolder.getInstance().treasureChestInRange(LocationController.getInstance().getMyPosition());
-                if (treasureInRange != null){
-                    Log.i("TRSR", "FOUND A TREASURE!!");
-                    ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro!", context);
+                LatLng userPos = LocationController.getInstance().getMyPosition();
+                TreasureChestHolder.getInstance().updateTreasuresInRange(userPos);
+                if (TreasureChestHolder.getInstance().isTreasureInRange()){
+                    mapsActivity.onTreasureInRange();
                 }
                 handler.postDelayed(this, DELAY_TIME);
             }

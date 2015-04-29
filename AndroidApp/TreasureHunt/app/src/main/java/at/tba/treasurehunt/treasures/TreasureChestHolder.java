@@ -30,8 +30,15 @@ public class TreasureChestHolder {
 
     private ArrayList<Treasure> treasureList;
 
+    private Treasure currentTreasureInRange = null;
 
-    public Treasure treasureChestInRange(LatLng userPos){
+
+    /**
+     * Returns the (first in list) Treasure object which is in range of the UserPos given
+     * @param userPos the current users Position
+     * @return the Treasure object, which is in range of UserPos
+     */
+    private Treasure treasureChestInRange(LatLng userPos){
         for (Treasure t: treasureList){
             LatLng treasurePos = new LatLng(t.getLocation().getLat(), t.getLocation().getLon());
             if (MapLocationHelper.isInRange(userPos,treasurePos, 10)){
@@ -41,17 +48,39 @@ public class TreasureChestHolder {
         return null;
     }
 
+
+    /**
+     * checks if a treasure is in range by treasureChestInRange()
+     * if true, then save the current treasure in range
+     */
+    public void updateTreasuresInRange(LatLng userPos){
+        currentTreasureInRange = treasureChestInRange(userPos);
+    }
+
+
+    /**
+     * Returns bool, if a treasure is in range on the map
+     * @return true, if a treasure object is in range of the user
+     */
+    public boolean isTreasureInRange(){
+        return currentTreasureInRange != null;
+    }
+
+    /**
+     * Updates the treasure list of TreasureChestHolder.
+     * Treasures given by TreasureChestProvider
+     */
     public void updateTreasureList(){
         ArrayList<Treasure> treasureChests = TreasureChestsProvider.getInstance().getTreasureChestsList();
         treasureList.clear();
         treasureList.addAll(treasureChests);
     }
 
-    public Treasure getOneTreasure(){
-        return treasureList.get(0);
-    }
 
-
+    /**
+     * Draws ever chest in treasureList on the given GoogleMap
+     * @param mMap GoogleMap to draw on
+     */
     public void drawChestsOnMap(GoogleMap mMap){
         for (Treasure t: treasureList){
             mMap.addCircle(new CircleOptions().center(new LatLng(t.getLocation().getLat(), t.getLocation().getLon())).radius(1));

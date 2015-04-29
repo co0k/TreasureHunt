@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import at.tba.treasurehunt.activities.MapsActivity;
 import at.tba.treasurehunt.controller.LocationController;
 
 /**
@@ -15,7 +16,7 @@ import at.tba.treasurehunt.controller.LocationController;
 public class GPSTracker implements LocationListener {
 
 
-    private final Context mContext;
+    private final MapsActivity mapsActivity;
     // Flag for GPS status
     boolean isGPSEnabled = false;
     // Flag for network status
@@ -31,13 +32,12 @@ public class GPSTracker implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
     // Declaring a Location Manager
     protected LocationManager locationManager;
-    public GPSTracker(Context context) {
-        this.mContext = context;
-        getLocation();
+    public GPSTracker(MapsActivity maps) {
+        this.mapsActivity = maps;
     }
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext
+            locationManager = (LocationManager) mapsActivity
                     .getSystemService(Context.LOCATION_SERVICE);
 // Getting GPS status
             isGPSEnabled = locationManager
@@ -127,6 +127,9 @@ public class GPSTracker implements LocationListener {
     }
     @Override
     public void onLocationChanged(Location location) {
+        Log.i("GPSTRCK", "Location changed to "+location.getLatitude()+"/"+location.getLongitude());
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
     }
 
     @Override

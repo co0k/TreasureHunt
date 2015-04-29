@@ -3,6 +3,9 @@ package at.tba.treasurehunt.activities;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +18,7 @@ import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.utils.GPSTracker;
 import at.tba.treasurehunt.utils.GPSUpdateHandler;
+import at.tba.treasurehunt.utils.ShowMessageHelper;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -70,6 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+       mMap.setMyLocationEnabled(true);
        GPSUpdateHandler gpsUpdate = new GPSUpdateHandler(this);
        gpsUpdate.startHandler();
        initMapAndLocations();
@@ -87,5 +92,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationController.getInstance().initialSetLocations();
     }
 
+    public void onTreasureInRange(){
+        Log.i("TRSR", "FOUND A TREASURE!!");
+        Button b = (Button) findViewById(R.id.btnOpenTreasure);
+        b.setVisibility(View.VISIBLE);
+        b.setEnabled(true);
+    }
+
+    public void onButtonOpenTreasureClick(View v){
+        ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
+    }
 
 }
