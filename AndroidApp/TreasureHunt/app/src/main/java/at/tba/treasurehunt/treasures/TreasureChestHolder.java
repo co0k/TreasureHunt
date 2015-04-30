@@ -84,7 +84,9 @@ public class TreasureChestHolder {
         return distanceToNearestTreasure;
     }
 
-
+    public Treasure getNearestTreasure(){
+        return this.nearestTreasure;
+    }
 
     /**
      * checks if a treasure is in range by treasureChestInRange()

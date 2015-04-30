@@ -1,5 +1,6 @@
 package at.tba.treasurehunt.activities;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.LocationController;
+import at.tba.treasurehunt.datastructures.treasure.Treasure;
+import at.tba.treasurehunt.treasures.TreasureChestHolder;
 import at.tba.treasurehunt.utils.GPSTracker;
 import at.tba.treasurehunt.utils.GPSUpdateHandler;
 import at.tba.treasurehunt.utils.ShowMessageHelper;
@@ -115,6 +118,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onButtonOpenTreasureClick(View v){
         ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
+        if (isQuiz(TreasureChestHolder.getInstance().getNearestTreasure().getType())) {
+            Intent actSwitch = new Intent(this, QuizActivity.class);
+            startActivity(actSwitch);
+        }
+    }
+
+    /**
+     * Only helper function here. Should be placed somewhere else, as soon as data structure is fixed
+     * @param type Treasure.Type object
+     * @return  true, if Type is a Quiz
+     */
+    private boolean isQuiz(Treasure.Type type){
+        return true;
     }
 
     public void updateHotColdDistance(double distance){
