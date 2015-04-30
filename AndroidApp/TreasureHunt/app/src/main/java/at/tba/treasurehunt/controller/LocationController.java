@@ -36,7 +36,7 @@ public class LocationController {
     private GPSTracker gpsTracker;
     private GoogleMap mMap;
 
-    private Circle myPosCircle;
+    //private Circle myPosCircle;
 
     public static LocationController getInstance(){
         if (instance == null) instance = new LocationController();
@@ -63,23 +63,8 @@ public class LocationController {
 
     private void initialMyLocation(){
         gpsTracker.getLocation();
-        if (gpsTracker.canGetLocation()) {
-            myPosCircle = mMap.addCircle(new CircleOptions()
-                    .center(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()))
-                    .radius(5)
-                    .fillColor(Color.BLUE)
-                    .strokeColor(Color.BLUE));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myPosCircle.getCenter(), 15));
-            Log.i("LocCon", "UpdateMyLocation: " + gpsTracker.getLatitude() + "/" + gpsTracker.getLongitude());
-        }
-    }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()), 15));
 
-    public void updateMyLocation(){
-        if (gpsTracker.canGetLocation() && myPosCircle != null) {
-            myPosCircle.setCenter(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()));
-            Log.i("LocCon", "UpdateMyLocation: " + gpsTracker.getLatitude() + "/" + gpsTracker.getLongitude());
-        }
     }
 
     public void initialChestLocations(){

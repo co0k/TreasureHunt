@@ -48,13 +48,6 @@ public class TreasureChestHolder {
             return nearestTreasure;
         }
         return null;
-        /*for (Treasure t: treasureList){
-            LatLng treasurePos = new LatLng(t.getLocation().getLat(), t.getLocation().getLon());
-            if (MapLocationHelper.isInRange(userPos,treasurePos, 100)){
-                return t;
-            }
-        }
-        return null;*/
     }
 
 

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,6 +22,10 @@ import at.tba.treasurehunt.utils.GPSTracker;
 import at.tba.treasurehunt.utils.GPSUpdateHandler;
 import at.tba.treasurehunt.utils.ShowMessageHelper;
 
+
+/**
+ * MAP Activity keeps screen alive! Set in onCreate.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -31,7 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_maps);
         setUpMapIfNeeded();
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
@@ -87,10 +92,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
     private void initMapAndLocations(){
         gpsTracker = new GPSTracker(this);
         LocationController.getInstance().setMapAndGps(mMap, gpsTracker);
         LocationController.getInstance().initialSetLocations();
+        mMap.setOnMyLocationChangeListener(gpsTracker);
     }
 
     public void onTreasureInRange(){
@@ -98,6 +105,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Button b = (Button) findViewById(R.id.btnOpenTreasure);
         b.setVisibility(View.VISIBLE);
         b.setEnabled(true);
+    }
+
+    public void onNoTreasureInRange(){
+        Button b = (Button) findViewById(R.id.btnOpenTreasure);
+        b.setVisibility(View.INVISIBLE);
+        b.setEnabled(false);
     }
 
     public void onButtonOpenTreasureClick(View v){

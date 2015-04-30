@@ -7,13 +7,15 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import at.tba.treasurehunt.activities.MapsActivity;
 import at.tba.treasurehunt.controller.LocationController;
 
 /**
  * Created by dAmihl on 27.04.15.
  */
-public class GPSTracker implements LocationListener {
+public class GPSTracker implements LocationListener, GoogleMap.OnMyLocationChangeListener {
 
 
     private final MapsActivity mapsActivity;
@@ -34,6 +36,7 @@ public class GPSTracker implements LocationListener {
     protected LocationManager locationManager;
     public GPSTracker(MapsActivity maps) {
         this.mapsActivity = maps;
+
     }
     public Location getLocation() {
         try {
@@ -105,7 +108,7 @@ public class GPSTracker implements LocationListener {
         if(location != null){
             latitude = location.getLatitude();
         }
-// return latitude
+        // return latitude
         return latitude;
     }
     /**
@@ -115,7 +118,7 @@ public class GPSTracker implements LocationListener {
         if(location != null){
             longitude = location.getLongitude();
         }
-// return longitude
+        // return longitude
         return longitude;
     }
     /**
@@ -127,9 +130,6 @@ public class GPSTracker implements LocationListener {
     }
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("GPSTRCK", "Location changed to "+location.getLatitude()+"/"+location.getLongitude());
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
     }
 
     @Override
@@ -140,5 +140,13 @@ public class GPSTracker implements LocationListener {
     }
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    @Override
+    public void onMyLocationChange(Location location) {
+        Log.i("GPSTRCK", "Location changed to "+location.getLatitude()+"/"+location.getLongitude());
+        this.location = location;
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
     }
 }

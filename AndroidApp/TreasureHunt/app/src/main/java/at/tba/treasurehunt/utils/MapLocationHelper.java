@@ -26,23 +26,10 @@ public class MapLocationHelper {
     public static boolean isInRange(LatLng myLocation, LatLng targetLocation, int radius){
 
         /**
-         * TODO: implement super nice algorithm
+         * TODO: maybe implement super nice algorithm
+         * or just use, like right now, GoogleMapAPI's super nice algorithm
          */
-        /*
-        compute the real radius by dividing by 1000
-        only look at the 0.00x position
-         */
-
         return distanceBetween(myLocation, targetLocation) <= radius;
-
-        /*double realRadius = (double) radius / 1000;
-
-        double diffLat = Math.abs((myLocation.latitude - targetLocation.latitude));
-        double diffLong = Math.abs((myLocation.longitude - targetLocation.longitude));
-
-        return diffLat <= realRadius &&
-               diffLong <= realRadius;
-        */
     }
 
     public static double distanceBetween(LatLng pos1, LatLng pos2){
@@ -54,7 +41,6 @@ public class MapLocationHelper {
         loc2.setLatitude(pos2.latitude);
         loc2.setLongitude(pos2.longitude);
         double distance = loc2.distanceTo(loc1);
-        Log.i("LOCHLP", "Distance to : "+distance);
         return distance;
     }
 

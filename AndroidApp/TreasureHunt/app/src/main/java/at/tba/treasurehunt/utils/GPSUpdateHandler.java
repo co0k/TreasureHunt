@@ -36,12 +36,13 @@ public class GPSUpdateHandler {
 
             @Override
             public void run() {
-                LocationController.getInstance().updateMyLocation();
                 LatLng userPos = LocationController.getInstance().getMyPosition();
                 TreasureChestHolder.getInstance().updateTreasuresInRange(userPos);
                 mapsActivity.updateHotColdDistance(TreasureChestHolder.getInstance().getNearestTreasureDistance());
                 if (TreasureChestHolder.getInstance().isTreasureInRange()){
                     mapsActivity.onTreasureInRange();
+                }else{
+                    mapsActivity.onNoTreasureInRange();
                 }
                 handler.postDelayed(this, DELAY_TIME);
             }
@@ -49,7 +50,7 @@ public class GPSUpdateHandler {
     }
 
     public void startHandler(){
-        handler.postDelayed(runnable, DELAY_TIME);
+        handler.postDelayed(runnable, 1000);
     }
 
 
