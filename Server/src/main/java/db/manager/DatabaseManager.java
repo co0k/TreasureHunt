@@ -35,6 +35,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(BOX, BOX.LID, BOX.TID, BOX.SID, BOX.QID, BOX.CID).values(lid, tid, sid, qid, cid).returning(BOX.BID).fetchOne();
+		conn.close();
 		return record.getValue(BOX.BID);
 		}
 	
@@ -44,6 +45,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(QUIZ, QUIZ.QUESTION, QUIZ.ANSWER1, QUIZ.ANSWER2, QUIZ.ANSWER3, QUIZ.ANSWER4, QUIZ.ANSWER5, QUIZ.ANSWER6, QUIZ.LID).values(question, correct1, answer2, answer3, answer4, answer5, answer6, lid).returning(QUIZ.QID).fetchOne();
+		conn.close();
 		return record.getValue(QUIZ.QID);
 		}
 	
@@ -51,6 +53,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(SIZE, SIZE.SIZE_, SIZE.SIZEXP).values(size, exp).returning(SIZE.SID).fetchOne();
+		conn.close();
 		return record.getValue(SIZE.SID);
 		}
 	
@@ -60,6 +63,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(CONTENT, CONTENT.CONTENT_, CONTENT.CONTENTXP).values(content, exp).returning(CONTENT.CID).fetchOne();
+		conn.close();
 		return record.getValue(CONTENT.CID);
 		}
 
@@ -68,6 +72,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(LOCATION, LOCATION.X,LOCATION.Y,LOCATION.OUTXP).values(x, y, exp).returning(LOCATION.LID).fetchOne();
+		conn.close();
 		return record.getValue(LOCATION.LID);
 		}
 	
@@ -77,6 +82,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(TYPE, TYPE.NAME, TYPE.TYPEXP).values(name, exp).returning(TYPE.TID).fetchOne();
+		conn.close();
 		return record.getValue(TYPE.TID);
 		}
 	
@@ -157,6 +163,7 @@ public class DatabaseManager {
 		create.truncate(SIZE);
 		create.truncate(TYPE);
 		create.truncate(CONTENT);
+		conn.close();
 	}
 
 	private static Connection getConnection() throws SQLException {
@@ -311,6 +318,42 @@ public class DatabaseManager {
 		if(out.isEmpty())
 			return null;
 		return out.get(0);
+	}
+	
+	public static ArrayList<Treasure> getAllTreasure () throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Result<Record> result = create.select().from(BOX).fetch();
+		ArrayList<Treasure> out = new ArrayList<Treasure>();
+		
+		for (Record r : result) {
+			Integer id = r.getValue(BOX.BID);
+			Integer lid = r.getValue(BOX.LID);
+			Integer tid = r.getValue(BOX.TID);
+			Integer sid = r.getValue(BOX.SID);
+			Integer qid = r.getValue(BOX.QID);
+			Integer cid = r.getValue(BOX.CID);
+			Integer last_userid = r.getValue(BOX.LAST_USERID);
+			Location location = getLocationFromId(lid);
+			Type type = null;
+			Size size = getSizeFromId(sid);
+			Content content = null;
+			/*if (cid != null) {
+				 content = getConntentFromId(cid);
+			}*/
+			if (qid != null) {
+				Quiz quiz = getQuizFromId(qid);
+				type = setTypeAttributesFromId(tid, quiz);
+			}
+			
+			Treasure tmp = new Treasure(id, 0, location, type, size, null, last_userid); //exp not  yet set
+			out.add(tmp);
+		}
+		
+		conn.close();
+		if(out.isEmpty())
+			return null;
+		return out;
 	}
 	
 	public static Location getLocationFromBid (int bid) throws SQLException {
