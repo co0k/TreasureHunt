@@ -23,13 +23,66 @@ public class DatabaseManager {
 			System.out.println(test);
 			test = setTypeAttributesFromId(2, test);
 			System.out.println(test);
+			//System.out.println("inserted id: " + insertType("InsertTest", 0));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
+	
 	}
 	
-	public boolean deleteTreasure (int tid) throws SQLException {
+	public static Integer insertBox (int lid, int tid, int sid, int qid, int cid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(BOX, BOX.LID, BOX.TID, BOX.SID, BOX.QID, BOX.CID).values(lid, tid, sid, qid, cid).returning(BOX.BID).fetchOne();
+		return record.getValue(BOX.BID);
+		}
+	
+	public static Integer insertQuiz (String question, String correct1, String answer2, String answer3, String answer4, String answer5, String answer6, int lid) throws SQLException, IllegalArgumentException {
+		if (question.length() > 256 || correct1.length() > 256 || answer2.length() > 256 || answer3.length() > 256 || answer4.length() > 256 || answer5.length() > 256 || answer6.length() > 256)
+			throw new IllegalArgumentException();
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(QUIZ, QUIZ.QUESTION, QUIZ.ANSWER1, QUIZ.ANSWER2, QUIZ.ANSWER3, QUIZ.ANSWER4, QUIZ.ANSWER5, QUIZ.ANSWER6, QUIZ.LID).values(question, correct1, answer2, answer3, answer4, answer5, answer6, lid).returning(QUIZ.QID).fetchOne();
+		return record.getValue(QUIZ.QID);
+		}
+	
+	public static Integer insertSize (int size, int exp) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(SIZE, SIZE.SIZE_, SIZE.SIZEXP).values(size, exp).returning(SIZE.SID).fetchOne();
+		return record.getValue(SIZE.SID);
+		}
+	
+	public static Integer insertContent (String content, int exp) throws SQLException, IllegalArgumentException {
+		if (content.length() > 1024)
+			throw new IllegalArgumentException();
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(CONTENT, CONTENT.CONTENT_, CONTENT.CONTENTXP).values(content, exp).returning(CONTENT.CID).fetchOne();
+		return record.getValue(CONTENT.CID);
+		}
+
+	
+	public static Integer insertLocation (Double x, Double y, int exp) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(LOCATION, LOCATION.X,LOCATION.Y,LOCATION.OUTXP).values(x, y, exp).returning(LOCATION.LID).fetchOne();
+		return record.getValue(LOCATION.LID);
+		}
+	
+	public static Integer insertType (String name, int exp) throws SQLException, IllegalArgumentException {
+		if (name.length() > 256)
+			throw new IllegalArgumentException();
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(TYPE, TYPE.NAME, TYPE.TYPEXP).values(name, exp).returning(TYPE.TID).fetchOne();
+		return record.getValue(TYPE.TID);
+		}
+	
+	
+	
+	public static boolean deleteTreasure (int tid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int delete = create.delete(BOX).where(BOX.TID.equal(tid)).execute();
@@ -40,7 +93,7 @@ public class DatabaseManager {
 			return false;
 	}
 	
-	public boolean deleteLocation (int lid) throws SQLException {
+	public static boolean deleteLocation (int lid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int delete = create.delete(LOCATION).where(LOCATION.LID.equal(lid)).execute();
@@ -51,7 +104,7 @@ public class DatabaseManager {
 			return false;
 	}
 	
-	public boolean deleteType (int tid) throws SQLException {
+	public static boolean deleteType (int tid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int delete = create.delete(TYPE).where(TYPE.TID.equal(tid)).execute();
@@ -62,7 +115,7 @@ public class DatabaseManager {
 			return false;
 	}
 	
-	public boolean deleteSize (int sid) throws SQLException {
+	public static boolean deleteSize (int sid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int delete = create.delete(SIZE).where(SIZE.SID.equal(sid)).execute();
@@ -73,7 +126,7 @@ public class DatabaseManager {
 			return false;
 	}
 	
-	public boolean deleteQuiz (int qid) throws SQLException {
+	public static boolean deleteQuiz (int qid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int delete = create.delete(QUIZ).where(QUIZ.QID.equal(qid)).execute();
@@ -84,7 +137,7 @@ public class DatabaseManager {
 			return false;
 	}
 	
-	public boolean deleteContent (int cid) throws SQLException {
+	public static boolean deleteContent (int cid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int delete = create.delete(CONTENT).where(CONTENT.CID.equal(cid)).execute();
@@ -95,7 +148,7 @@ public class DatabaseManager {
 			return false;
 	}
 	
-	public void deleteAll () throws SQLException {
+	public static void deleteAll () throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		create.truncate(BOX);
