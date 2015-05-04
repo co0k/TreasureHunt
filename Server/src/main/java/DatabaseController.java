@@ -1,6 +1,7 @@
-package main.java;
+
 
 import java.util.List;
+
 import data_structures.treasure.*;
 import data_structures.user.*;
 
@@ -34,11 +35,6 @@ public class DatabaseController implements DatabaseControllerDAO {
 		return null;
 	}
 
-	@Override
-	public List<Treasure> getTreasures(GeoLocation location, double radius, boolean onlyActive) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public int saveTreasure(Treasure treasure) {
@@ -57,15 +53,9 @@ public class DatabaseController implements DatabaseControllerDAO {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
-	public List<Treasure> getLocationData(GeoLocation location, double radius, boolean onlyActive) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Treasure> getAllLocationData(boolean onlyActive) {
+	public List<Treasure> getTreasures(GeoLocation location, double radius) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -135,4 +125,6 @@ public class DatabaseController implements DatabaseControllerDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }
