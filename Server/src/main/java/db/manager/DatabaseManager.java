@@ -30,6 +30,8 @@ public class DatabaseManager {
 		
 	
 	}
+
+
 	
 	public static Integer insertBox (int lid, int tid, int sid, int qid, int cid) throws SQLException {
 		Connection conn = getConnection();
@@ -310,7 +312,7 @@ public class DatabaseManager {
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 			
-			Treasure tmp = new Treasure(id, 0, location, type, size, null, last_userid); //exp not  yet set
+			Treasure tmp = new Treasure(id, location, type, size, null, last_userid); //exp not  yet set
 			out.add(tmp);
 		}
 		
@@ -346,7 +348,7 @@ public class DatabaseManager {
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 			
-			Treasure tmp = new Treasure(id, 0, location, type, size, null, last_userid); //exp not  yet set
+			Treasure tmp = new Treasure(id, location, type, size, null, last_userid); //exp not  yet set
 			out.add(tmp);
 		}
 		
