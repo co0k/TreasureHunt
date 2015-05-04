@@ -7,6 +7,7 @@ import data_structures.IdHolder;
 import data_structures.treasure.Treasure;
 import data_structures.treasure.Treasure.Content;
 
+
 public class Inventory {
 	private List<Entry> inventoryList;
 
