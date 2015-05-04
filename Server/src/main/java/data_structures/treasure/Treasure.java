@@ -12,9 +12,8 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	private Content content;
 	private int last_userid;
 
-	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid) {
+	public Treasure(int id, Location location, Type type, Size size, Content content, int last_userid) {
 		this.id = id;
-		this.experience = exp;
 		this.location = location;
 		this.type = type;
 		this.size = size;
@@ -22,10 +21,8 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		this.last_userid = last_userid;
 	}
 
-
-
-	public Treasure(int exp, Location location, Type type, Size size, Content content, int last_userid) {
-		this(-1, exp, location, type, size, content, last_userid);
+	public Treasure(Location location, Type type, Size size, Content content, int last_userid) {
+		this(-1, location, type, size, content, last_userid);
 	}
 
 
@@ -56,7 +53,7 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 	@Override
 	public int getXP() {
-		return experience;
+		return 0;
 	}
 
 	@Override
@@ -67,7 +64,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		Treasure treasure = (Treasure) o;
 
 		if (id != treasure.id) return false;
-		if (experience != treasure.experience) return false;
 		if (last_userid != treasure.last_userid) return false;
 		if (!location.equals(treasure.location)) return false;
 		if (!type.equals(treasure.type)) return false;
@@ -80,7 +76,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	@Override
 	public int hashCode() {
 		int result = id;
-		result = 31 * result + experience;
 		result = 31 * result + location.hashCode();
 		result = 31 * result + type.hashCode();
 		result = 31 * result + size.hashCode();
