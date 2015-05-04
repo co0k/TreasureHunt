@@ -15,6 +15,7 @@ before_install:
         - chmod +x ./Server/createDB
         - ./Server/createDB
 script:
-        - sudo ./gradlew assemble
-        - sudo ./gradlew check
-        - java -jar Server/build/libs/Server-all-0.1.jar 
+        - cd Server/
+        - sudo ../gradlew assemble
+        - sudo ../gradlew check
+        - java -jar build/libs/Server-all-0.1.jar 
