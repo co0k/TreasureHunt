@@ -5,7 +5,6 @@ import static db.generated.Tables.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 
 import org.jooq.DSLContext;
@@ -354,7 +353,7 @@ public class DatabaseManager {
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 			
-			Treasure tmp = new Treasure(id, location, type, size, null, last_userid); //exp not  yet set
+			Treasure tmp = new Treasure(id, location, type, size, null); //exp not  yet set
 			out.add(tmp);
 		}
 		
