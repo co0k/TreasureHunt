@@ -10,17 +10,9 @@ import db.quadtree.*;
 
 public class DatabaseSupervisor {
 	private QuadTree<Integer> activeTree = null;
-	private static DatabaseSupervisor instance = null;
 
 	private DatabaseSupervisor() {
-		// Exists only to defeat instantiation.
-	}
-
-	public static DatabaseSupervisor getInstance() {
-		if (instance == null) {
-			instance = new DatabaseSupervisor();
-		}
-		return instance;
+		setupSupervisor();
 	}
 	
 	public void setupSupervisor() {
