@@ -11,10 +11,11 @@ jdk:
         - openjdk7
  
 before_install:
+        - sudo: true
         - chmod +x gradlew
         - chmod +x ./Server/createDB
         - ./Server/createDB
 script:
-        - ./gradlew assemble
-        - ./gradlew check
+        - sudo ./gradlew assemble
+        - sudo ./gradlew check
         - java -jar Server/build/libs/Server-all-0.1.jar 
