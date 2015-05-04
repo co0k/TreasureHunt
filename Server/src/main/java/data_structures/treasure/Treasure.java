@@ -5,7 +5,6 @@ import data_structures.IdHolder;
 
 public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Treasure> {
 	private int id;
-	private int experience;
 	private boolean isActive;
 	private Location location;
 	private Type type;
@@ -13,9 +12,8 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	private Content content;
 	private int last_userid;
 
-	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid, boolean isActive) {
+	public Treasure(int id, Location location, Type type, Size size, Content content, int last_userid, boolean isActive) {
 		this.id = id;
-		this.experience = exp;
 		this.location = location;
 		this.type = type;
 		this.size = size;
@@ -24,13 +22,13 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		this.isActive = isActive;
 	}
 
-	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid) {
-		this(id, exp, location, type, size, content, last_userid, false);
+	public Treasure(int id, Location location, Type type, Size size, Content content, int last_userid) {
+		this(id, location, type, size, content, last_userid, false);
 	}
 
 
-	public Treasure(int exp, Location location, Type type, Size size, Content content, int last_userid) {
-		this(-1, exp, location, type, size, content, last_userid, false);
+	public Treasure(Location location, Type type, Size size, Content content, int last_userid) {
+		this(-1, location, type, size, content, last_userid, false);
 	}
 
 	public boolean isActive() {
@@ -68,7 +66,7 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 	@Override
 	public int getXP() {
-		return experience;
+		return 0;
 	}
 
 	@Override
@@ -79,7 +77,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		Treasure treasure = (Treasure) o;
 
 		if (id != treasure.id) return false;
-		if (experience != treasure.experience) return false;
 		if (isActive != treasure.isActive) return false;
 		if (last_userid != treasure.last_userid) return false;
 		if (!location.equals(treasure.location)) return false;
@@ -93,7 +90,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	@Override
 	public int hashCode() {
 		int result = id;
-		result = 31 * result + experience;
 		result = 31 * result + (isActive ? 1 : 0);
 		result = 31 * result + location.hashCode();
 		result = 31 * result + type.hashCode();
