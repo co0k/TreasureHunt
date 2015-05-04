@@ -46,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        refreshMap();
     }
 
     /**
@@ -117,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onButtonOpenTreasureClick(View v){
-        ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
+        //ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
         if (isQuiz(TreasureChestHolder.getInstance().getNearestTreasure().getType())) {
             Intent actSwitch = new Intent(this, QuizActivity.class);
             startActivity(actSwitch);
@@ -137,5 +138,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         TextView t = (TextView) findViewById(R.id.textViewDistToTreasure);
         t.setText("Distance to next Treasure: "+distance);
     }
+
+    public void refreshMap(){
+        TreasureChestHolder.getInstance().updateTreasureList();
+        TreasureChestHolder.getInstance().drawChestsOnMap(this.mMap);
+        LatLng userPos = LocationController.getInstance().getMyPosition();
+        TreasureChestHolder.getInstance().updateTreasuresInRange(userPos);
+        updateHotColdDistance(TreasureChestHolder.getInstance().getNearestTreasureDistance());
+        if (TreasureChestHolder.getInstance().isTreasureInRange()){
+            onTreasureInRange();
+        }else{
+            onNoTreasureInRange();
+        }
+    }
+
 
 }

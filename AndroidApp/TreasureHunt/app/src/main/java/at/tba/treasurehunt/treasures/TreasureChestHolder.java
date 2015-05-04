@@ -127,4 +127,15 @@ public class TreasureChestHolder {
         }
     }
 
+    /**
+     * Called from QuizActivity when the chest is opened successfully.
+     * Treasure will be set inactive
+     */
+    public void openTreasure(Treasure t){
+        TreasureChestsProvider.getInstance().getTreasureChestsList().remove(t);
+    }
+
+
+
+
 }
