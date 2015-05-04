@@ -1,3 +1,4 @@
+
 import java.util.List;
 import data_structures.treasure.*;
 import data_structures.user.*;
@@ -14,22 +15,19 @@ public interface DatabaseControllerDAO {
 	 * @param location
 	 *            the center of the circle that holds the treasures
 	 * @param radius
-	 * @param onlyActive
-	 *            decides if only active treasures should be returned, if false,
-	 *            all treasures will be returned
 	 * @return the list of treasures
 	 */
-	List<Treasure> getTreasures(GeoLocation location, double radius, boolean onlyActive);
+	List<Treasure> getTreasures(GeoLocation location, double radius);
 
 	/**
-	 * returns id of saved treasure, -1 otherwise
+	 * returns id of saved treasure
 	 * 
 	 * @param treasure
 	 *            the treasure to be saved, should hold all items, either per id
 	 *            or per object
 	 * @return the id of the saved treasure
 	 */
-	int saveTreasure(Treasure treasure);
+	 int saveTreasure(Treasure treasure);
 
 	/**
 	 * deletes the treasure by the reference of the id
@@ -47,25 +45,6 @@ public interface DatabaseControllerDAO {
 	 */
 	boolean deleteAllTreasures();
 
-	/**
-	 * returns list of Treasures where only id and Location is used (rest is
-	 * null)
-	 * 
-	 * @param location
-	 * @param radius
-	 * @param onlyActive
-	 * @return
-	 */
-	List<Treasure> getLocationData(GeoLocation location, double radius, boolean onlyActive);
-
-	/**
-	 * returns list of Treasures where only id and Location is used (rest is
-	 * null)
-	 * 
-	 * @param onlyActive
-	 * @return
-	 */
-	List<Treasure> getAllLocationData(boolean onlyActive);
 
 	/**
 	 * returns a quiz object for the given Treasure id, -1 otherwise needed ?

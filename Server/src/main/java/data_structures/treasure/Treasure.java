@@ -5,39 +5,26 @@ import data_structures.IdHolder;
 
 public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Treasure> {
 	private int id;
-	private boolean isActive;
+	private int experience;
 	private Location location;
 	private Type type;
 	private Size size;
 	private Content content;
 	private int last_userid;
 
-	public Treasure(int id, Location location, Type type, Size size, Content content, int last_userid, boolean isActive) {
+	public Treasure(int id, Location location, Type type, Size size, Content content, int last_userid) {
 		this.id = id;
 		this.location = location;
 		this.type = type;
 		this.size = size;
 		this.content = content;
 		this.last_userid = last_userid;
-		this.isActive = isActive;
 	}
-
-	public Treasure(int id, Location location, Type type, Size size, Content content, int last_userid) {
-		this(id, location, type, size, content, last_userid, false);
-	}
-
 
 	public Treasure(Location location, Type type, Size size, Content content, int last_userid) {
-		this(-1, location, type, size, content, last_userid, false);
+		this(-1, location, type, size, content, last_userid);
 	}
 
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
 
 	public Location getLocation() {
 		return location;
@@ -77,7 +64,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		Treasure treasure = (Treasure) o;
 
 		if (id != treasure.id) return false;
-		if (isActive != treasure.isActive) return false;
 		if (last_userid != treasure.last_userid) return false;
 		if (!location.equals(treasure.location)) return false;
 		if (!type.equals(treasure.type)) return false;
@@ -90,7 +76,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	@Override
 	public int hashCode() {
 		int result = id;
-		result = 31 * result + (isActive ? 1 : 0);
 		result = 31 * result + location.hashCode();
 		result = 31 * result + type.hashCode();
 		result = 31 * result + size.hashCode();
