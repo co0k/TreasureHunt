@@ -24,9 +24,7 @@ public class User implements IdHolder, ExperiencePointHolder {
 	}
 
 	@Override
-	public int getId() {
-		return id;
-	}
+	public int getId() {return id;}
 
 	@Override
 	public int getXP() {
