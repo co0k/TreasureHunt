@@ -1,0 +1,12 @@
+
+.settings/gradle/org.springsource.ide.eclipse.gradle.core.import.prefs
+
+.settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
+
+Server/.classpath
+
+Server/.project
+
+Server/.settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
+
+Server/.settings/gradle/org.springsource.ide.eclipse.gradle.refresh.prefs

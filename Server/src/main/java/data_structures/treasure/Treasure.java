@@ -6,14 +6,13 @@ import data_structures.IdHolder;
 public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Treasure> {
 	private int id;
 	private int experience;
-	private boolean isActive;
 	private Location location;
 	private Type type;
 	private Size size;
 	private Content content;
 	private int last_userid;
 
-	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid, boolean isActive) {
+	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid) {
 		this.id = id;
 		this.experience = exp;
 		this.location = location;
@@ -21,25 +20,14 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		this.size = size;
 		this.content = content;
 		this.last_userid = last_userid;
-		this.isActive = isActive;
 	}
 
-	public Treasure(int id, int exp, Location location, Type type, Size size, Content content, int last_userid) {
-		this(id, exp, location, type, size, content, last_userid, false);
-	}
 
 
 	public Treasure(int exp, Location location, Type type, Size size, Content content, int last_userid) {
-		this(-1, exp, location, type, size, content, last_userid, false);
+		this(-1, exp, location, type, size, content, last_userid);
 	}
 
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
 
 	public Location getLocation() {
 		return location;
@@ -80,7 +68,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 		if (id != treasure.id) return false;
 		if (experience != treasure.experience) return false;
-		if (isActive != treasure.isActive) return false;
 		if (last_userid != treasure.last_userid) return false;
 		if (!location.equals(treasure.location)) return false;
 		if (!type.equals(treasure.type)) return false;
@@ -94,7 +81,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	public int hashCode() {
 		int result = id;
 		result = 31 * result + experience;
-		result = 31 * result + (isActive ? 1 : 0);
 		result = 31 * result + location.hashCode();
 		result = 31 * result + type.hashCode();
 		result = 31 * result + size.hashCode();
