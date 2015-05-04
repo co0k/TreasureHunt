@@ -9,12 +9,14 @@ public class Quiz extends Treasure.Type {
 	private String answer4;
 	private String answer5;
 	private String answer6;
+	private Integer lid;
 
 	/**
 	 * answers can be partially filled, if for example only 2 answers are
 	 * needed, the rest should be filled with 'null'
 	 * 
 	 * @param id
+	 * @param lid
 	 * @param question
 	 * @param answer1
 	 * @param answer2
@@ -23,9 +25,10 @@ public class Quiz extends Treasure.Type {
 	 * @param answer5
 	 * @param answer6
 	 */
-	public Quiz(int id, String question, String answer1, String answer2,
+	public Quiz(int id, Integer lid, String question, String answer1, String answer2,
 			String answer3, String answer4, String answer5, String answer6) {
 		this.id = id;
+		this.lid = lid;
 		this.question = question;
 		this.answer1 = answer1;
 		this.answer2 = answer2;
@@ -37,7 +40,7 @@ public class Quiz extends Treasure.Type {
 
 	public Quiz(String question, String answer1, String answer2,
 			String answer3, String answer4, String answer5, String answer6) {
-		this(-1, question, answer1, answer2, answer3, answer4, answer5, answer6);
+		this(-1, -1, question, answer1, answer2, answer3, answer4, answer5, answer6);
 	}
 
 	public String getQuestion() {
@@ -74,7 +77,7 @@ public class Quiz extends Treasure.Type {
 
 	@Override
 	public String toString() {
-		return "Tid: " + this.getId() + "\n" + "name: " + this.getName() + "\n"
+		return "Tid: " + this.getId() + "\n" + "Lid: " + lid + "\n" + "name: " + this.getName() + "\n"
 				+ "exp: " + this.getXP() + "\n" + "Qid: " + id + "\n" + "q: "
 				+ question + "\n" + "1: " + answer1 + "\n" + "2: " + answer2
 				+ "\n" + "3: " + answer3 + "\n" + "4: " + answer4 + "\n"
