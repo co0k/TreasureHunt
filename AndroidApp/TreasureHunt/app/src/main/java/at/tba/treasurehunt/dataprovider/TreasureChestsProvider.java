@@ -17,17 +17,23 @@ public class TreasureChestsProvider {
         return instance;
     }
 
+    private ArrayList<Treasure> treasures = new ArrayList<Treasure>();
+
+    private TreasureChestsProvider(){
+        treasures.add(DummyDataProvider.getDummyTreasureData(0));
+        treasures.add(DummyDataProvider.getDummyTreasureData(1));
+        treasures.add(DummyDataProvider.getDummyTreasureData(2));
+        treasures.add(DummyDataProvider.getDummyTreasureData(3));
+    }
+
 
     /***
      *
      * @return all treasure chests provided by the server in an ArrayList<Treasure> object
      */
     public ArrayList<Treasure> getTreasureChestsList(){
-        ArrayList<Treasure> result = new ArrayList<Treasure>();
-        result.add(DummyDataProvider.getDummyTreasureData(0));
-        result.add(DummyDataProvider.getDummyTreasureData(1));
-        result.add(DummyDataProvider.getDummyTreasureData(2));
-        return result;
+
+        return treasures;
     }
 
     /***
