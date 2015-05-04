@@ -17,6 +17,7 @@ import data_structures.treasure.*;
 import data_structures.treasure.Treasure.*;
 
 public class DatabaseManager {
+	
 	public static void main(String[] args) {
 		try {
 			Type test = getQuizFromId(1);
@@ -27,6 +28,19 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static boolean userAllowedToOpenTreasure (int bid, int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne();
+		if (!result.getValue(BOX.LAST_USERID).equals(uid)){
+			conn.close();
+			return true;
+		}
+		
+		conn.close();
+		return false;
 	}
 	
 	public static int saveTreasure (Treasure toSave) throws IllegalArgumentException, SQLException {
