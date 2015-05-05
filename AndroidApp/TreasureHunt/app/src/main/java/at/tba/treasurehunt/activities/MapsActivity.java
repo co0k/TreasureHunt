@@ -1,12 +1,16 @@
 package at.tba.treasurehunt.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -108,6 +112,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.i("TRSR", "FOUND A TREASURE!!");
         Button b = (Button) findViewById(R.id.btnOpenTreasure);
         b.setVisibility(View.VISIBLE);
+        b.setBackgroundColor(Color.RED);
+        b.setTextColor(Color.WHITE);
+
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        Animation blink = AnimationUtils.loadAnimation(this, R.anim.blink);
+        b.startAnimation(shake);
+        b.startAnimation(blink);
+
         b.setEnabled(true);
     }
 
@@ -115,6 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Button b = (Button) findViewById(R.id.btnOpenTreasure);
         b.setVisibility(View.INVISIBLE);
         b.setEnabled(false);
+        b.clearAnimation();
     }
 
     public void onButtonOpenTreasureClick(View v){

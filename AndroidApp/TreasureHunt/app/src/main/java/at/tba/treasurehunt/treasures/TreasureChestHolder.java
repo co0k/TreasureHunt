@@ -122,6 +122,7 @@ public class TreasureChestHolder {
      * @param mMap GoogleMap to draw on
      */
     public void drawChestsOnMap(GoogleMap mMap){
+        mMap.clear();
         for (Treasure t: treasureList){
             mMap.addCircle(new CircleOptions().center(new LatLng(t.getLocation().getLat(), t.getLocation().getLon())).radius(1));
         }

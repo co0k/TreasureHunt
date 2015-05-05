@@ -85,7 +85,6 @@ public class QuizActivity extends Activity {
     private void generateQuizLayout(Quiz q){
 
         GridLayout btnLayout = (GridLayout) findViewById(R.id.quizLayout);
-        //LinearLayout questionLayout =
 
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.columnSpec = GridLayout.spec(3, GridLayout.CENTER);
@@ -117,8 +116,7 @@ public class QuizActivity extends Activity {
             p.width = GridLayout.LayoutParams.WRAP_CONTENT;
             p.height = GridLayout.LayoutParams.WRAP_CONTENT;
             p.topMargin = 3;
-            //params.columnSpec = GridLayout.spec(2 + ((i - 1) % 2), 1);
-           // params.rowSpec = GridLayout.spec(2+((i-1)/2), 1);
+
             answerButtons[i].setLayoutParams(p);
             btnLayout.addView(answerButtons[i]);
         }
