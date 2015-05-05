@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:id="@+id/login"
+        android:id="@+id/login1"
         android:layout_marginBottom="73dp"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/enter_passw"

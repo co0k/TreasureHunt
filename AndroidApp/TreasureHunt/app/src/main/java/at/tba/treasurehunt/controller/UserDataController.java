@@ -24,8 +24,7 @@ public class UserDataController {
     private UserDataController(){}
 
 
-    public User getCurrentUserData(){
-        return DummyDataProvider.getDummyUserData();
+    public User getCurrentUserData(){return DummyDataProvider.getDummyUserData();
     }
 
 
