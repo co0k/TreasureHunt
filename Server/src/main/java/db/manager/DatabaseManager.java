@@ -238,12 +238,12 @@ public class DatabaseManager {
 	public static void deleteAll() throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		create.truncate(BOX);
-		create.truncate(LOCATION);
-		create.truncate(QUIZ);
-		create.truncate(SIZE);
-		create.truncate(TYPE);
-		create.truncate(CONTENT);
+		create.truncate(BOX).execute();
+		create.truncate(LOCATION).execute();
+		create.truncate(QUIZ).execute();
+		create.truncate(SIZE).execute();
+		create.truncate(TYPE).execute();
+		create.truncate(CONTENT).execute();
 		conn.close();
 	}
 
