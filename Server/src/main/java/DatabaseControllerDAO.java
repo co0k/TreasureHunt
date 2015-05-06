@@ -14,7 +14,7 @@ public interface DatabaseControllerDAO {
 	 * 
 	 * @param location
 	 *            the center of the circle that holds the treasures
-	 * @param radius
+	 * @param radius in meters
 	 * @return the list of treasures
 	 */
 	List<Treasure> getTreasures(GeoLocation location, double radius);
@@ -99,7 +99,7 @@ public interface DatabaseControllerDAO {
 	/**
 	 * returns user and all user connected data
 	 * 
-	 * @param id
+	 * @param name
 	 * @return
 	 */
 	User getUser(String name);

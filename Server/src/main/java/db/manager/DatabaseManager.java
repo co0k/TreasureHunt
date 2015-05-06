@@ -19,7 +19,7 @@ import data_structures.treasure.Treasure.*;
 public class DatabaseManager {
 
 	public static void main(String[] args) {
-		try {
+		//try {
 			//System.out.println("inserted id: " + insertType("InsertTest", 0));
             
 			/*Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
@@ -33,9 +33,9 @@ public class DatabaseManager {
 			for (Treasure t : exampleTreasures)
 				exampleTreasuresID.add(saveTreasure(t)); */
 			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		//} catch (SQLException e) {
+		//	e.printStackTrace();
+		//}
 	}
 
 	public static boolean userAllowedToOpenTreasure(int bid, int uid) throws SQLException {
