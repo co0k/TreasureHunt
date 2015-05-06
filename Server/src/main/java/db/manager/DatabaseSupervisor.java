@@ -10,14 +10,18 @@ import db.quadtree.*;
 
 public class DatabaseSupervisor {
 	private QuadTree<Integer> activeTree = null;
+	private ArrayList<Integer> activeId = null;
 
-	private DatabaseSupervisor() {
+	public DatabaseSupervisor() {
 		setupSupervisor();
 	}
 	
-	public void setupSupervisor() {
-		if (activeTree != null) {
+	private void setupSupervisor() {
+		if (activeTree == null) {
 			activeTree = new QuadTree<Integer>(-90, -180, 90, 180);
+		}
+		if (activeId == null) {
+			activeId = new ArrayList<Integer>();
 		}
 	}
 	
@@ -30,10 +34,28 @@ public class DatabaseSupervisor {
 			return false;			
 		}
 		activeTree.put(tmp.getLon(), tmp.getLat(), bid);
+		activeId.add(bid);
 		return true;
 	}
 	
-	public ArrayList<Treasure> getTreasuresNearLocation (float lon, float lat, float radius) {
+	public boolean removeTreasure(int bid) {
+		Location tmp;
+		try {
+			tmp = DatabaseManager.getLocationFromBid(bid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;			
+		}
+		activeTree.remove(tmp.getLon(), tmp.getLat(), bid);
+		activeId.remove(bid);
+		return true;
+	}
+	
+	public boolean isActive(Integer bid) {
+		return activeId.contains(bid);
+	}
+	
+	public ArrayList<Treasure> getTreasuresNearLocation (double lon, double lat, double radius) {
 		ArrayList<Integer> tmp = activeTree.get(lon, lat, radius);
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
 		for (Integer i : tmp ) {

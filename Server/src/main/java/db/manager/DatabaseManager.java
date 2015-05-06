@@ -17,6 +17,7 @@ import data_structures.treasure.*;
 import data_structures.treasure.Treasure.*;
 
 public class DatabaseManager {
+	
 	public static void main(String[] args) {
 		try {
 			Type test = getQuizFromId(1);
@@ -27,13 +28,67 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-	
 	}
+	
+	public static boolean userAllowedToOpenTreasure (int bid, int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne();
+		if (!result.getValue(BOX.LAST_USERID).equals(uid)){
+			conn.close();
+			return true;
+		}
+		
+		conn.close();
+		return false;
+	}
+	
+	public static int saveTreasure (Treasure toSave) throws IllegalArgumentException, SQLException {
+
+		if (toSave.getId() != -1 && toSave.getXP() != -1)
+			throw new IllegalArgumentException();
+
+		Location lTmp = toSave.getLocation();
+		int lid;
+		if (lTmp.getId() == -1)
+			lid = insertLocation(lTmp.getLon(), lTmp.getLat(), lTmp.getXP());
+		else
+		lid = lTmp.getId();
+		
+		Integer tid;
+		Integer qid;
+		if (toSave.getType() instanceof Quiz) {
+			Quiz qTmp = (Quiz) toSave.getType();
+			if (qTmp.getId() == -1)
+				tid = insertType(qTmp.getType(), qTmp.getXP());
+			else
+				tid = qTmp.getId();
+			if (qTmp.getQuizId() == -1)
+				qid = insertQuiz(qTmp.getQuestion(), qTmp.getAnswer1(), qTmp.getAnswer2(), qTmp.getAnswer3(), qTmp.getAnswer4(), qTmp.getAnswer5(), qTmp.getAnswer6(), lid);
+			else
+				qid = qTmp.getQuizId();	
+		} else {
+			tid = null;
+			qid = null;
+		}
+		
+		Size sTmp = toSave.getSize();
+		int sid;
+		if (sTmp.getId() == -1) 
+			sid = insertSize(sTmp.getSize(), sTmp.getXP());
+		else
+			sid = sTmp.getId();
+		
+		Integer cid = null; //TODO Content 
+		
+		Integer treasureID = insertBox(lid, tid, sid, qid, cid);
+
+		return treasureID;
+		}
 
 
 	
-	public static Integer insertBox (int lid, int tid, int sid, int qid, int cid) throws SQLException {
+	public static Integer insertBox (int lid, Integer tid, int sid, Integer qid, Integer cid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(BOX, BOX.LID, BOX.TID, BOX.SID, BOX.QID, BOX.CID).values(lid, tid, sid, qid, cid).returning(BOX.BID).fetchOne();
@@ -304,7 +359,7 @@ public class DatabaseManager {
 			Type type = null;
 			Size size = getSizeFromId(sid);
 			Content content = null;
-			/*if (cid != null) {
+			/*if (cid != null) {//TODO content only interface
 				 content = getConntentFromId(cid);
 			}*/
 			if (qid != null) {
@@ -312,7 +367,7 @@ public class DatabaseManager {
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 			
-			Treasure tmp = new Treasure(id, location, type, size, null, last_userid); //exp not  yet set
+			Treasure tmp = new Treasure(id, location, type, size, null); //exp not  yet set
 			out.add(tmp);
 		}
 		
@@ -335,7 +390,6 @@ public class DatabaseManager {
 			Integer sid = r.getValue(BOX.SID);
 			Integer qid = r.getValue(BOX.QID);
 			Integer cid = r.getValue(BOX.CID);
-			Integer last_userid = r.getValue(BOX.LAST_USERID);
 			Location location = getLocationFromId(lid);
 			Type type = null;
 			Size size = getSizeFromId(sid);
@@ -348,7 +402,7 @@ public class DatabaseManager {
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 			
-			Treasure tmp = new Treasure(id, location, type, size, null, last_userid); //exp not  yet set
+			Treasure tmp = new Treasure(id, location, type, size, null); //exp not  yet set
 			out.add(tmp);
 		}
 		

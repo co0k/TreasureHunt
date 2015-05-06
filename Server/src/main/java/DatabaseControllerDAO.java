@@ -1,5 +1,4 @@
 
-
 import java.util.List;
 import data_structures.treasure.*;
 import data_structures.user.*;
@@ -42,19 +41,25 @@ public interface DatabaseControllerDAO {
 	 * obviously deletes all treasures in the database, should only be used for
 	 * test cases
 	 * 
-	 * @return
+	 * @return if everything succeeded, return true otherwise false
 	 */
 	boolean deleteAllTreasures();
-
-
+	
 	/**
-	 * returns a quiz object for the given Treasure id, -1 otherwise needed ?
-	 * since its possible to get a whole Treasure with 'getTreasure(...)'
-	 * 
+	 * checks if a treasure is active
 	 * @param treasureId
 	 * @return
 	 */
-	Quiz getQuiz(int treasureId);
+	boolean isTreasureActive(int treasureId);
+	/**
+	 * checks if user is allowed to open a treasure
+	 * @param userId
+	 * @param treasureId
+	 * @return
+	 */
+	boolean allowedToOpenTreasure(int userId, int treasureId);
+
+
 
 	/*********************** User ***********************/
 	/**
