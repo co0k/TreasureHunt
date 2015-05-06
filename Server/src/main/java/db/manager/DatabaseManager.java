@@ -20,11 +20,19 @@ public class DatabaseManager {
 
 	public static void main(String[] args) {
 		try {
-			Type test = getQuizFromId(1);
-			System.out.println(test);
-			test = setTypeAttributesFromId(2, test);
-			System.out.println(test);
 			//System.out.println("inserted id: " + insertType("InsertTest", 0));
+            
+			/*Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+			quiz1.setId(-1);
+			quiz1.setXP(0);
+			quiz1.setName("testTypus");
+			ArrayList<Integer> exampleTreasuresID = new ArrayList<Integer>();
+			ArrayList<Treasure> exampleTreasures = new ArrayList<Treasure>();
+			exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
+			// add all the treasures
+			for (Treasure t : exampleTreasures)
+				exampleTreasuresID.add(saveTreasure(t)); */
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -151,8 +159,8 @@ public class DatabaseManager {
 	}
 
 	public static Integer insertType(String name, int exp) throws SQLException, IllegalArgumentException {
-		if (name.length() > 256)
-			throw new IllegalArgumentException();
+		if ( name == null ||name.length() > 256)
+			throw new IllegalArgumentException("Type has no name or name is too long");
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(TYPE, TYPE.NAME, TYPE.TYPEXP).values(name, exp).returning(TYPE.TID).fetchOne();
