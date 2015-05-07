@@ -103,7 +103,7 @@ public class DatabaseManager {
 		return record.getValue(BOX.BID);
 	}
 
-	public static Integer insertQuiz(String question, String correct1, String answer2, String answer3, String answer4, String answer5, String answer6, int lid) throws SQLException, IllegalArgumentException {
+	public static Integer insertQuiz(String question, String correct1, String answer2, String answer3, String answer4, String answer5, String answer6,int exp, int lid) throws SQLException, IllegalArgumentException {
 		// check if the quiz and answer pattern is correct
 		if (correct1 == null || question == null)
 			throw new IllegalArgumentException("no correct answer or question given!");
@@ -126,7 +126,7 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("strings longer than 256 characters not allowed!");
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record record = create.insertInto(QUIZ, QUIZ.QUESTION, QUIZ.ANSWER1, QUIZ.ANSWER2, QUIZ.ANSWER3, QUIZ.ANSWER4, QUIZ.ANSWER5, QUIZ.ANSWER6, QUIZ.LID).values(question, correct1, answer2, answer3, answer4, answer5, answer6, lid).returning(QUIZ.QID).fetchOne();
+		Record record = create.insertInto(QUIZ, QUIZ.QUESTION, QUIZ.ANSWER1, QUIZ.ANSWER2, QUIZ.ANSWER3, QUIZ.ANSWER4, QUIZ.ANSWER5, QUIZ.ANSWER6,QUIZ.EXP, QUIZ.LID).values(question, correct1, answer2, answer3, answer4, answer5, answer6, exp, lid).returning(QUIZ.QID).fetchOne();
 		conn.close();
 		return record.getValue(QUIZ.QID);
 	}

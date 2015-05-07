@@ -15,6 +15,7 @@ answer3 varchar(1024),
 answer4 varchar(1024),
 answer5 varchar(1024),
 answer6 varchar(1024),
+typeXP int,
 Lid int,
 primary key (Qid),
 foreign key (Lid) references location (Lid)
@@ -23,7 +24,6 @@ foreign key (Lid) references location (Lid)
 create table type (
 Tid int NOT NULL AUTO_INCREMENT,
 name varchar(256),
-typeXP int,
 primary key (Tid)
 );
 
