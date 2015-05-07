@@ -68,11 +68,11 @@ public class DatabaseManager {
 		if (toSave.getType() instanceof Quiz) {
 			Quiz qTmp = (Quiz) toSave.getType();
 			if (qTmp.getId() == -1)
-				tid = insertType(qTmp.getType(), qTmp.getXP());
+				tid = insertType(qTmp.getType());
 			else
 				tid = qTmp.getId();
 			if (qTmp.getQuizId() == -1)
-				qid = insertQuiz(qTmp.getQuestion(), qTmp.getAnswer1(), qTmp.getAnswer2(), qTmp.getAnswer3(), qTmp.getAnswer4(), qTmp.getAnswer5(), qTmp.getAnswer6(), lid);
+				qid = insertQuiz(qTmp.getQuestion(), qTmp.getAnswer1(), qTmp.getAnswer2(), qTmp.getAnswer3(), qTmp.getAnswer4(), qTmp.getAnswer5(), qTmp.getAnswer6(),qTmp.getXP(), lid);
 			else
 				qid = qTmp.getQuizId();
 		} else {
@@ -158,12 +158,12 @@ public class DatabaseManager {
 		return record.getValue(LOCATION.LID);
 	}
 
-	public static Integer insertType(String name, int exp) throws SQLException, IllegalArgumentException {
+	public static Integer insertType(String name) throws SQLException, IllegalArgumentException {
 		if ( name == null ||name.length() > 256)
 			throw new IllegalArgumentException("Type has no name or name is too long");
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record record = create.insertInto(TYPE, TYPE.NAME, TYPE.TYPEXP).values(name, exp).returning(TYPE.TID).fetchOne();
+		Record record = create.insertInto(TYPE, TYPE.NAME).values(name).returning(TYPE.TID).fetchOne();
 		conn.close();
 		return record.getValue(TYPE.TID);
 	}
