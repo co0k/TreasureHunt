@@ -274,6 +274,7 @@ public class DatabaseManager {
 			String answer6 = r.getValue(QUIZ.ANSWER6);
 			Integer lid = r.getValue(QUIZ.LID);
 			Quiz tmp = new Quiz(id, lid, question, answer1, answer2, answer3, answer4, answer5, answer6);
+			tmp.setXP(r.getValue(QUIZ.EXP));
 			out.add(tmp);
 		}
 
@@ -357,7 +358,6 @@ public class DatabaseManager {
 		for (Record r : result) {
 			toset.setId(r.getValue(TYPE.TID));
 			toset.setName(r.getValue(TYPE.NAME));
-			toset.setXP(r.getValue(TYPE.TYPEXP));
 		}
 
 		conn.close();
