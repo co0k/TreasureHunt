@@ -11,7 +11,7 @@ primary key (Lid)
 
 create table if not exists user (
 Uid int NOT NULL AUTO_INCREMENT,
-name varchar(256) NOT NULL,
+name varchar(255) NOT NULL,
 pwdHash varchar(1024) NOT NULL,
 email varchar(1024),
 score int default 0,
