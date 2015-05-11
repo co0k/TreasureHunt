@@ -25,7 +25,6 @@ public class DatabaseManager {
 			/*Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
 			quiz1.setId(-1);
 			quiz1.setXP(0);
-			quiz1.setName("testTypus");
 			ArrayList<Integer> exampleTreasuresID = new ArrayList<Integer>();
 			ArrayList<Treasure> exampleTreasures = new ArrayList<Treasure>();
 			exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
@@ -41,7 +40,7 @@ public class DatabaseManager {
 	public static boolean userAllowedToOpenTreasure(int bid, int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne();
+		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne(); //TODO fetchOne null??
 		if (!result.getValue(BOX.LAST_USERID).equals(uid)) {
 			conn.close();
 			return true;
@@ -116,8 +115,6 @@ public class DatabaseManager {
 				if(answer4 == null) {
 					if(answer5 != null || answer6 != null)
 						throw new IllegalArgumentException("an answer was given although the previous answer is null");
-					if(answer5 == null && answer6 != null)
-						throw new IllegalArgumentException("an answer was given although the previous answer is null");
 				}
 			}
 		}
@@ -167,6 +164,47 @@ public class DatabaseManager {
 		conn.close();
 		return record.getValue(TYPE.TID);
 	}
+	
+	public static Integer insertUser(String name, String pwdHash, String email) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(USER, USER.NAME, USER.PWDHASH, USER.EMAIL).values(name, pwdHash, email).returning(USER.UID).fetchOne();
+		conn.close();
+		return record.getValue(USER.UID);
+	}
+	
+	public static boolean insertHistory(int uid, int bid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int record = create.insertInto(HISTORY, HISTORY.UID, HISTORY.BID).values(uid, bid).execute();
+		if (record != 1)
+			return false;
+		else
+			return true;
+	}
+	
+	public static boolean insertInventory(int uid, int cid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int record = create.insertInto(INVENTORY, INVENTORY.UID, INVENTORY.CID).values(uid, cid).execute();
+		if (record != 1)
+			return false;
+		else
+			return true;
+	}
+	
+	public static boolean deleteUser(int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(USER).where(USER.UID.equal(uid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	
 
 
 	public static boolean deleteTreasure(int tid) throws SQLException {
@@ -363,7 +401,6 @@ public class DatabaseManager {
 
 		for (Record r : result) {
 			toset.setId(r.getValue(TYPE.TID));
-			toset.setName(r.getValue(TYPE.NAME));
 		}
 
 		conn.close();
@@ -456,5 +493,6 @@ public class DatabaseManager {
 
 		return getLocationFromId(lid.get(0));
 	}
+	 
 
 }
