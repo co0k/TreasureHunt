@@ -73,23 +73,18 @@ public class HighscoreList {
 	}
 
 	public static class Entry implements IdHolder, ExperiencePointHolder {
-		private int uId;
 		private int id;
 		private String name;
 		private int rank;
 		private int experience;
 
-		public Entry(int id, int uId, String name, int rank, int exp) {
+		public Entry(int id, String name, int rank, int exp) {
 			this.id = id;
-			this.uId = uId;
 			this.name = name;
 			this.rank = rank;
 			this.experience = exp;
 		}
 
-		public int getUId() {
-			return uId;
-		}
 
 		public String getName() {
 			return name;
@@ -116,7 +111,6 @@ public class HighscoreList {
 
 			Entry entry = (Entry) o;
 
-			if (uId != entry.uId) return false;
 			if (id != entry.id) return false;
 			if (rank != entry.rank) return false;
 			if (experience != entry.experience) return false;
@@ -126,8 +120,7 @@ public class HighscoreList {
 
 		@Override
 		public int hashCode() {
-			int result = uId;
-			result = 31 * result + id;
+			int result = id;
 			result = 31 * result + (name != null ? name.hashCode() : 0);
 			result = 31 * result + rank;
 			result = 31 * result + experience;
