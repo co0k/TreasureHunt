@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.servercomm.ServerConnection;
 
 
 public class HomeActivity extends ActionBarActivity {
@@ -16,6 +17,8 @@ public class HomeActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ServerConnection.getInstance().connectServer();
     }
 
 

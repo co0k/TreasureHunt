@@ -9,13 +9,19 @@ import at.tba.treasurehunt.datastructures.user.User;
 /**
  * Created by dAmihl on 11.05.15.
  */
-public class ServerCommunication implements ServerCommunicationDAO, ServerComm {
+public class ServerCommunication implements ServerCommunicationDAO{
 
     private static ServerCommunication instance = null;
+
+    private ServerConnection serverConn;
 
     public static ServerCommunication getInstance(){
         if (instance == null) instance = new ServerCommunication();
         return instance;
+    }
+
+    private ServerCommunication(){
+        this.serverConn = ServerConnection.getInstance();
     }
 
     @Override
@@ -43,20 +49,4 @@ public class ServerCommunication implements ServerCommunicationDAO, ServerComm {
         return null;
     }
 
-
-
-    @Override
-    public boolean connectServer() {
-        return false;
-    }
-
-    @Override
-    public boolean disconnectServer() {
-        return false;
-    }
-
-    @Override
-    public boolean sendPackage() {
-        return false;
-    }
 }
