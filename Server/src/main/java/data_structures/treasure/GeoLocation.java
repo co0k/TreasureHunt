@@ -1,6 +1,10 @@
 package data_structures.treasure;
 
-public class GeoLocation {
+import java.io.Serializable;
+
+public class GeoLocation implements Serializable{
+
+	private static final long serialVersionUID = -107439324567278310L;
 	private double lat;
 	private double lon;
 

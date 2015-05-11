@@ -6,6 +6,8 @@ import data_structures.IdHolder;
 import java.io.Serializable;
 
 public class User implements IdHolder, ExperiencePointHolder, Serializable {
+	
+	private static final long serialVersionUID = 5805432646049665444L;
 	private int id;
 	private int rank;
 	private int experience;

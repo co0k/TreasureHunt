@@ -1,6 +1,10 @@
 package data_structures.treasure;
 
-public class Quiz extends Treasure.Type {
+import java.io.Serializable;
+
+public class Quiz extends Treasure.Type implements Serializable{
+
+	private static final long serialVersionUID = -4757699933744798652L;
 	private int id;
 	private String question;
 	private String answer1;

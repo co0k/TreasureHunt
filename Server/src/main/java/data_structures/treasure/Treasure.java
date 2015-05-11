@@ -1,9 +1,13 @@
 package data_structures.treasure;
 
+import java.io.Serializable;
+
 import data_structures.ExperiencePointHolder;
 import data_structures.IdHolder;
 
-public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Treasure> {
+public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Treasure>, Serializable {
+
+	private static final long serialVersionUID = -4460184027651609755L;
 	private int id;
 	private Location location;
 	private Type type;
@@ -99,7 +103,9 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	 * *************** (sub-)interfaces and classes *****************
 	 */
 
-	public static abstract class Type implements IdHolder, ExperiencePointHolder {
+	public static abstract class Type implements IdHolder, ExperiencePointHolder, Serializable {
+
+		private static final long serialVersionUID = -776106189348790607L;
 		private int experience;
 		private int id;
 
@@ -157,7 +163,9 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		String getType();
 	}
 
-	public static class Location extends GeoLocation implements IdHolder, ExperiencePointHolder {
+	public static class Location extends GeoLocation implements IdHolder, ExperiencePointHolder, Serializable {
+
+		private static final long serialVersionUID = 5989987395139608857L;
 		int id;
 		int experience;
 
@@ -214,7 +222,9 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		}
 	}
 
-	public static class Size implements IdHolder, ExperiencePointHolder {
+	public static class Size implements IdHolder, ExperiencePointHolder, Serializable {
+
+		private static final long serialVersionUID = -2209741524996598990L;
 		private int id;
 		private int experience;
 		private int size;

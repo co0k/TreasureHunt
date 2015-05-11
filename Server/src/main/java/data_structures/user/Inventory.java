@@ -1,5 +1,6 @@
 package data_structures.user;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import data_structures.treasure.Treasure;
 import data_structures.treasure.Treasure.Content;
 
 
-public class Inventory {
+public class Inventory implements Serializable{
+	
+	private static final long serialVersionUID = 7945628184208861956L;
 	private List<Entry> inventoryList;
 
 	public Inventory() {
@@ -53,7 +56,9 @@ public class Inventory {
 	 * *************** (sub-)interfaces and classes *****************
 	 */
 
-	public static class Entry {
+	public static class Entry implements Serializable{
+		
+		private static final long serialVersionUID = 4495788775657108215L;
 		private int count;
 		private Treasure.Content content;
 

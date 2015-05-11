@@ -15,6 +15,7 @@ import org.jooq.impl.DSL;
 
 import data_structures.treasure.*;
 import data_structures.treasure.Treasure.*;
+import data_structures.user.User;
 
 public class DatabaseManager {
 
@@ -40,14 +41,12 @@ public class DatabaseManager {
 	public static boolean userAllowedToOpenTreasure(int bid, int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne(); //TODO fetchOne null??
-		if (!result.getValue(BOX.LAST_USERID).equals(uid)) {
-			conn.close();
-			return true;
-		}
-
+		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne();
 		conn.close();
-		return false;
+		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid))
+			return false;
+		else
+			return false;
 	}
 
 	public static int saveTreasure(Treasure toSave) throws IllegalArgumentException, SQLException {
@@ -70,8 +69,14 @@ public class DatabaseManager {
 				tid = insertType(qTmp.getType());
 			else
 				tid = qTmp.getId();
-			if (qTmp.getQuizId() == -1)
-				qid = insertQuiz(qTmp.getQuestion(), qTmp.getAnswer1(), qTmp.getAnswer2(), qTmp.getAnswer3(), qTmp.getAnswer4(), qTmp.getAnswer5(), qTmp.getAnswer6(),qTmp.getXP(), lid);
+			if (qTmp.getQuizId() == -1) {
+				Integer qLid;
+				if (qTmp.getLocationId() == -1)
+					qLid = null;
+				else
+					qLid = qTmp.getLocationId();
+				qid = insertQuiz(qTmp.getQuestion(), qTmp.getAnswer1(), qTmp.getAnswer2(), qTmp.getAnswer3(), qTmp.getAnswer4(), qTmp.getAnswer5(), qTmp.getAnswer6(),qTmp.getXP(), qLid);
+			}
 			else
 				qid = qTmp.getQuizId();
 		} else {
@@ -177,6 +182,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int record = create.insertInto(HISTORY, HISTORY.UID, HISTORY.BID).values(uid, bid).execute();
+		conn.close();
 		if (record != 1)
 			return false;
 		else
@@ -187,6 +193,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int record = create.insertInto(INVENTORY, INVENTORY.UID, INVENTORY.CID).values(uid, cid).execute();
+		conn.close();
 		if (record != 1)
 			return false;
 		else
@@ -204,7 +211,19 @@ public class DatabaseManager {
 			return false;
 	}
 	
+	public static void deltetHistory(int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		create.delete(HISTORY).where(HISTORY.UID.equal(uid)).execute();
+		conn.close();
+	}
 	
+	public static void deltetInventory(int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		create.delete(INVENTORY).where(INVENTORY.UID.equal(uid)).execute();
+		conn.close();
+	}
 
 
 	public static boolean deleteTreasure(int tid) throws SQLException {
@@ -490,9 +509,23 @@ public class DatabaseManager {
 			lid.add(r.getValue(BOX.LID));
 		}
 
-
+		
 		return getLocationFromId(lid.get(0));
 	}
-	 
+	
+	public static User getUserFromId (int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select().from(USER).where(USER.UID.equal(uid)).fetchOne();
+		if (result == null)
+			return null;
+		int uidFromDB = result.getValue(USER.UID);
+		String name = result.getValue(USER.NAME);
+		String pwdHash = result.getValue(USER.PWDHASH);
+		String eMail = result.getValue(USER.EMAIL);
+		int score = result.getValue(USER.SCORE);
+		User out = new User(uidFromDB, name, pwdHash, eMail, score, -1, null);
+		return out;
+	}
 
 }
