@@ -28,8 +28,9 @@ public class Quiz extends Treasure.Type implements Serializable{
 	 * @param answer5
 	 * @param answer6
 	 */
-	public Quiz(int quizId, Integer lid, String question, String answer1, String answer2,
+	public Quiz(int quizId, Integer lid, int exp, String question, String answer1, String answer2,
 	            String answer3, String answer4, String answer5, String answer6) {
+		super.setXP(exp);
 		this.id = quizId;
 		this.lid = lid;
 		this.question = question;
@@ -40,9 +41,10 @@ public class Quiz extends Treasure.Type implements Serializable{
 		this.answer5 = answer5;
 		this.answer6 = answer6;
 	}
-	public Quiz(int id, int quizId, Integer lid, String question, String answer1, String answer2,
+	public Quiz(int id, int quizId, Integer lid, int exp, String question, String answer1, String answer2,
 			String answer3, String answer4, String answer5, String answer6) {
 		super.setId(id);
+		super.setXP(exp);
 		this.id = quizId;
 		this.lid = lid;
 		this.question = question;
@@ -54,9 +56,9 @@ public class Quiz extends Treasure.Type implements Serializable{
 		this.answer6 = answer6;
 	}
 
-	public Quiz(String question, String answer1, String answer2,
+	public Quiz(int exp, String question, String answer1, String answer2,
 			String answer3, String answer4, String answer5, String answer6) {
-		this(-1, -1, -1, question, answer1, answer2, answer3, answer4, answer5, answer6);
+		this(-1, -1, -1, exp, question, answer1, answer2, answer3, answer4, answer5, answer6);
 	}
 
 	public String getQuestion() {
@@ -110,11 +112,12 @@ public class Quiz extends Treasure.Type implements Serializable{
 	public String getType() {
 		return "QUIZ";
 	}
-
+	
+	@Override
 	public boolean equalsWithoutId(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
+		if (!super.equalsWithoutId(o)) return false;
 
 		Quiz quiz = (Quiz) o;
 

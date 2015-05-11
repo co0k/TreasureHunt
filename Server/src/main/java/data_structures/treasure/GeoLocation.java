@@ -51,6 +51,7 @@ public class GeoLocation implements Serializable{
 		return Double.compare(that.lon, lon) == 0;
 
 	}
+	
 
 	@Override
 	public int hashCode() {

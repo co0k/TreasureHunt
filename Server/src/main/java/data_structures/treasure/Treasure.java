@@ -53,6 +53,14 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	public int getXP() {
 		return 0;
 	}
+	
+	@Override
+	public String toString () {
+		String out = "bid: " + this.getId() + " lat: " + this.getLocation().getLat() + " lon: "  + this.getLocation().getLon() +
+				"\ntype: " + this.getType().getType() + " " + getType().toString() +
+				"\nsize: " + this.getSize().getSize() + " size exp: " + this.getSize().getXP();
+		return out;
+	}
 
 	public boolean equalsWithoutId(Object o) {
 		if (this == o) return true;
@@ -60,10 +68,9 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 		Treasure treasure = (Treasure) o;
 
-		if (id != treasure.id) return false;
-		if (!location.equalsWithoutId(treasure.location)) return false;
-		if (!type.equalsWithoutId(treasure.type)) return false;
-		if (!size.equalsWithoutId(treasure.size)) return false;
+		if (!location.equalsWithoutId(treasure.location)) return false; //TODO broken
+		if (!type.equalsWithoutId(treasure.type)) return false; //TODO broken
+		if (!size.equalsWithoutId(treasure.size)) return false; 
 		if (content != null ? !content.equals(treasure.content) : treasure.content != null) return false;
 
 		return true;
@@ -135,7 +142,7 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 			Type type = (Type) o;
 
-			if (experience != type.experience) return false;
+			if (this.experience != type.experience) return false;
 			return !(getType() != null ? !getType().equals(type.getType()) : type.getType() != null);
 		}
 		@Override
@@ -157,6 +164,8 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			result = 31 * result + (getType() != null ? getType().hashCode() : 0);
 			return result;
 		}
+		
+
 	}
 
 	public interface Content extends IdHolder, ExperiencePointHolder {

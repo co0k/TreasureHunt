@@ -12,6 +12,7 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.jooq.types.Unsigned;
 
 import data_structures.treasure.*;
 import data_structures.treasure.Treasure.*;
@@ -99,7 +100,7 @@ public class DatabaseManager {
 	}
 
 
-	public static Integer insertBox(int lid, Integer tid, int sid, Integer qid, Integer cid) throws SQLException {
+	public static Integer insertBox(Integer lid, Integer tid, int sid, Integer qid, Integer cid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record record = create.insertInto(BOX, BOX.LID, BOX.TID, BOX.SID, BOX.QID, BOX.CID).values(lid, tid, sid, qid, cid).returning(BOX.BID).fetchOne();
@@ -107,7 +108,7 @@ public class DatabaseManager {
 		return record.getValue(BOX.BID);
 	}
 
-	public static Integer insertQuiz(String question, String correct1, String answer2, String answer3, String answer4, String answer5, String answer6,int exp, int lid) throws SQLException, IllegalArgumentException {
+	public static Integer insertQuiz(String question, String correct1, String answer2, String answer3, String answer4, String answer5, String answer6,int exp, Integer lid) throws SQLException, IllegalArgumentException {
 		// check if the quiz and answer pattern is correct
 		if (correct1 == null || question == null)
 			throw new IllegalArgumentException("no correct answer or question given!");
@@ -335,9 +336,9 @@ public class DatabaseManager {
 			String answer4 = r.getValue(QUIZ.ANSWER4);
 			String answer5 = r.getValue(QUIZ.ANSWER5);
 			String answer6 = r.getValue(QUIZ.ANSWER6);
+			Integer exp = r.getValue(QUIZ.EXP);
 			Integer lid = r.getValue(QUIZ.LID);
-			Quiz tmp = new Quiz(id, lid, question, answer1, answer2, answer3, answer4, answer5, answer6);
-			tmp.setXP(r.getValue(QUIZ.EXP));
+			Quiz tmp = new Quiz(id, lid, exp, question, answer1, answer2, answer3, answer4, answer5, answer6);
 			out.add(tmp);
 		}
 
@@ -360,7 +361,7 @@ public class DatabaseManager {
 			Double x = r.getValue(LOCATION.X);
 			Double y = r.getValue(LOCATION.Y);
 			Integer outXP = r.getValue(LOCATION.OUTXP);
-			Location tmp = new Location(id, outXP, x, y);
+			Location tmp = new Location(id, outXP, y, x);
 			out.add(tmp);
 		}
 

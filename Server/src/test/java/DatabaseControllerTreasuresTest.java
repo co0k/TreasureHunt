@@ -16,7 +16,7 @@ public class DatabaseControllerTreasuresTest {
 	@Before
 	public void initialize() {
 		// TODO add more test data
-		Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+		Quiz quiz1 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
 		exampleTreasuresID = new ArrayList<Integer>();
 		exampleTreasures = new ArrayList<Treasure>();
 		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
@@ -35,10 +35,10 @@ public class DatabaseControllerTreasuresTest {
 
 	@Test
 	public void saveTreasureTest() {
-		Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", null, "Konzerthaus", null);
-		Quiz quiz2 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", null, "Bank", null, "Konzerthaus", null);
-		Quiz quiz3 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", null, "Ballspielhaus", "Bank", null, "Konzerthaus", null);
-		Quiz quiz4 = new Quiz(null, "Bank", "Ballspielhaus", "Bank", null, "Konzerthaus", null);
+		Quiz quiz1 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", null, "Konzerthaus", null);
+		Quiz quiz2 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", null, "Bank", null, "Konzerthaus", null);
+		Quiz quiz3 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", null, "Ballspielhaus", "Bank", null, "Konzerthaus", null);
+		Quiz quiz4 = new Quiz(10, null, "Bank", "Ballspielhaus", "Bank", null, "Konzerthaus", null);
 		try {
 			DatabaseController.getInstance().saveTreasure(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
 			fail("an exception should be thrown");
@@ -71,7 +71,7 @@ public class DatabaseControllerTreasuresTest {
 
 	@Test
 	public void deleteTreasureTest() {
-		Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+		Quiz quiz1 = new Quiz(10, "Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
 		int id = DatabaseController.getInstance().saveTreasure(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
 		DatabaseController.getInstance().deleteTreasure(id);
 		List<Treasure> result = DatabaseController.getInstance().getAllTreasures(false);
@@ -116,8 +116,9 @@ public class DatabaseControllerTreasuresTest {
 			assertEquals("the treasure with id: " + i + " is not equal to the id: " + t.getId() + "!", (Integer)t.getId(), i);
 		}
 		Collections.sort(result);
-		for(int i = 0; i < exampleTreasures.size(); i++)
-			assertTrue("the treasures aren't equal", exampleTreasures.get(i).equalsWithoutId(result.get(i)));
+		for(int i = 0; i < exampleTreasures.size(); i++) {
+			assertTrue("the treasures aren't equal: \n" + result.get(i) + "\n" + exampleTreasures.get(i), exampleTreasures.get(i).equalsWithoutId(result.get(i)));
+		}
 	}
 
 	@Test

@@ -3,8 +3,8 @@ mysql -e 'create database IF NOT EXISTS library;' -uroot
 mysql -e "use library;
 create table if not exists location (
 Lid int NOT NULL AUTO_INCREMENT,
-x float,
-y float,
+x double,
+y double,
 outXP int,
 primary key (Lid)
 );
