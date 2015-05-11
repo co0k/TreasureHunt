@@ -18,7 +18,7 @@ public class DatabaseSupervisor {
 	
 	private void setupSupervisor() {
 		if (activeTree == null) {
-			activeTree = new QuadTree<Integer>(-90, -180, 90, 180);
+			activeTree = new QuadTree<Integer>(-180, -90, 180, 90);
 		}
 		if (activeId == null) {
 			activeId = new ArrayList<Integer>();

@@ -88,6 +88,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 	
 	@Override
 	public List<Treasure> getTreasures(GeoLocation location, double radius) {
+		radius = radius / 6378137; // earth radius in meters
 		return dataBaseSupervisor.getTreasuresNearLocation(location.getLon(), location.getLat(), radius);
 	}
 	
