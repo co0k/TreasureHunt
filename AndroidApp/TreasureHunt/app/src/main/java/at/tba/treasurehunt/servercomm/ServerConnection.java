@@ -28,7 +28,7 @@ public class ServerConnection implements ServerComm {
     private final static String TAG = "TH-ServerConnection";
 
     private final WebSocketConnection mConnection = new WebSocketConnection();
-    private static final String SERVER_URI = "ws://173.25.3.179:8080/stocks";
+    private static final String SERVER_URI = "ws://philipp-m.de:8887/stocks";
    // private static final String SERVER_URI = "ws://echo.websocket.org";
 
 

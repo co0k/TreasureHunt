@@ -78,6 +78,7 @@ public class QuizActivity extends Activity {
     }
 
 
+
     /**
      * The layout should be flexible. Quizzes can have a different number and types of answers.
      * For example, a picture can also be an answer.

@@ -1,5 +1,6 @@
 package at.tba.treasurehunt.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.servercomm.ServerConnection;
 
 
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
