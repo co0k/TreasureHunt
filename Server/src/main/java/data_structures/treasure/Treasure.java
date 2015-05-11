@@ -50,6 +50,20 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		return 0;
 	}
 
+	public boolean equalsWithoutId(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Treasure treasure = (Treasure) o;
+
+		if (id != treasure.id) return false;
+		if (!location.equalsWithoutId(treasure.location)) return false;
+		if (!type.equalsWithoutId(treasure.type)) return false;
+		if (!size.equalsWithoutId(treasure.size)) return false;
+		if (content != null ? !content.equals(treasure.content) : treasure.content != null) return false;
+
+		return true;
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -109,6 +123,15 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			return experience;
 		}
 
+		public boolean equalsWithoutId(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Type type = (Type) o;
+
+			if (experience != type.experience) return false;
+			return !(getType() != null ? !getType().equals(type.getType()) : type.getType() != null);
+		}
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
@@ -158,6 +181,16 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			return id;
 		}
 
+		public boolean equalsWithoutId(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			if (!super.equals(o)) return false;
+
+			Location location = (Location) o;
+
+			return experience == location.experience;
+
+		}
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
@@ -170,6 +203,7 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			return experience == location.experience;
 
 		}
+
 
 		@Override
 		public int hashCode() {
@@ -228,6 +262,16 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			result = 31 * result + experience;
 			result = 31 * result + size;
 			return result;
+		}
+
+		public boolean equalsWithoutId(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Size size1 = (Size) o;
+
+			if (experience != size1.experience) return false;
+			return size == size1.size;
 		}
 	}
 }

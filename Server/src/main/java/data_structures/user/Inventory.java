@@ -3,7 +3,6 @@ package data_structures.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import data_structures.IdHolder;
 import data_structures.treasure.Treasure;
 import data_structures.treasure.Treasure.Content;
 
@@ -54,20 +53,13 @@ public class Inventory {
 	 * *************** (sub-)interfaces and classes *****************
 	 */
 
-	public static class Entry implements IdHolder {
-		private int id;
+	public static class Entry {
 		private int count;
 		private Treasure.Content content;
 
-		public Entry(int id, int count, Content content) {
-			this.id = id;
+		public Entry(int count, Content content) {
 			this.count = count;
 			this.content = content;
-		}
-
-		@Override
-		public int getId() {
-			return id;
 		}
 
 		public int getCount() {
@@ -85,7 +77,6 @@ public class Inventory {
 
 			Entry entry = (Entry) o;
 
-			if (id != entry.id) return false;
 			if (count != entry.count) return false;
 			return !(content != null ? !content.equals(entry.content) : entry.content != null);
 
@@ -93,8 +84,7 @@ public class Inventory {
 
 		@Override
 		public int hashCode() {
-			int result = id;
-			result = 31 * result + count;
+			int result = 31 * count;
 			result = 31 * result + (content != null ? content.hashCode() : 0);
 			return result;
 		}

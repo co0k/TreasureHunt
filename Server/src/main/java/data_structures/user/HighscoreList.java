@@ -104,6 +104,16 @@ public class HighscoreList {
 			return id;
 		}
 
+		public boolean equalsWithoutId(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Entry entry = (Entry) o;
+
+			if (rank != entry.rank) return false;
+			if (experience != entry.experience) return false;
+			return !(name != null ? !name.equals(entry.name) : entry.name != null);
+		}
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
@@ -115,7 +125,6 @@ public class HighscoreList {
 			if (rank != entry.rank) return false;
 			if (experience != entry.experience) return false;
 			return !(name != null ? !name.equals(entry.name) : entry.name != null);
-
 		}
 
 		@Override

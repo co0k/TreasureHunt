@@ -87,6 +87,10 @@ public class Quiz extends Treasure.Type {
 		return id;
 	}
 
+	public int getLocationId() {
+		return lid;
+	}
+
 	@Override
 	public String toString() {
 		return "Tid: " + this.getId() + "\n" + "Lid: " + lid + "\n" + "name: " + this.getType() + "\n"
@@ -103,6 +107,22 @@ public class Quiz extends Treasure.Type {
 		return "QUIZ";
 	}
 
+	public boolean equalsWithoutId(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+
+		Quiz quiz = (Quiz) o;
+
+		if (!question.equals(quiz.question)) return false;
+		if (answer1 != null ? !answer1.equals(quiz.answer1) : quiz.answer1 != null) return false;
+		if (answer2 != null ? !answer2.equals(quiz.answer2) : quiz.answer2 != null) return false;
+		if (answer3 != null ? !answer3.equals(quiz.answer3) : quiz.answer3 != null) return false;
+		if (answer4 != null ? !answer4.equals(quiz.answer4) : quiz.answer4 != null) return false;
+		if (answer5 != null ? !answer5.equals(quiz.answer5) : quiz.answer5 != null) return false;
+		return !(answer6 != null ? !answer6.equals(quiz.answer6) : quiz.answer6 != null);
+
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
