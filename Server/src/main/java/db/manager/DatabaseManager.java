@@ -121,8 +121,8 @@ public class DatabaseManager {
 				}
 			}
 		}
-		if (question.length() > 256 || correct1.length() > 256 || (answer2 != null && answer2.length() > 256) || (answer3 != null && answer3.length() > 256) ||
-				(answer4 != null && answer4.length() > 256) || (answer5 != null && answer5.length() > 256) || (answer6 != null && answer6.length() > 256))
+		if (question.length() > 1024 || correct1.length() > 1024 || (answer2 != null && answer2.length() > 1024) || (answer3 != null && answer3.length() > 1024) ||
+				(answer4 != null && answer4.length() > 1024) || (answer5 != null && answer5.length() > 1024) || (answer6 != null && answer6.length() > 1024))
 			throw new IllegalArgumentException("strings longer than 256 characters not allowed!");
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
