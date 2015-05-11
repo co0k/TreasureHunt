@@ -17,6 +17,8 @@ public class DatabaseControllerTreasuresTest {
 	public void initialize() {
 		// TODO add more test data
 		Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+		quiz1.setName("QUIZ");
+		quiz1.setId(-1);
 		exampleTreasuresID = new ArrayList<Integer>();
 		exampleTreasures = new ArrayList<Treasure>();
 		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
@@ -120,7 +122,7 @@ public class DatabaseControllerTreasuresTest {
 
 		assertNotNull("null returned instead of all treasures", result);
 
-		assertEquals("count of treasures has to be equal", result.size(), exampleTreasures.size());
+		assertEquals("count of treasures has to be equal", exampleTreasures.size(), result.size() );
 		Collections.sort(result);
 		assertEquals("the treasures aren't equal", exampleTreasures, result);
 		// test only treasures that are active

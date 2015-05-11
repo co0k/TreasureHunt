@@ -78,7 +78,7 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 	@Override
 	public int compareTo(Treasure treasure) {
-			return Integer.compare(this.id, treasure.id);
+		return Integer.compare(this.id, treasure.id);
 	}
 
 	/**
@@ -88,14 +88,10 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 	public static abstract class Type implements IdHolder, ExperiencePointHolder {
 		private int experience;
 		private int id;
-		private String name;
 
-		public String getName() {
-			return name;
-		}
+		abstract public String getType();
 
 		public void setName(String name) {
-			this.name = name;
 		}
 
 		public void setId(int id) {
@@ -116,10 +112,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			return experience;
 		}
 
-		public String getType() {
-			return name;
-		}
-
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
@@ -129,14 +121,14 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 			if (experience != type.experience) return false;
 			if (id != type.id) return false;
-			return !(name != null ? !name.equals(type.name) : type.name != null);
+			return !(getType() != null ? !getType().equals(type.getType()) : type.getType() != null);
 		}
 
 		@Override
 		public int hashCode() {
 			int result = experience;
 			result = 31 * result + id;
-			result = 31 * result + (name != null ? name.hashCode() : 0);
+			result = 31 * result + (getType() != null ? getType().hashCode() : 0);
 			return result;
 		}
 	}
