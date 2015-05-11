@@ -1,7 +1,7 @@
 create table location (
 Lid int NOT NULL AUTO_INCREMENT,
-x float,
-y float,
+x double,
+y double,
 outXP int,
 primary key (Lid)
 );

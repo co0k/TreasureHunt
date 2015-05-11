@@ -1,6 +1,10 @@
 package data_structures.treasure;
 
-public class GeoLocation {
+import java.io.Serializable;
+
+public class GeoLocation implements Serializable{
+
+	private static final long serialVersionUID = -107439324567278310L;
 	private double lat;
 	private double lon;
 
@@ -47,6 +51,7 @@ public class GeoLocation {
 		return Double.compare(that.lon, lon) == 0;
 
 	}
+	
 
 	@Override
 	public int hashCode() {
