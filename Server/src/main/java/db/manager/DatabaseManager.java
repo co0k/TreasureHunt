@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record3;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -16,6 +18,7 @@ import org.jooq.types.Unsigned;
 
 import data_structures.treasure.*;
 import data_structures.treasure.Treasure.*;
+import data_structures.user.HighscoreList;
 import data_structures.user.User;
 
 public class DatabaseManager {
@@ -502,8 +505,8 @@ public class DatabaseManager {
 	public static Location getLocationFromBid(int bid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(BOX)
-				.where(BOX.BID.equal(bid)).fetch();
+		Result<Record> result = create.select().from(BOX).where(BOX.BID.equal(bid)).fetch();
+		conn.close();
 		ArrayList<Integer> lid = new ArrayList<Integer>();
 
 		for (Record r : result) {
@@ -514,10 +517,11 @@ public class DatabaseManager {
 		return getLocationFromId(lid.get(0));
 	}
 	
-	public static User getUserFromId (int uid) throws SQLException {
+	public static User getUserFromId(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(USER).where(USER.UID.equal(uid)).fetchOne();
+		conn.close();
 		if (result == null)
 			return null;
 		int uidFromDB = result.getValue(USER.UID);
@@ -527,6 +531,66 @@ public class DatabaseManager {
 		int score = result.getValue(USER.SCORE);
 		User out = new User(uidFromDB, name, pwdHash, eMail, score, -1, null);
 		return out;
+	}
+	
+	public static User getUserFromName(String name) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select().from(USER).where(USER.NAME.equal(name)).fetchOne();
+		conn.close();
+		if (result == null)
+			return null;
+		int uid = result.getValue(USER.UID);
+		String nameFromDB = result.getValue(USER.NAME);
+		String pwdHash = result.getValue(USER.PWDHASH);
+		String eMail = result.getValue(USER.EMAIL);
+		int score = result.getValue(USER.SCORE);
+		User out = new User(uid, nameFromDB, pwdHash, eMail, score, -1, null);
+		return out;
+	}
+	
+	private static int getScoreFromId(int uid) throws SQLException, IllegalArgumentException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select(USER.SCORE).from(USER).where(USER.UID.equal(uid)).fetchOne();
+		conn.close();
+		if (result == null)
+			throw new IllegalArgumentException("not a valid user");
+		else
+			return result.getValue(USER.SCORE);
+	}
+	
+	public static int getRankFromId(int uid) throws SQLException, IllegalArgumentException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int score = getScoreFromId(uid);
+		Field<Integer> rank = create.selectCount().from(USER).where(USER.SCORE.lessThan(score)).asField("rank");
+		Record result = create.select(rank).from(USER).where(USER.UID.equal(uid)).fetchOne();
+		conn.close();
+		if (result == null)
+			throw new IllegalArgumentException("not a valid user");
+		else
+			return result.getValue(rank);
+	}
+	
+	public static HighscoreList getHighScoreFromTo (int fromRank, int numberOfEntries) throws SQLException { 
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Result<Record3<Integer, String, Integer>> result = create.select(USER.UID, USER.NAME, USER.SCORE).from(USER).orderBy(USER.SCORE.desc()).limit(fromRank, numberOfEntries).fetch();
+		//TODO rank in Highscore.entry??
+		conn.close();
+		return null;
+	}
+	
+	public static boolean updateScore (int uid, int score) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int count = create.update(USER).set(USER.SCORE, getScoreFromId(uid) + score).where(USER.UID.equal(uid)).execute();
+		conn.close();
+		if (count != 1)
+			return false;
+		else
+			return true;
 	}
 
 }
