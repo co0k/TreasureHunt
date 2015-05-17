@@ -39,6 +39,8 @@ public class QuizActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+        ActivityManager.setCurrentActivity(this);
+
 
         /**
          * Get the quiz of the opened Treasure.
@@ -52,8 +54,11 @@ public class QuizActivity extends Activity {
         generateQuizLayout(this.quiz);
     }
 
-
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActivityManager.setCurrentActivity(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,85 +83,81 @@ public class QuizActivity extends Activity {
     }
 
 
-
     /**
      * The layout should be flexible. Quizzes can have a different number and types of answers.
      * For example, a picture can also be an answer.
      */
-    private void generateQuizLayout(Quiz q){
+    private void generateQuizLayout(Quiz q) {
 
-        GridLayout btnLayout = (GridLayout) findViewById(R.id.quizLayout);
+        int numQuestions = 4;
 
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.columnSpec = GridLayout.spec(3, GridLayout.CENTER);
-        params.rowSpec = GridLayout.spec(1, GridLayout.CENTER);
-        params.bottomMargin = 10;
-        params.topMargin = 10;
-        TextView question = new TextView(this);
-        question.setText(q.getQuestion());
-        question.setLayoutParams(params);
-        btnLayout.addView(question);
+        TextView questionText = (TextView) findViewById(R.id.quizQuestionText);
+        questionText.setText(q.getQuestion());
 
+        Button[] answerButtons = new Button[numQuestions + 1];
 
-
-        int numQuestions = 0;
-        if (q.getAnswer1() != null) numQuestions++;
-        if (q.getAnswer2() != null) numQuestions++;
-        if (q.getAnswer3() != null) numQuestions++;
-        if (q.getAnswer4() != null) numQuestions++;
-        if (q.getAnswer5() != null) numQuestions++;
-        if (q.getAnswer6() != null) numQuestions++;
-
-        Button[] answerButtons = new Button[numQuestions+1];
-
-        for (int i = 1; i <= numQuestions; i++){
+        for (int i = 1; i <= numQuestions; i++) {
             answerButtons[i] = generateButton(this.quiz, i);
-            GridLayout.LayoutParams p = new GridLayout.LayoutParams(
-                    GridLayout.spec(2+((i-1)/2), GridLayout.CENTER), //row
-                    GridLayout.spec(2 + ((i - 1) % 2)*2, GridLayout.CENTER)); //col
-            p.width = GridLayout.LayoutParams.WRAP_CONTENT;
-            p.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            p.topMargin = 3;
-
-            answerButtons[i].setLayoutParams(p);
-            btnLayout.addView(answerButtons[i]);
         }
-        setContentView(btnLayout);
     }
 
-    private Button generateButton(Quiz q, final int answerId){
+    private Button generateButton(Quiz q, final int answerId) {
         Button answerButton = new Button(this);
 
         String answerText = "";
 
-        switch(answerId){
-            case 1: answerText = q.getAnswer1(); break;
-            case 2: answerText = q.getAnswer2(); break;
-            case 3: answerText = q.getAnswer3(); break;
-            case 4: answerText = q.getAnswer4(); break;
-            case 5: answerText = q.getAnswer5(); break;
-            case 6: answerText = q.getAnswer6(); break;
+        switch (answerId) {
+            case 1: {
+                answerButton = (Button) findViewById(R.id.quiz_answer1);
+                answerText = q.getAnswer1();
+                break;
+            }
+            case 2: {
+                answerButton = (Button) findViewById(R.id.quiz_answer2);
+                answerText = q.getAnswer2();
+                break;
+            }
+            case 3: {
+                answerButton = (Button) findViewById(R.id.quiz_answer3);
+                answerText = q.getAnswer3();
+                break;
+            }
+            case 4: {
+                answerButton = (Button) findViewById(R.id.quiz_answer4);
+                answerText = q.getAnswer4();
+                break;
+            }
         }
 
         answerButton.setText(answerText);
-        answerButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                onAnswerClick(answerId);
-            }
-        });
 
         return answerButton;
     }
 
-    public void onAnswerClick(int answerId){
-        if (answerId == this.quiz.getCorrectAnswer()){
+    public void onAnswerClick(int answerId) {
+        if (answerId == this.quiz.getCorrectAnswer()) {
             //ShowMessageHelper.showSimpleInfoMessagePopUp("Right Answer! Nice bro.", this);
             TreasureChestHolder.getInstance().openTreasure(this.treasure);
             this.finish();
-        }else{
+        } else {
             ShowMessageHelper.showSimpleInfoMessagePopUp("Wrong answer bro. sry.", this);
         }
+    }
+
+    public void onButtonAnswer1Click(View v) {
+        onAnswerClick(1);
+    }
+
+    public void onButtonAnswer2Click(View v) {
+        onAnswerClick(2);
+    }
+
+    public void onButtonAnswer3Click(View v) {
+        onAnswerClick(3);
+    }
+
+    public void onButtonAnswer4Click(View v) {
+        onAnswerClick(4);
     }
 }

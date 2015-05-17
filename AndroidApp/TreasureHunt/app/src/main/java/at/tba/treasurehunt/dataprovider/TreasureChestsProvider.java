@@ -24,6 +24,7 @@ public class TreasureChestsProvider {
         treasures.add(DummyDataProvider.getDummyTreasureData(1));
         treasures.add(DummyDataProvider.getDummyTreasureData(2));
         treasures.add(DummyDataProvider.getDummyTreasureData(3));
+        treasures.add(DummyDataProvider.getDummyTreasureData(4));
     }
 
 

@@ -14,8 +14,14 @@ public class HighscoresActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscores);
+        ActivityManager.setCurrentActivity(this);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActivityManager.setCurrentActivity(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

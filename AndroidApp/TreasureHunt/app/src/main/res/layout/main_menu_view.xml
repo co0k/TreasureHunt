@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Map"
-        android:id="@+id/map_view"
+        android:id="@+id/quiz_answer1"
         android:layout_marginTop="132dp"
         android:layout_marginLeft="48dp"
         android:layout_marginStart="48dp"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="Profile"
         android:id="@+id/profile_view"
-        android:layout_alignTop="@+id/map_view"
+        android:layout_alignTop="@+id/quiz_answer1"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="48dp"
@@ -53,8 +53,8 @@
         android:id="@+id/loot_view"
         android:layout_marginTop="54dp"
         android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/map_view"
-        android:layout_alignStart="@+id/map_view" />
+        android:layout_alignLeft="@+id/quiz_answer1"
+        android:layout_alignStart="@+id/quiz_answer1" />
 
     <Button
         android:layout_width="wrap_content"

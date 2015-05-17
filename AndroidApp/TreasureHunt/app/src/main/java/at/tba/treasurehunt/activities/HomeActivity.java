@@ -1,6 +1,7 @@
 package at.tba.treasurehunt.activities;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,17 +11,27 @@ import android.view.View;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.servercomm.ServerConnection;
+import at.tba.treasurehunt.utils.AlertHelper;
 
 
 public class HomeActivity extends Activity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        ServerConnection.getInstance().connectServer();
+        ActivityManager.setCurrentActivity(this);
+        //connectServer();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActivityManager.setCurrentActivity(this);
+    }
+
 
 
     @Override
@@ -69,4 +80,6 @@ public class HomeActivity extends Activity {
         Intent actSwitch = new Intent(this, MapsActivity.class);
         startActivity(actSwitch);
     }
+
+
 }

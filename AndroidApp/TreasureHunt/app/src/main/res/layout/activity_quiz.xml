@@ -1,15 +1,71 @@
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
-    android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="at.tba.treasurehunt.activities.QuizActivity"
-    android:id="@+id/quizLayout"
-    android:columnCount = "5"
-    android:rowCount="5"
-    >
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="2">
 
 
 
-</GridLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Question"
+        android:layout_weight="1.3"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:gravity="center"
+        android:textSize="50dp"
+        android:layout_gravity="center_horizontal|top"
+        android:id="@+id/quizQuestionText" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_weight="0.7"
+
+        >
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Answer1"
+            android:id="@+id/quiz_answer1"
+            android:onClick="onButtonAnswer1Click"
+            android:layout_gravity="center"
+            android:layout_weight="0.25" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Answer2"
+            android:id="@+id/quiz_answer2"
+            android:onClick="onButtonAnswer2Click"
+            android:layout_gravity="center"
+            android:layout_weight="0.25" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Answer3"
+            android:id="@+id/quiz_answer3"
+            android:onClick="onButtonAnswer3Click"
+            android:layout_gravity="center"
+            android:layout_weight="0.25" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Answer4"
+            android:id="@+id/quiz_answer4"
+            android:onClick="onButtonAnswer4Click"
+            android:layout_gravity="center"
+            android:layout_weight="0.25" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

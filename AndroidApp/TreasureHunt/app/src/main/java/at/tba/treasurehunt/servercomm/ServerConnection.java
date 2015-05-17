@@ -6,7 +6,10 @@ import android.util.Log;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
+import at.tba.treasurehunt.activities.ActivityManager;
+import at.tba.treasurehunt.activities.HomeActivity;
 import at.tba.treasurehunt.debug.Debug;
+import at.tba.treasurehunt.utils.AlertHelper;
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
@@ -26,21 +29,33 @@ public class ServerConnection implements ServerComm {
 
 
     private final static String TAG = "TH-ServerConnection";
+    private ServerConnectionCallback lastCallbackClass;
 
     private final WebSocketConnection mConnection = new WebSocketConnection();
     private static final String SERVER_URI = "ws://philipp-m.de:8887/stocks";
-   // private static final String SERVER_URI = "ws://echo.websocket.org";
+    //private static final String SERVER_URI = "ws://echo.websocket.org";
 
+    private boolean serverConnected = false;
 
 
     @Override
-    public boolean connectServer() {
+    public boolean connectServer(final ServerConnectionCallback callback) {
+        if (callback != null)
+            lastCallbackClass = callback;
+
+        if (callback == null)
+           if (lastCallbackClass == null)
+               return false;
+
         try {
             mConnection.connect(SERVER_URI, new WebSocketHandler() {
 
                 @Override
                 public void onOpen() {
                     Log.d(TAG, "Status: Connected to " + SERVER_URI);
+                    serverConnected = true;
+                    ActivityManager.dismissLoadingSpinner();
+                    lastCallbackClass.onServerConnected();
                     mConnection.sendTextMessage("start");
                 }
 
@@ -51,6 +66,10 @@ public class ServerConnection implements ServerComm {
 
                 @Override
                 public void onClose(int code, String reason) {
+                    ActivityManager.dismissLoadingSpinner();
+                    serverConnected = false;
+                    AlertHelper.showConnectionErrorAlert(ActivityManager.getCurrentActivity());
+                    lastCallbackClass.onServerNotConnected();
                     Log.d(TAG, "Connection lost.");
                 }
             });
@@ -65,11 +84,20 @@ public class ServerConnection implements ServerComm {
     @Override
     public boolean disconnectServer() {
         mConnection.disconnect();
+        serverConnected = false;
         return true;
     }
 
     @Override
     public boolean sendPackage() {
         return false;
+    }
+
+    public boolean isConnected(){
+        return serverConnected;
+    }
+
+    public ServerConnectionCallback getLastCallbackClass(){
+        return lastCallbackClass;
     }
 }

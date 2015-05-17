@@ -30,8 +30,8 @@ public class ServerCommunication implements ServerCommunicationDAO{
     }
 
     @Override
-    public boolean logInToServer() {
-        return false;
+    public boolean logInToServer(String uName, String pwd) {
+        return true;
     }
 
     @Override

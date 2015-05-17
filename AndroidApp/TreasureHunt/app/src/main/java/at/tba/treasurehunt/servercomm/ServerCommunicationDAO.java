@@ -13,7 +13,7 @@ public interface ServerCommunicationDAO {
 
     public ArrayList<Treasure> getTreasuresFromServer();
 
-    public boolean logInToServer();
+    public boolean logInToServer(String uName, String pwd);
 
     public User getUserById(int userId);
 

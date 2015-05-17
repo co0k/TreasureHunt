@@ -44,6 +44,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView( R.layout.activity_maps);
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        ActivityManager.setCurrentActivity(this);
+
     }
 
     @Override
@@ -51,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
         setUpMapIfNeeded();
         refreshMap();
+        ActivityManager.setCurrentActivity(this);
     }
 
     /**

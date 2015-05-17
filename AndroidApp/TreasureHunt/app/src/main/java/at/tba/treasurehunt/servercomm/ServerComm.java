@@ -5,10 +5,12 @@ package at.tba.treasurehunt.servercomm;
  */
 public interface ServerComm {
 
-    public boolean connectServer();
+    public boolean connectServer(ServerConnectionCallback callback);
 
     public boolean disconnectServer();
 
     public boolean sendPackage();
+
+    public boolean isConnected();
 
 }

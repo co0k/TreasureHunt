@@ -14,8 +14,14 @@ public class InventoryActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
+        ActivityManager.setCurrentActivity(this);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActivityManager.setCurrentActivity(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

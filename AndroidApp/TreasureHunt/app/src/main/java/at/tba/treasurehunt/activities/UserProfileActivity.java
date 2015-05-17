@@ -23,6 +23,13 @@ public class UserProfileActivity extends ActionBarActivity {
         setContentView(R.layout.activity_user_profile);
         initLayoutFields();
         fillUserData();
+        ActivityManager.setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActivityManager.setCurrentActivity(this);
     }
 
 

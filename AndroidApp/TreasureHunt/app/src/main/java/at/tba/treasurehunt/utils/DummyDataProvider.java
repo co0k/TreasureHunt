@@ -24,7 +24,7 @@ public class DummyDataProvider {
    }
 
    public static Treasure getDummyTreasureData(int pos){
-       return new Treasure(1,20,getDummyTreasureHuntLocation(pos),getDummyQuiz(),new Treasure.Size(1,20,1),null,0);
+       return new Treasure(pos,20,getDummyTreasureHuntLocation(pos),getDummyQuiz(),new Treasure.Size(1,20,1),null,0);
    }
 
     /**
@@ -41,6 +41,7 @@ public class DummyDataProvider {
            case 1: return new Treasure.Location(2, 100, 47.264097, 11.343373);
            case 2: return new Treasure.Location(3, 100, 47.319443, 11.073080);
            case 3: return new Treasure.Location(4, 100, 47.2641234,11.3451889);
+           case 4: return new Treasure.Location(5, 100, 47.232164, 11.441617);
        }
        //Innsbruck Goldenes Dachl
        // return new Treasure.Location(1, 100, 47.259659, 11.400375);
