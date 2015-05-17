@@ -1,11 +1,14 @@
 package data_structures.user;
 
+import java.io.Serializable;
 import java.util.List;
 
 import data_structures.ExperiencePointHolder;
 import data_structures.IdHolder;
 
-public class HighscoreList {
+public class HighscoreList  implements Serializable{
+
+	private static final long serialVersionUID = 1855455260769203099L;
 	private int minRange;
 	private int maxRange;
 	private List<Entry> list;
@@ -72,24 +75,21 @@ public class HighscoreList {
 		RANK, UID, NAME
 	}
 
-	public static class Entry implements IdHolder, ExperiencePointHolder {
-		private int uId;
+	public static class Entry implements IdHolder, ExperiencePointHolder, Serializable {
+		
+		private static final long serialVersionUID = -5355700657619391702L;
 		private int id;
 		private String name;
 		private int rank;
 		private int experience;
 
-		public Entry(int id, int uId, String name, int rank, int exp) {
+		public Entry(int id, String name, int rank, int exp) {
 			this.id = id;
-			this.uId = uId;
 			this.name = name;
 			this.rank = rank;
 			this.experience = exp;
 		}
 
-		public int getUId() {
-			return uId;
-		}
 
 		public String getName() {
 			return name;
@@ -109,6 +109,16 @@ public class HighscoreList {
 			return id;
 		}
 
+		public boolean equalsWithoutId(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Entry entry = (Entry) o;
+
+			if (rank != entry.rank) return false;
+			if (experience != entry.experience) return false;
+			return !(name != null ? !name.equals(entry.name) : entry.name != null);
+		}
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
@@ -116,18 +126,15 @@ public class HighscoreList {
 
 			Entry entry = (Entry) o;
 
-			if (uId != entry.uId) return false;
 			if (id != entry.id) return false;
 			if (rank != entry.rank) return false;
 			if (experience != entry.experience) return false;
 			return !(name != null ? !name.equals(entry.name) : entry.name != null);
-
 		}
 
 		@Override
 		public int hashCode() {
-			int result = uId;
-			result = 31 * result + id;
+			int result = id;
 			result = 31 * result + (name != null ? name.hashCode() : 0);
 			result = 31 * result + rank;
 			result = 31 * result + experience;

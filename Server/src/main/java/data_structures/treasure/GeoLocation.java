@@ -1,6 +1,10 @@
 package data_structures.treasure;
 
-public class GeoLocation {
+import java.io.Serializable;
+
+public class GeoLocation implements Serializable{
+
+	private static final long serialVersionUID = -107439324567278310L;
 	private double lat;
 	private double lon;
 
@@ -25,6 +29,17 @@ public class GeoLocation {
 		this.lon = lon;
 	}
 
+	public double getDistanceTo(GeoLocation l) {
+		// Haversine formula
+		double latRad1 = Math.toRadians(lat);
+		double latRad2 = Math.toRadians(l.lat);
+		double deltaLatRad = Math.toRadians(lat-l.lat);
+		double deltaLonRad = Math.toRadians(lon-l.lon);
+		double a = Math.sin(deltaLatRad/2)*Math.sin(deltaLatRad/2) + Math.cos(latRad1)  * Math.cos(latRad2)  * Math.sin(deltaLonRad/2) * Math.sin(deltaLonRad/2);
+		double c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a));
+		return 6371000 * c;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -36,6 +51,7 @@ public class GeoLocation {
 		return Double.compare(that.lon, lon) == 0;
 
 	}
+	
 
 	@Override
 	public int hashCode() {
