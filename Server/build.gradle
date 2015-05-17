@@ -85,7 +85,7 @@ task cleanGeneratedFiles << {
 }
 test {
     testLogging {
-        events 'passed'
+        events = ["passed", "standard_error", "failed", "skipped"]
         exceptionFormat 'full'
         showCauses true
     }

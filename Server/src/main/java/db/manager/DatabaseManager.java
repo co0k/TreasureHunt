@@ -126,6 +126,21 @@ public class DatabaseManager {
 						throw new IllegalArgumentException("an answer was given although the previous answer is null");
 				}
 			}
+		} else {
+			if(answer3 == null) {
+				if(answer4 != null || answer5 != null || answer6 != null)
+					throw new IllegalArgumentException("an answer was given although the previous answer is null");
+				if(answer4 == null) {
+					if(answer5 != null || answer6 != null)
+						throw new IllegalArgumentException("an answer was given although the previous answer is null");
+				}
+			} else {
+				if(answer4 == null) {
+					if(answer5 != null || answer6 != null)
+						throw new IllegalArgumentException("an answer was given although the previous answer is null");
+				} else if(answer5 == null && answer6 != null)
+						throw new IllegalArgumentException("an answer was given although the previous answer is null");
+			}
 		}
 		if (question.length() > 1024 || correct1.length() > 1024 || (answer2 != null && answer2.length() > 1024) || (answer3 != null && answer3.length() > 1024) ||
 				(answer4 != null && answer4.length() > 1024) || (answer5 != null && answer5.length() > 1024) || (answer6 != null && answer6.length() > 1024))
@@ -215,14 +230,14 @@ public class DatabaseManager {
 			return false;
 	}
 	
-	public static void deltetHistory(int uid) throws SQLException {
+	public static void deleteHistory(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		create.delete(HISTORY).where(HISTORY.UID.equal(uid)).execute();
 		conn.close();
 	}
 	
-	public static void deltetInventory(int uid) throws SQLException {
+	public static void deleteInventory(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		create.delete(INVENTORY).where(INVENTORY.UID.equal(uid)).execute();
@@ -233,7 +248,7 @@ public class DatabaseManager {
 	public static boolean deleteTreasure(int tid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		int delete = create.delete(BOX).where(BOX.TID.equal(tid)).execute();
+		int delete = create.delete(BOX).where(BOX.BID.equal(tid)).execute();
 		conn.close();
 		if (delete != 0)
 			return true;

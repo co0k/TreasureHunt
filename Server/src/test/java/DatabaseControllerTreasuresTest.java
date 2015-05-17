@@ -1,13 +1,14 @@
 import static org.junit.Assert.*;
-
 import data_structures.treasure.GeoLocation;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
 import org.junit.*;
+import java.util.logging.LogManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class DatabaseControllerTreasuresTest {
 	List<Treasure> exampleTreasures;
@@ -15,6 +16,9 @@ public class DatabaseControllerTreasuresTest {
 
 	@Before
 	public void initialize() {
+		LogManager.getLogManager().reset();
+		Logger globalLogger = Logger.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
+		globalLogger.setLevel(java.util.logging.Level.OFF);
 		// TODO add more test data
 		Quiz quiz1 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
 		exampleTreasuresID = new ArrayList<Integer>();
@@ -65,6 +69,7 @@ public class DatabaseControllerTreasuresTest {
 		}
 		List<Treasure> result = DatabaseController.getInstance().getAllTreasures(false);
 		Collections.sort(result);
+		assertEquals("the size of the saved treasures is different to the size that is hold locally! local: " + exampleTreasures.size() + " DB: " + result.size(), exampleTreasures.size(), result.size());
 		for(int i = 0; i < exampleTreasures.size(); i++)
 			assertTrue("there was saved a treasure although it shouldn't!", exampleTreasures.get(i).equalsWithoutId(result.get(i)));
 	}
@@ -76,6 +81,7 @@ public class DatabaseControllerTreasuresTest {
 		DatabaseController.getInstance().deleteTreasure(id);
 		List<Treasure> result = DatabaseController.getInstance().getAllTreasures(false);
 		Collections.sort(result);
+		assertEquals("the size of the saved treasures is different to the size that is hold locally! local: " + exampleTreasures.size() + " DB: " + result.size(), exampleTreasures.size(), result.size());
 		for(int i = 0; i < exampleTreasures.size(); i++)
 			assertTrue("the saved treasure should have been deleted!", exampleTreasures.get(i).equalsWithoutId(result.get(i)));
 	}
@@ -88,6 +94,7 @@ public class DatabaseControllerTreasuresTest {
 		for (Treasure t : exampleTreasures)
 			if (t.getLocation().getDistanceTo(loc) <= 2000) exampleTreasuresLoc.add(t);
 		Collections.sort(exampleTreasuresLoc);
+		assertEquals("the size of the saved treasures is different to the size that is hold locally! local: " + exampleTreasuresLoc.size() + " DB: " + result.size(), exampleTreasuresLoc.size(), result.size());
 		for(int i = 0; i < exampleTreasuresLoc.size(); i++)
 			assertTrue("the treasures within the radius(2000m) are not equal to the treasures the database gave", exampleTreasuresLoc.get(i).equalsWithoutId(result.get(i)));
 		exampleTreasuresLoc = new ArrayList<Treasure>();
@@ -95,14 +102,15 @@ public class DatabaseControllerTreasuresTest {
 		for (Treasure t : exampleTreasures)
 			if (t.getLocation().getDistanceTo(loc) <= 300) exampleTreasuresLoc.add(t);
 		Collections.sort(exampleTreasuresLoc);
+		assertEquals("the size of the saved treasures is different to the size that is hold locally! local: " + exampleTreasuresLoc.size() + " DB: " + result.size(), exampleTreasuresLoc.size(), result.size());
 		for(int i = 0; i < exampleTreasuresLoc.size(); i++)
 			assertTrue("the treasures within the radius(300m) are not equal to the treasures the database gave", exampleTreasuresLoc.get(i).equalsWithoutId(result.get(i)));
-		assertEquals("the treasures within the radius(300m) are not equal to the treasures the database gave", exampleTreasuresLoc, result);
 		exampleTreasuresLoc = new ArrayList<Treasure>();
 		result = DatabaseController.getInstance().getTreasures(loc, 50);
 		for (Treasure t : exampleTreasures)
 			if (t.getLocation().getDistanceTo(loc) <= 50) exampleTreasuresLoc.add(t);
 		Collections.sort(exampleTreasuresLoc);
+		assertEquals("the treasures within the radius(300m) are not equal to the treasures the database gave", exampleTreasuresLoc, result);
 		for(int i = 0; i < exampleTreasuresLoc.size(); i++)
 			assertTrue("the treasures within the radius(50m) are not equal to the treasures the database gave", exampleTreasuresLoc.get(i).equalsWithoutId(result.get(i)));
 	}
@@ -116,6 +124,7 @@ public class DatabaseControllerTreasuresTest {
 			assertEquals("the treasure with id: " + i + " is not equal to the id: " + t.getId() + "!", (Integer)t.getId(), i);
 		}
 		Collections.sort(result);
+		assertEquals("the size of the saved treasures is different to the size that is hold locally! local: " + exampleTreasures.size() + " DB: " + result.size(), exampleTreasures.size(), result.size());
 		for(int i = 0; i < exampleTreasures.size(); i++) {
 			assertTrue("the treasures aren't equal: \n" + result.get(i) + "\n" + exampleTreasures.get(i), exampleTreasures.get(i).equalsWithoutId(result.get(i)));
 		}
