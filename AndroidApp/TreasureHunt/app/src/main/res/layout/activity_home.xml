@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="TreasureHunt"
+        android:text="Welcome to TreasureHunt"
         android:layout_weight="1.3"
         style="@style/Base.TextAppearance.AppCompat.Title"
         android:gravity="center"
