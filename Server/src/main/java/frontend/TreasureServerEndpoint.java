@@ -6,7 +6,9 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
+import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.LinkedList;
 
 /**
  * Created by nebios on 04.05.15.
@@ -31,16 +33,18 @@ public class TreasureServerEndpoint {
     }
 
     private void send(String message) {
-        try {
-            if (session.isOpen()) {
-                session.getRemote().sendString(message);
+       // for (Session session : sessions) {
+            try {
+                if (session.isOpen()) {
+                     session.getRemote().sendString(message);
+                }
+            } catch (IOException e) {
+                 e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       // }
     }
 
-    private void stop() {
+    private void stop(Session session) {
         try {
             session.disconnect();
         } catch (IOException e) {
