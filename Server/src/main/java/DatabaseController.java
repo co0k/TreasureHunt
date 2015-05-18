@@ -150,14 +150,17 @@ public class DatabaseController implements DatabaseControllerDAO {
 
 	@Override
 	public boolean checkUserLogin(User user) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		User toCompare = getUser(user.getName());
+		return user.getPasswordHash().equals(toCompare.getPasswordHash());
+		}
 
 	@Override
 	public boolean deleteUser(int id) {
 		try {
+			DatabaseManager.deleteInventory(id);
+			DatabaseManager.deleteHistory(id);
 			return DatabaseManager.deleteUser(id);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -228,6 +231,17 @@ public class DatabaseController implements DatabaseControllerDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean changePassword (User user, String newPwdHash) throws IllegalArgumentException {
+		if (checkUserLogin(user))
+			try {
+				return DatabaseManager.changePassword(user.getId(), newPwdHash);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return false;
 	}
 
 
