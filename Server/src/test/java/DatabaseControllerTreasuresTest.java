@@ -89,6 +89,9 @@ public class DatabaseControllerTreasuresTest {
 	@Test
 	public void getTreasuresTest() {
 		GeoLocation loc = new GeoLocation(47.26952, 11.39570);
+		for (Integer tmp : exampleTreasuresID) {
+			DatabaseController.getInstance().activateTreasure(tmp);
+		}
 		List<Treasure> exampleTreasuresLoc = new ArrayList<Treasure>();
 		List<Treasure> result = DatabaseController.getInstance().getTreasures(loc, 2000);
 		for (Treasure t : exampleTreasures)
@@ -110,7 +113,7 @@ public class DatabaseControllerTreasuresTest {
 		for (Treasure t : exampleTreasures)
 			if (t.getLocation().getDistanceTo(loc) <= 50) exampleTreasuresLoc.add(t);
 		Collections.sort(exampleTreasuresLoc);
-		assertEquals("the treasures within the radius(300m) are not equal to the treasures the database gave", exampleTreasuresLoc, result);
+		
 		for(int i = 0; i < exampleTreasuresLoc.size(); i++)
 			assertTrue("the treasures within the radius(50m) are not equal to the treasures the database gave", exampleTreasuresLoc.get(i).equalsWithoutId(result.get(i)));
 	}
