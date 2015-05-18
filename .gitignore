@@ -17,7 +17,7 @@ Server/src/main/java/db/
 
 .gradle
 
-AndroidApp/TreasureHunt/app/libs/Server-all-0.1.jar
-AndroidApp/TreasureHunt/app/libs/Server-0.1.jar
+AndroidApp/TreasureHunt/app/libs/TreasureHunt-libs-0.1.jar
+
 AndroidApp/.idea
 

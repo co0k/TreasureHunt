@@ -62,11 +62,13 @@
             android:id="@+id/edit_text_password_retype" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/action_register"
             android:id="@+id/button_register"
+            android:onClick="onButtonRegister"
             android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 
 </RelativeLayout>

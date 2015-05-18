@@ -3,9 +3,9 @@ package at.tba.treasurehunt.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +18,7 @@ import at.tba.treasurehunt.controller.AuthenticationError;
 import at.tba.treasurehunt.controller.IAuthenticationCallback;
 import at.tba.treasurehunt.utils.AlertHelper;
 
-public class RegisterActivity extends ActionBarActivity implements IAuthenticationCallback {
+public class RegisterActivity extends Activity implements IAuthenticationCallback {
 
     private EditText inputUsername;
     private EditText inputEmail;
