@@ -6,10 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.Record3;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
@@ -341,145 +343,124 @@ public class DatabaseManager {
 	public static Quiz getQuizFromId(int qid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(QUIZ)
-				.where(QUIZ.QID.equal(qid)).fetch();
-		ArrayList<Quiz> out = new ArrayList<Quiz>();
-
-		for (Record r : result) {
-			int id = r.getValue(QUIZ.QID);
-			String question = r.getValue(QUIZ.QUESTION);
-			String answer1 = r.getValue(QUIZ.ANSWER1);
-			String answer2 = r.getValue(QUIZ.ANSWER2);
-			String answer3 = r.getValue(QUIZ.ANSWER3);
-			String answer4 = r.getValue(QUIZ.ANSWER4);
-			String answer5 = r.getValue(QUIZ.ANSWER5);
-			String answer6 = r.getValue(QUIZ.ANSWER6);
-			Integer exp = r.getValue(QUIZ.EXP);
-			Integer lid = r.getValue(QUIZ.LID);
-			Quiz tmp = new Quiz(id, lid, exp, question, answer1, answer2, answer3, answer4, answer5, answer6);
-			out.add(tmp);
-		}
-
+		Record result = create.select().from(QUIZ).where(QUIZ.QID.equal(qid)).fetchOne();
 		conn.close();
-		if (out.isEmpty())
+		
+		if (result == null)
 			return null;
-		return out.get(0);
+		
+		int id = result.getValue(QUIZ.QID);
+		String question = result.getValue(QUIZ.QUESTION);
+		String answer1 = result.getValue(QUIZ.ANSWER1);
+		String answer2 = result.getValue(QUIZ.ANSWER2);
+		String answer3 = result.getValue(QUIZ.ANSWER3);
+		String answer4 = result.getValue(QUIZ.ANSWER4);
+		String answer5 = result.getValue(QUIZ.ANSWER5);
+		String answer6 = result.getValue(QUIZ.ANSWER6);
+		Integer exp = result.getValue(QUIZ.EXP);
+		Integer lid = result.getValue(QUIZ.LID);
+		Quiz tmp = new Quiz(id, lid, exp, question, answer1, answer2, answer3, answer4, answer5, answer6);
+
+		return tmp;
 
 	}
 
 	public static Location getLocationFromId(int lid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(LOCATION)
-				.where(LOCATION.LID.equal(lid)).fetch();
-		ArrayList<Location> out = new ArrayList<Location>();
-
-		for (Record r : result) {
-			Integer id = r.getValue(LOCATION.LID);
-			Double x = r.getValue(LOCATION.X);
-			Double y = r.getValue(LOCATION.Y);
-			Integer outXP = r.getValue(LOCATION.OUTXP);
-			Location tmp = new Location(id, outXP, y, x);
-			out.add(tmp);
-		}
-
+		Record result = create.select().from(LOCATION).where(LOCATION.LID.equal(lid)).fetchOne();
 		conn.close();
-		if (out.isEmpty())
+		
+		if (result == null)
 			return null;
-		return out.get(0);
+		
+		Integer id = result.getValue(LOCATION.LID);
+		Double x = result.getValue(LOCATION.X);
+		Double y = result.getValue(LOCATION.Y);
+		Integer outXP = result.getValue(LOCATION.OUTXP);
+		Location tmp = new Location(id, outXP, y, x);
+
+		return tmp;
 	}
 
 	public static Size getSizeFromId(int sid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(SIZE)
-				.where(SIZE.SID.equal(sid)).fetch();
-		ArrayList<Size> out = new ArrayList<Size>();
-
-		for (Record r : result) {
-			Integer id = r.getValue(SIZE.SID);
-			Integer exp = r.getValue(SIZE.SIZEXP);
-			Integer size = r.getValue(SIZE.SIZE_);
-			Size tmp = new Size(id, exp, size);
-			out.add(tmp);
-		}
-
-		conn.close();
-		if (out.isEmpty())
+		Record result = create.select().from(SIZE).where(SIZE.SID.equal(sid)).fetchOne();
+		if (result == null)
 			return null;
-		return out.get(0);
+		Integer id = result.getValue(SIZE.SID);
+		Integer exp = result.getValue(SIZE.SIZEXP);
+		Integer size = result.getValue(SIZE.SIZE_);
+		Size tmp = new Size(id, exp, size);
+		
+		return tmp;
+
 	}
 
 	public static Content getConntentFromId(int cid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(CONTENT)
-				.where(CONTENT.CID.equal(cid)).fetch();
-		ArrayList<Content> out = new ArrayList<Content>();
-
-		for (Record r : result) {
-			Integer id = r.getValue(CONTENT.CID);
-			String content = r.getValue(CONTENT.CONTENT_);
-			Integer xp = r.getValue(CONTENT.CONTENTXP);
-			//TODO Content only interface....
-			//Content tmp = new Content (id, xp, content); 
-			//out.add(tmp);
-		}
+		Record result = create.select().from(CONTENT).where(CONTENT.CID.equal(cid)).fetchOne();
 		conn.close();
-		if (out.isEmpty())
+		
+		if (result == null)
 			return null;
-		return out.get(0);
+		
+		Integer id = result.getValue(CONTENT.CID);
+		String content = result.getValue(CONTENT.CONTENT_);
+		Integer xp = result.getValue(CONTENT.CONTENTXP);
+		//TODO Content only interface....
+		//Content tmp = new Content (id, xp, content); 
+
+		return null;
 	}
+
 
 	private static Type setTypeAttributesFromId(int tid, Type toset) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(TYPE)
-				.where(TYPE.TID.equal(tid)).fetch();
-
-		for (Record r : result) {
-			toset.setId(r.getValue(TYPE.TID));
-		}
-
+		Record result = create.select().from(TYPE).where(TYPE.TID.equal(tid)).fetchOne();
 		conn.close();
+		
+		if (result == null)
+			return null;
+		
+		toset.setId(result.getValue(TYPE.TID));
+
 		return toset;
 	}
 
 	public static Treasure getTreasureFromId(int bid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(BOX)
-				.where(BOX.BID.equal(bid)).fetch();
-		ArrayList<Treasure> out = new ArrayList<Treasure>();
-
-		for (Record r : result) {
-			Integer id = r.getValue(BOX.BID);
-			Integer lid = r.getValue(BOX.LID);
-			Integer tid = r.getValue(BOX.TID);
-			Integer sid = r.getValue(BOX.SID);
-			Integer qid = r.getValue(BOX.QID);
-			Integer cid = r.getValue(BOX.CID);
-			Integer last_userid = r.getValue(BOX.LAST_USERID);
-			Location location = getLocationFromId(lid);
-			Type type = null;
-			Size size = getSizeFromId(sid);
-			Content content = null;
-			/*if (cid != null) {//TODO content only interface
-				 content = getConntentFromId(cid);
-			}*/
-			if (qid != null) {
-				Quiz quiz = getQuizFromId(qid);
-				type = setTypeAttributesFromId(tid, quiz);
-			}
-
-			Treasure tmp = new Treasure(id, location, type, size, null); //exp not  yet set
-			out.add(tmp);
+		Record result = create.select().from(BOX).where(BOX.BID.equal(bid)).fetchOne();
+		conn.close();
+		
+		if (result == null)
+			return null;
+		
+		Integer id = result.getValue(BOX.BID);
+		Integer lid = result.getValue(BOX.LID);
+		Integer tid = result.getValue(BOX.TID);
+		Integer sid = result.getValue(BOX.SID);
+		Integer qid = result.getValue(BOX.QID);
+		Integer cid = result.getValue(BOX.CID);
+		Location location = getLocationFromId(lid);
+		Type type = null;
+		Size size = getSizeFromId(sid);
+		Content content = null;
+		/*if (cid != null) {//TODO content only interface
+			 content = getConntentFromId(cid);
+		}*/
+		if (qid != null) {
+			Quiz quiz = getQuizFromId(qid);
+			type = setTypeAttributesFromId(tid, quiz);
 		}
 
-		conn.close();
-		if (out.isEmpty())
-			return null;
-		return out.get(0);
+		Treasure tmp = new Treasure(id, location, type, size, null); //exp not  yet set
+		
+		return tmp;
 	}
 
 	public static ArrayList<Treasure> getAllTreasure() throws SQLException {
@@ -520,16 +501,13 @@ public class DatabaseManager {
 	public static Location getLocationFromBid(int bid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record> result = create.select().from(BOX).where(BOX.BID.equal(bid)).fetch();
+		Record result = create.select().from(BOX).where(BOX.BID.equal(bid)).fetchOne();
 		conn.close();
-		ArrayList<Integer> lid = new ArrayList<Integer>();
-
-		for (Record r : result) {
-			lid.add(r.getValue(BOX.LID));
-		}
-
 		
-		return getLocationFromId(lid.get(0));
+		if (result == null)
+			return null;
+		
+		return getLocationFromId(result.getValue(BOX.LID));
 	}
 	
 	public static User getUserFromId(int uid) throws SQLException {
@@ -548,6 +526,21 @@ public class DatabaseManager {
 		return out;
 	}
 	
+	public static User getUserProfileFromId(int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select().from(USER).where(USER.UID.equal(uid)).fetchOne();
+		conn.close();
+		if (result == null)
+			return null;
+		int uidFromDB = result.getValue(USER.UID);
+		String name = result.getValue(USER.NAME);
+		String eMail = result.getValue(USER.EMAIL);
+		int score = result.getValue(USER.SCORE);
+		User out = new User(uidFromDB, name, null, eMail, score, -1, null);
+		return out;
+	}
+	
 	public static User getUserFromName(String name) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -561,6 +554,21 @@ public class DatabaseManager {
 		String eMail = result.getValue(USER.EMAIL);
 		int score = result.getValue(USER.SCORE);
 		User out = new User(uid, nameFromDB, pwdHash, eMail, score, -1, null);
+		return out;
+	}
+	
+	public static User getUserProfileFromName(String name) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select().from(USER).where(USER.NAME.equal(name)).fetchOne();
+		conn.close();
+		if (result == null)
+			return null;
+		int uid = result.getValue(USER.UID);
+		String nameFromDB = result.getValue(USER.NAME);
+		String eMail = result.getValue(USER.EMAIL);
+		int score = result.getValue(USER.SCORE);
+		User out = new User(uid, nameFromDB, null, eMail, score, -1, null);
 		return out;
 	}
 	
@@ -592,9 +600,17 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Result<Record3<Integer, String, Integer>> result = create.select(USER.UID, USER.NAME, USER.SCORE).from(USER).orderBy(USER.SCORE.desc()).limit(fromRank, numberOfEntries).fetch();
-		//TODO rank in Highscore.entry??
 		conn.close();
-		return null;
+		
+		ArrayList<HighscoreList.Entry> out = new ArrayList<HighscoreList.Entry>();
+		for (Record3<Integer, String, Integer> tmp : result) {
+			HighscoreList.Entry tmpEntry = new HighscoreList.Entry((int)tmp.getValue(0), (String) tmp.getValue(1), fromRank++, (int) tmp.getValue(2));
+			out.add(tmpEntry);
+		}
+		if (out.isEmpty())
+			return null;
+		else
+			return new HighscoreList(fromRank, fromRank + numberOfEntries,  out);
 	}
 	
 	public static boolean updateScore (int uid, int score) throws SQLException {
@@ -606,6 +622,22 @@ public class DatabaseManager {
 			return false;
 		else
 			return true;
+	}
+	
+	public static List<Treasure> getHistory(int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Result<Record1<Integer>> result = create.select(HISTORY.BID).from(HISTORY).where(HISTORY.UID.equal(uid)).fetch();
+		conn.close();
+		ArrayList<Treasure> out = new ArrayList<Treasure>();
+		
+		for (Record1<Integer> tmp : result) {
+			out.add(getTreasureFromId((int) tmp.getValue(0))); 
+		}
+		if (!out.isEmpty())
+			return out;
+		else
+			return null;
 	}
 
 }

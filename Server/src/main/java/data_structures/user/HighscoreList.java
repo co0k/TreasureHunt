@@ -12,6 +12,14 @@ public class HighscoreList  implements Serializable{
 	private int minRange;
 	private int maxRange;
 	private List<Entry> list;
+	
+	
+	public HighscoreList(int minRange, int maxRange, List<Entry> list) {
+		super();
+		this.minRange = minRange;
+		this.maxRange = maxRange;
+		this.list = list;
+	}
 
 	public int getMinRange() {
 		return minRange;

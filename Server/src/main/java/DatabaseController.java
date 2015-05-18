@@ -93,6 +93,16 @@ public class DatabaseController implements DatabaseControllerDAO {
 	}
 	
 	@Override
+	public boolean activateTreasure(int treasureId) {
+		return dataBaseSupervisor.addTresure(treasureId);
+	}
+	
+	@Override
+	public boolean deactivateTreasure(int treasureId) {
+		return dataBaseSupervisor.removeTreasure(treasureId);
+	}
+	
+	@Override
 	public boolean isTreasureActive(int treasureId) {
 		return dataBaseSupervisor.isActive(treasureId);
 	}
@@ -109,13 +119,33 @@ public class DatabaseController implements DatabaseControllerDAO {
 			return false;
 		}
 	}
-
-
+	
+	@Override
+	public boolean openTreasure(int userId, int treasureId) {
+		if (allowedToOpenTreasure(userId, treasureId))
+			return deactivateTreasure(treasureId);
+		else
+			return false;
+	}
+	
+	@Override
+	public boolean updateScore (int userId, int score) {
+		try {
+			return DatabaseManager.updateScore(userId, score);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	@Override
 	public int addUser(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+			return DatabaseManager.insertUser(user.getName(), user.getPasswordHash(), user.getEmail());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	@Override
@@ -126,31 +156,51 @@ public class DatabaseController implements DatabaseControllerDAO {
 
 	@Override
 	public boolean deleteUser(int id) {
-		// TODO Auto-generated method stub
+		try {
+			return DatabaseManager.deleteUser(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public User getUser(int id) {
-		// TODO Auto-generated method stub
+		try {
+			return DatabaseManager.getUserFromId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public User getUser(String name) {
-		// TODO Auto-generated method stub
+		try {
+			return DatabaseManager.getUserFromName(name);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public User getUserProfile(int id) {
-		// TODO Auto-generated method stub
+		try {
+			return DatabaseManager.getUserProfileFromId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public User getUserProfile(String name) {
-		// TODO Auto-generated method stub
+		try {
+			return DatabaseManager.getUserProfileFromName(name);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -162,13 +212,21 @@ public class DatabaseController implements DatabaseControllerDAO {
 
 	@Override
 	public List<Treasure> getTreasureHistory(int uId) {
-		// TODO Auto-generated method stub
+		try {
+			return DatabaseManager.getHistory(uId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public HighscoreList getHighscoreList(int minRange, int maxRange) {
-		// TODO Auto-generated method stub
+		try {
+			return DatabaseManager.getHighScoreFromTo(minRange, maxRange-minRange);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

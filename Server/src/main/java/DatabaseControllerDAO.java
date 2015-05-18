@@ -51,6 +51,7 @@ public interface DatabaseControllerDAO {
 	 * @return
 	 */
 	boolean isTreasureActive(int treasureId);
+	
 	/**
 	 * checks if user is allowed to open a treasure
 	 * @param userId
@@ -58,6 +59,37 @@ public interface DatabaseControllerDAO {
 	 * @return
 	 */
 	boolean allowedToOpenTreasure(int userId, int treasureId);
+	
+	/**
+	 * checks if a user is allowed to open a treasure and tries to open it
+	 * it does NOT update the score of the user
+	 * @param userId
+	 * @param treasureId
+	 * @return
+	 */
+	boolean openTreasure(int userId, int treasureId);
+	
+	/**
+	 * activates a treasure, given the id
+	 * @param treasureId id of the treasure
+	 * @return 
+	 */
+	boolean activateTreasure (int treasureId);
+	
+	/**
+	 * deactivates a treasure ,given the id
+	 * @param treasureId id of the treasure
+	 * @return
+	 */
+	boolean deactivateTreasure (int treasureId);
+	
+	/**
+	 * updates the score of a given user 
+	 * @param userId
+	 * @param score points to add
+	 * @return
+	 */
+	boolean updateScore (int userId, int score);
 
 
 
