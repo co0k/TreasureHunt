@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -31,14 +30,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.controller.AuthenticationController;
+import at.tba.treasurehunt.controller.AuthenticationError;
+import at.tba.treasurehunt.controller.IAuthenticationCallback;
+import at.tba.treasurehunt.servercomm.IServerConnectionCallback;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.servercomm.ServerConnection;
-import at.tba.treasurehunt.servercomm.ServerConnectionCallback;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, ServerConnectionCallback {
+public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, IServerConnectionCallback {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -266,7 +268,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> implements IAuthenticationCallback {
 
         private final String mEmail;
         private final String mPassword;
@@ -278,31 +280,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            /*try {
-                // Simulate network access.
-                while(!ServerConnection.getInstance().isConnected()) {
-                    Thread.sleep(1000);
-                }
-            } catch (InterruptedException e) {
-                return false;
-            }*/
-
-            /*for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }*/
-
             if (!ServerConnection.getInstance().isConnected()) return false;
 
-            return ServerCommunication.getInstance().logInToServer(mEmail, mPassword);
+            return AuthenticationController.getInstance().authenticateUser(mEmail, mPassword, this);
 
-            // TODO: register the new account here.
-            //return true;
         }
 
         @Override
@@ -323,6 +304,26 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+
+        @Override
+        public void onAuthenticationSuccess() {
+
+        }
+
+        @Override
+        public void onAuthenticationFailure(AuthenticationError err) {
+
+        }
+
+        @Override
+        public void onRegistrationSuccess() {
+
+        }
+
+        @Override
+        public void onRegistrationError(AuthenticationError err) {
+
         }
     }
 
@@ -346,6 +347,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         showProgress(false);
         mEmailView.requestFocus();
 
+    }
+
+    public void onButtonRegister(View v){
+        Intent actSwitch = new Intent(this, RegisterActivity.class);
+        startActivity(actSwitch);
     }
 
 }

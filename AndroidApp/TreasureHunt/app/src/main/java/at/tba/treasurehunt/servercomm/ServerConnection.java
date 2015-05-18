@@ -3,12 +3,7 @@ package at.tba.treasurehunt.servercomm;
 
 import android.util.Log;
 
-import java.net.URI;
-import java.util.concurrent.TimeUnit;
-
 import at.tba.treasurehunt.activities.ActivityManager;
-import at.tba.treasurehunt.activities.HomeActivity;
-import at.tba.treasurehunt.debug.Debug;
 import at.tba.treasurehunt.utils.AlertHelper;
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
@@ -17,7 +12,7 @@ import de.tavendo.autobahn.WebSocketHandler;
 /**
  * Created by dAmihl on 11.05.15.
  */
-public class ServerConnection implements ServerComm {
+public class ServerConnection implements IServerConnection {
 
 
     private static ServerConnection instance = null;
@@ -29,7 +24,7 @@ public class ServerConnection implements ServerComm {
 
 
     private final static String TAG = "TH-ServerConnection";
-    private ServerConnectionCallback lastCallbackClass;
+    private IServerConnectionCallback lastCallbackClass;
 
     private final WebSocketConnection mConnection = new WebSocketConnection();
     private static final String SERVER_URI = "ws://philipp-m.de:8887/stocks";
@@ -39,7 +34,7 @@ public class ServerConnection implements ServerComm {
 
 
     @Override
-    public boolean connectServer(final ServerConnectionCallback callback) {
+    public boolean connectServer(final IServerConnectionCallback callback) {
         if (callback != null)
             lastCallbackClass = callback;
 
@@ -97,7 +92,7 @@ public class ServerConnection implements ServerComm {
         return serverConnected;
     }
 
-    public ServerConnectionCallback getLastCallbackClass(){
+    public IServerConnectionCallback getLastCallbackClass(){
         return lastCallbackClass;
     }
 }

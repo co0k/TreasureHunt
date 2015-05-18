@@ -27,4 +27,17 @@ public class AlertHelper {
                 .show();
     }
 
+    public static void showUnknownErrorAlert(Context context){
+        new AlertDialog.Builder(context)
+                .setTitle("Error!")
+                .setMessage("An unknown error occured. Please try again.")
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
 }

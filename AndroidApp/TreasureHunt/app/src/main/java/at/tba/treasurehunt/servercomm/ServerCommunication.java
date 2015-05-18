@@ -10,7 +10,7 @@ import data_structures.user.User;
 /**
  * Created by dAmihl on 11.05.15.
  */
-public class ServerCommunication implements ServerCommunicationDAO{
+public class ServerCommunication implements IServerCommunicationDAO{
 
     private static ServerCommunication instance = null;
 
