@@ -9,8 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
 import at.tba.treasurehunt.utils.MapLocationHelper;
+import data_structures.treasure.Treasure;
 
 /**
  * Created by dAmihl on 28.04.15.

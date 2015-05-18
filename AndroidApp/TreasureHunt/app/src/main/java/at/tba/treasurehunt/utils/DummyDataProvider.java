@@ -1,9 +1,10 @@
 package at.tba.treasurehunt.utils;
 
-import at.tba.treasurehunt.datastructures.treasure.Quiz;
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
-import at.tba.treasurehunt.datastructures.user.Inventory;
-import at.tba.treasurehunt.datastructures.user.User;
+
+import data_structures.treasure.Quiz;
+import data_structures.treasure.Treasure;
+import data_structures.user.Inventory;
+import data_structures.user.User;
 
 /**
  * Created by dAmihl on 28.04.15.
@@ -24,7 +25,7 @@ public class DummyDataProvider {
    }
 
    public static Treasure getDummyTreasureData(int pos){
-       return new Treasure(pos,20,getDummyTreasureHuntLocation(pos),getDummyQuiz(),new Treasure.Size(1,20,1),null,0);
+       return new Treasure(getDummyTreasureHuntLocation(pos),getDummyQuiz(),new Treasure.Size(1,20,1),null);
    }
 
     /**
@@ -52,7 +53,7 @@ public class DummyDataProvider {
    }
 
    public static Quiz getDummyQuiz(){
-       return new Quiz(1,1, "Wo is waldo?", "KA", "ka mann", "hinterm baum?", "da hinten", "da oben", "gar nit da", 1);
+       return new Quiz(10,"Wo is waldo?", "KA", "ka mann", "hinterm baum?", "da hinten", "da oben", "gar nit da");
    }
 
 }

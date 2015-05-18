@@ -17,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import at.tba.treasurehunt.R;
-import at.tba.treasurehunt.datastructures.treasure.Quiz;
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
 import at.tba.treasurehunt.utils.ShowMessageHelper;
+import data_structures.treasure.Quiz;
+import data_structures.treasure.Treasure;
 
 
 /**
@@ -136,7 +136,8 @@ public class QuizActivity extends Activity {
     }
 
     public void onAnswerClick(int answerId) {
-        if (answerId == this.quiz.getCorrectAnswer()) {
+        if (answerId == 1) { // correct answer is always id == 1
+
             //ShowMessageHelper.showSimpleInfoMessagePopUp("Right Answer! Nice bro.", this);
             TreasureChestHolder.getInstance().openTreasure(this.treasure);
             this.finish();

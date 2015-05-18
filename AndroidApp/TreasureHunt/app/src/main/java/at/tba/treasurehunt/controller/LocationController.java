@@ -19,7 +19,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
 import at.tba.treasurehunt.utils.GPSTracker;
 

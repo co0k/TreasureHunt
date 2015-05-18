@@ -23,11 +23,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.LocationController;
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
 import at.tba.treasurehunt.utils.GPSTracker;
 import at.tba.treasurehunt.utils.GPSUpdateHandler;
 import at.tba.treasurehunt.utils.ShowMessageHelper;
+import data_structures.treasure.Treasure;
 
 
 /**

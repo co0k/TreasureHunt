@@ -2,9 +2,10 @@ package at.tba.treasurehunt.servercomm;
 
 import java.util.ArrayList;
 
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
-import at.tba.treasurehunt.datastructures.user.HighscoreList;
-import at.tba.treasurehunt.datastructures.user.User;
+import data_structures.treasure.Treasure;
+import data_structures.user.HighscoreList;
+import data_structures.user.User;
+
 
 /**
  * Created by dAmihl on 11.05.15.

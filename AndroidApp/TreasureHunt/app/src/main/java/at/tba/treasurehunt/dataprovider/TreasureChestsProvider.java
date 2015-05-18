@@ -2,8 +2,8 @@ package at.tba.treasurehunt.dataprovider;
 
 import java.util.ArrayList;
 
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
 import at.tba.treasurehunt.utils.DummyDataProvider;
+import data_structures.treasure.Treasure;
 
 /**
  * Created by dAmihl on 28.04.15.

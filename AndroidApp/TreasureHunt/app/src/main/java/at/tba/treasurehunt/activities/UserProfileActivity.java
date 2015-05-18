@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.UserDataController;
-import at.tba.treasurehunt.datastructures.user.User;
+import data_structures.user.User;
 
 
 public class UserProfileActivity extends ActionBarActivity {

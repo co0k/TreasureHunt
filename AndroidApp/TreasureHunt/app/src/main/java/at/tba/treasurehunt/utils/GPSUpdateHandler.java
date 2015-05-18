@@ -8,7 +8,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import at.tba.treasurehunt.activities.MapsActivity;
 import at.tba.treasurehunt.controller.LocationController;
-import at.tba.treasurehunt.datastructures.treasure.Treasure;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
 
 /**

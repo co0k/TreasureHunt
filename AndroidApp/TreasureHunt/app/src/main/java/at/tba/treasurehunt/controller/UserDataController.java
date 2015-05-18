@@ -4,9 +4,9 @@ package at.tba.treasurehunt.controller;
  * Created by dAmihl on 27.04.15.
  */
 
-import at.tba.treasurehunt.datastructures.user.Inventory;
-import at.tba.treasurehunt.datastructures.user.User;
+
 import at.tba.treasurehunt.utils.DummyDataProvider;
+import data_structures.user.User;
 
 /**
  * Singleton
