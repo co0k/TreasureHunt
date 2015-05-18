@@ -3,7 +3,8 @@
 apply plugin: 'java'
 
 version = '0.1'
-
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 repositories {
     mavenCentral()
 }
@@ -11,7 +12,6 @@ repositories {
 dependencies {
     compile 'org.jooq:jooq:3.6.0'
     compile 'mysql:mysql-connector-java:+'
-    runtime 'com.h2database:h2:1.4.177'
     testCompile'junit:junit:[4,)'
 }
 jar {
@@ -30,6 +30,16 @@ task fatJar(type: Jar) {
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+task libs(type: Jar, dependsOn: classes) {
+    manifest {
+        attributes 'Implementation-Title': 'Data structures for the TreasureHunt App',
+                'Implementation-Version': version
+    }
+    baseName = 'TreasureHunt-libs'
+    from(sourceSets.main.output) {
+        include "data_structures/**"
+    }
 }
 buildscript {
     repositories {
@@ -93,3 +103,4 @@ test {
 compileJava.dependsOn(generate)
 clean.dependsOn(cleanGeneratedFiles)
 assemble.dependsOn(fatJar)
+assemble.dependsOn(libs)
