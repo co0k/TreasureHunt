@@ -639,5 +639,18 @@ public class DatabaseManager {
 		else
 			return null;
 	}
+	
+	public static boolean changePassword (int uid, String newPwdHash) throws SQLException, IllegalArgumentException {
+		Connection conn = getConnection();
+		if (newPwdHash == null || newPwdHash.length() > 1024)
+			throw new IllegalArgumentException("your hash is null or too long");
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int count = create.update(USER).set(USER.PWDHASH, newPwdHash).where(USER.UID.equal(uid)).execute();
+		conn.close();
+		if (count != 1)
+			return false;
+		else
+			return true;		
+	}
 
 }

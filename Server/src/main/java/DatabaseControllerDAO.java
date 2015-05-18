@@ -183,4 +183,14 @@ public interface DatabaseControllerDAO {
 	 * @return the list of highscores
 	 */
 	HighscoreList getHighscoreList(int minRange, int maxRange);
+	
+	/**
+	 * checks if a user is allowed to change his Password and if so it will be updated
+	 * @param user
+	 * @param newPwdHash
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	boolean changePassword (User user, String newPwdHash) throws IllegalArgumentException;	
+	
 }
