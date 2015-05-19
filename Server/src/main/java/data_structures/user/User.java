@@ -5,8 +5,8 @@ import data_structures.IdHolder;
 
 import java.io.Serializable;
 
-public class User implements IdHolder, ExperiencePointHolder, Serializable {
-	
+public class User implements IdHolder, ExperiencePointHolder, Comparable<User>, Serializable {
+
 	private static final long serialVersionUID = 5805432646049665444L;
 	private int id;
 	private int rank;
@@ -25,6 +25,11 @@ public class User implements IdHolder, ExperiencePointHolder, Serializable {
 		this.email = email;
 		this.inventory = inventory;
 	}
+
+	public User(String name, String passwordHash, String email, int experience, int rank, Inventory inventory) {
+		this(-1, name,passwordHash,email,experience,rank,inventory);
+	}
+
 
 	@Override
 	public int getId() {
@@ -69,6 +74,7 @@ public class User implements IdHolder, ExperiencePointHolder, Serializable {
 		if (email != null ? !email.equals(user.email) : user.email != null) return false;
 		return !(inventory != null ? !inventory.equals(user.inventory) : user.inventory != null);
 	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -85,6 +91,10 @@ public class User implements IdHolder, ExperiencePointHolder, Serializable {
 		return !(inventory != null ? !inventory.equals(user.inventory) : user.inventory != null);
 	}
 
+	@Override
+	public int compareTo(User user) {
+		return Integer.compare(this.id, user.id);
+	}
 	@Override
 	public int hashCode() {
 		int result = id;
