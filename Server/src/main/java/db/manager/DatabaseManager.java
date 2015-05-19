@@ -604,7 +604,7 @@ public class DatabaseManager {
 		
 		ArrayList<HighscoreList.Entry> out = new ArrayList<HighscoreList.Entry>();
 		for (Record3<Integer, String, Integer> tmp : result) {
-			HighscoreList.Entry tmpEntry = new HighscoreList.Entry((int)tmp.getValue(0), (String) tmp.getValue(1), fromRank++, (int) tmp.getValue(2));
+			HighscoreList.Entry tmpEntry = new HighscoreList.Entry(tmp.getValue(USER.UID), tmp.getValue(USER.NAME), fromRank++, tmp.getValue(USER.SCORE));
 			out.add(tmpEntry);
 		}
 		if (out.isEmpty())
@@ -632,7 +632,7 @@ public class DatabaseManager {
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
 		
 		for (Record1<Integer> tmp : result) {
-			out.add(getTreasureFromId((int) tmp.getValue(0))); 
+			out.add(getTreasureFromId(tmp.getValue(HISTORY.BID))); 
 		}
 		if (!out.isEmpty())
 			return out;
@@ -641,9 +641,9 @@ public class DatabaseManager {
 	}
 	
 	public static boolean changePassword (int uid, String newPwdHash) throws SQLException, IllegalArgumentException {
-		Connection conn = getConnection();
 		if (newPwdHash == null || newPwdHash.length() > 1024)
 			throw new IllegalArgumentException("your hash is null or too long");
+		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int count = create.update(USER).set(USER.PWDHASH, newPwdHash).where(USER.UID.equal(uid)).execute();
 		conn.close();
@@ -651,6 +651,21 @@ public class DatabaseManager {
 			return false;
 		else
 			return true;		
+	}
+	
+	public static List<Integer> getAllBoxId () throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Result<Record1<Integer>> result = create.select(BOX.BID).from(BOX).fetch();
+		ArrayList<Integer> out = new ArrayList<Integer>();
+		
+		for (Record1<Integer> tmp : result) {
+			out.add(tmp.getValue(BOX.BID));
+		}
+		if (out.isEmpty())
+			return null;
+		else
+			return out;
 	}
 
 }

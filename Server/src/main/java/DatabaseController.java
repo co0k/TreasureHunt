@@ -243,6 +243,31 @@ public class DatabaseController implements DatabaseControllerDAO {
 			}
 		return false;
 	}
+	
+	@Override
+	public int getRank (int uId) {
+		try {
+			return DatabaseManager.getRankFromId(uId);			
+		} catch (IllegalArgumentException | SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public List<Integer> getallTreasureID (boolean onlyInactive) {
+			try {
+				if (!onlyInactive) {
+					return DatabaseManager.getAllBoxId();
+				} else {
+					List<Integer> out = DatabaseManager.getAllBoxId();
+					out.removeAll(dataBaseSupervisor.getAllActiveTresuresId());
+					return out;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+	}
 
 
 }

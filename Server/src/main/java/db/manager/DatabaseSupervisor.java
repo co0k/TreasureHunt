@@ -3,6 +3,7 @@ package db.manager;
 import java.sql.SQLException;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.List;
 
 import data_structures.treasure.Treasure;
 import data_structures.treasure.Treasure.*;
@@ -80,6 +81,12 @@ public class DatabaseSupervisor {
 				return null;
 			}
 		}
+		return out;
+	}
+	
+	public List<Integer> getAllActiveTresuresId () {
+		List<Integer> out = new ArrayList<Integer>();
+		out.addAll(activeTree.values());
 		return out;
 	}
 

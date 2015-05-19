@@ -84,13 +84,11 @@ public interface DatabaseControllerDAO {
 	boolean deactivateTreasure (int treasureId);
 	
 	/**
-	 * updates the score of a given user 
-	 * @param userId
-	 * @param score points to add
+	 * returns the Id of all or only the inactive treasures
+	 * @param onlyInactive
 	 * @return
 	 */
-	boolean updateScore (int userId, int score);
-
+	List<Integer> getallTreasureID (boolean onlyInactive);
 
 
 	/*********************** User ***********************/
@@ -192,5 +190,20 @@ public interface DatabaseControllerDAO {
 	 * @throws IllegalArgumentException
 	 */
 	boolean changePassword (User user, String newPwdHash) throws IllegalArgumentException;	
+	
+	/**
+	 * gives back the rank of a given user
+	 * @param user
+	 * @return 
+	 */
+	int getRank (int uID);
+	
+	/**
+	 * updates the score of a given user 
+	 * @param userId
+	 * @param score points to add
+	 * @return
+	 */
+	boolean updateScore (int userId, int score);
 	
 }
