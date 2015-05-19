@@ -9,7 +9,8 @@ public class JsonConstructor {
 
 	public JsonConstructor() {
 		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(Treasure.Type.class, new TreasureTypeAdapter());
+		builder.registerTypeAdapter(Treasure.Type.class, new TreasureAbstractAdapter<Treasure.Type>());
+		builder.registerTypeAdapter(Treasure.Content.class, new TreasureAbstractAdapter<Treasure.Content>());
 		// for nicer debugging, should be commented out in the production version
 		builder.setPrettyPrinting();
 		builder.serializeNulls();

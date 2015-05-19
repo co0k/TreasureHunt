@@ -1,24 +1,22 @@
 package communication_protocol.json;
 
 import com.google.gson.*;
-import data_structures.treasure.Treasure;
 
 import java.lang.reflect.Type;
 
-public class TreasureTypeAdapter implements JsonSerializer<Treasure.Type>, JsonDeserializer<Treasure.Type> {
+public class TreasureAbstractAdapter<AbstractType> implements JsonSerializer<AbstractType>, JsonDeserializer<AbstractType> {
 
 	@Override
-	public JsonElement serialize(Treasure.Type src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(AbstractType src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject result = new JsonObject();
 		result.add("type", new JsonPrimitive(src.getClass().getSimpleName()));
-		System.err.println(src.getClass().getSimpleName());
 		result.add("properties", context.serialize(src, src.getClass()));
 
 		return result;
 	}
 
 	@Override
-	public Treasure.Type deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+	public AbstractType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		JsonObject jsonObject = json.getAsJsonObject();
 		String type = jsonObject.get("type").getAsString();
 		JsonElement element = jsonObject.get("properties");
