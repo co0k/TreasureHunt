@@ -2,7 +2,7 @@ package data_structures.treasure;
 
 import java.io.Serializable;
 
-public class GeoLocation implements Serializable{
+public class GeoLocation implements Serializable {
 
 	private static final long serialVersionUID = -107439324567278310L;
 	private double lat;
@@ -33,10 +33,10 @@ public class GeoLocation implements Serializable{
 		// Haversine formula
 		double latRad1 = Math.toRadians(lat);
 		double latRad2 = Math.toRadians(l.lat);
-		double deltaLatRad = Math.toRadians(lat-l.lat);
-		double deltaLonRad = Math.toRadians(lon-l.lon);
-		double a = Math.sin(deltaLatRad/2)*Math.sin(deltaLatRad/2) + Math.cos(latRad1)  * Math.cos(latRad2)  * Math.sin(deltaLonRad/2) * Math.sin(deltaLonRad/2);
-		double c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a));
+		double deltaLatRad = Math.toRadians(lat - l.lat);
+		double deltaLonRad = Math.toRadians(lon - l.lon);
+		double a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) + Math.cos(latRad1) * Math.cos(latRad2) * Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return 6371000 * c;
 	}
 
@@ -51,7 +51,7 @@ public class GeoLocation implements Serializable{
 		return Double.compare(that.lon, lon) == 0;
 
 	}
-	
+
 
 	@Override
 	public int hashCode() {

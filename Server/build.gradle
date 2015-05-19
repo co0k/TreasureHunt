@@ -13,6 +13,7 @@ dependencies {
     compile 'org.jooq:jooq:3.6.0'
     compile 'mysql:mysql-connector-java:+'
     testCompile'junit:junit:[4,)'
+    compile 'com.google.code.gson:gson:2.3.1'
 }
 jar {
     manifest {

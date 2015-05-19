@@ -2,10 +2,10 @@ package data_structures.treasure;
 
 import java.io.Serializable;
 
-public class Quiz extends Treasure.Type implements Serializable{
+public class Quiz extends Treasure.Type implements Serializable {
 
 	private static final long serialVersionUID = -4757699933744798652L;
-	private int id;
+	private int qid;
 	private String question;
 	private String answer1;
 	private String answer2;
@@ -18,7 +18,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 	/**
 	 * answers can be partially filled, if for example only 2 answers are
 	 * needed, the rest should be filled with 'null'
-	 * 
+	 *
 	 * @param lid
 	 * @param question
 	 * @param answer1
@@ -31,7 +31,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 	public Quiz(int quizId, Integer lid, int exp, String question, String answer1, String answer2,
 	            String answer3, String answer4, String answer5, String answer6) {
 		super.setXP(exp);
-		this.id = quizId;
+		this.qid = quizId;
 		this.lid = lid;
 		this.question = question;
 		this.answer1 = answer1;
@@ -41,11 +41,12 @@ public class Quiz extends Treasure.Type implements Serializable{
 		this.answer5 = answer5;
 		this.answer6 = answer6;
 	}
+
 	public Quiz(int id, int quizId, Integer lid, int exp, String question, String answer1, String answer2,
-			String answer3, String answer4, String answer5, String answer6) {
+	            String answer3, String answer4, String answer5, String answer6) {
 		super.setId(id);
 		super.setXP(exp);
-		this.id = quizId;
+		this.qid = quizId;
 		this.lid = lid;
 		this.question = question;
 		this.answer1 = answer1;
@@ -57,7 +58,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 	}
 
 	public Quiz(int exp, String question, String answer1, String answer2,
-			String answer3, String answer4, String answer5, String answer6) {
+	            String answer3, String answer4, String answer5, String answer6) {
 		this(-1, -1, -1, exp, question, answer1, answer2, answer3, answer4, answer5, answer6);
 	}
 
@@ -90,7 +91,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 	}
 
 	public int getQuizId() {
-		return id;
+		return qid;
 	}
 
 	public int getLocationId() {
@@ -100,7 +101,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 	@Override
 	public String toString() {
 		return "Tid: " + this.getId() + "\n" + "Lid: " + lid + "\n" + "name: " + this.getType() + "\n"
-				+ "exp: " + this.getXP() + "\n" + "Qid: " + id + "\n" + "q: "
+				+ "exp: " + this.getXP() + "\n" + "Qid: " + qid + "\n" + "q: "
 				+ question + "\n" + "1: " + answer1 + "\n" + "2: " + answer2
 				+ "\n" + "3: " + answer3 + "\n" + "4: " + answer4 + "\n"
 				+ "5: " + answer5 + "\n" + "6: " + answer6 + "\n";
@@ -112,7 +113,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 	public String getType() {
 		return "QUIZ";
 	}
-	
+
 	@Override
 	public boolean equalsWithoutId(Object o) {
 		if (this == o) return true;
@@ -130,6 +131,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 		return !(answer6 != null ? !answer6.equals(quiz.answer6) : quiz.answer6 != null);
 
 	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -138,7 +140,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 
 		Quiz quiz = (Quiz) o;
 
-		if (id != quiz.id) return false;
+		if (qid != quiz.qid) return false;
 		if (!question.equals(quiz.question)) return false;
 		if (answer1 != null ? !answer1.equals(quiz.answer1) : quiz.answer1 != null) return false;
 		if (answer2 != null ? !answer2.equals(quiz.answer2) : quiz.answer2 != null) return false;
@@ -152,7 +154,7 @@ public class Quiz extends Treasure.Type implements Serializable{
 	@Override
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 31 * result + id;
+		result = 31 * result + qid;
 		result = 31 * result + question.hashCode();
 		result = 31 * result + (answer1 != null ? answer1.hashCode() : 0);
 		result = 31 * result + (answer2 != null ? answer2.hashCode() : 0);
