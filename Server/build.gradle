@@ -21,6 +21,7 @@ dependencies {
     compile 'org.eclipse.jetty.websocket:websocket-parent:9.3.0.M2'
     compile 'org.eclipse.jetty.websocket:websocket-api:9.3.0.M2'
     testCompile 'junit:junit:[4,)'
+    compile 'com.google.code.gson:gson:2.3.1'
 }
 
 test {

@@ -3,7 +3,11 @@ package data_structures.user;
 import data_structures.ExperiencePointHolder;
 import data_structures.IdHolder;
 
-public class User implements IdHolder, ExperiencePointHolder {
+import java.io.Serializable;
+
+public class User implements IdHolder, ExperiencePointHolder, Comparable<User>, Serializable {
+
+	private static final long serialVersionUID = 5805432646049665444L;
 	private int id;
 	private int rank;
 	private int experience;
@@ -21,6 +25,11 @@ public class User implements IdHolder, ExperiencePointHolder {
 		this.email = email;
 		this.inventory = inventory;
 	}
+
+	public User(String name, String passwordHash, String email, int experience, int rank, Inventory inventory) {
+		this(-1, name,passwordHash,email,experience,rank,inventory);
+	}
+
 
 	@Override
 	public int getId() {
@@ -52,6 +61,20 @@ public class User implements IdHolder, ExperiencePointHolder {
 		return inventory;
 	}
 
+	public boolean equalsWithoutId(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
+		if (rank != user.rank) return false;
+		if (experience != user.experience) return false;
+		if (name != null ? !name.equals(user.name) : user.name != null) return false;
+		if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) return false;
+		if (email != null ? !email.equals(user.email) : user.email != null) return false;
+		return !(inventory != null ? !inventory.equals(user.inventory) : user.inventory != null);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -66,9 +89,12 @@ public class User implements IdHolder, ExperiencePointHolder {
 		if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) return false;
 		if (email != null ? !email.equals(user.email) : user.email != null) return false;
 		return !(inventory != null ? !inventory.equals(user.inventory) : user.inventory != null);
-
 	}
 
+	@Override
+	public int compareTo(User user) {
+		return Integer.compare(this.id, user.id);
+	}
 	@Override
 	public int hashCode() {
 		int result = id;
