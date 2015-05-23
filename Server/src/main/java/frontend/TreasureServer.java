@@ -11,7 +11,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 public class TreasureServer{
     public static void main(String[] args) throws Exception {
 
-        Server server = new Server(8887);
+        Server server = new Server(7666);
 
         ServletContextHandler servletContext = new ServletContextHandler();
         servletContext.setContextPath("/loot");
