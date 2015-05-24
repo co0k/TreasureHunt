@@ -3,10 +3,7 @@ package frontend;
 
 //import org.eclipse.jetty.websocket.api.Session;
 
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
@@ -25,6 +22,12 @@ public class TreasureServerSocket {
         System.out.println("Client connected: " + session.toString());
     }
 
+
+    @OnClose
+    public void handleClose(Session session, CloseReason reason) {
+        System.out.println("Connection closed! - Reason: " + reason);
+    }
+
     /*
     @OnClose
     public void handleClose(int statusCode, String reason) {
@@ -37,6 +40,7 @@ public class TreasureServerSocket {
     public void handleMessage(Session session, String message) {
         send(message);
     }
+
 
     private void send(String message) {
         //for (Session session : sessions) {
