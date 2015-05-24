@@ -6,7 +6,7 @@ import java.util.List;
 import data_structures.ExperiencePointHolder;
 import data_structures.IdHolder;
 
-public class HighscoreList  implements Serializable{
+public class HighscoreList  implements Serializable, Comparable<HighscoreList> {
 
 	private static final long serialVersionUID = 1855455260769203099L;
 	private int minRange;
@@ -77,6 +77,19 @@ public class HighscoreList  implements Serializable{
 		return result;
 	}
 
+	@Override
+	public int compareTo(HighscoreList highscoreList) {
+		if(minRange < highscoreList.minRange)
+			return -1;
+		else if(minRange > highscoreList.minRange)
+			return 1;
+		else  {
+			if(maxRange < highscoreList.maxRange)
+				return -1;
+			else return 1;
+		}
+	}
+
 	/****************** (sub-)interfaces and classes ******************/
 
 	public static enum Order {
@@ -96,6 +109,10 @@ public class HighscoreList  implements Serializable{
 			this.name = name;
 			this.rank = rank;
 			this.experience = exp;
+		}
+
+		public Entry(String name, int rank, int exp) {
+			this(-1, name,rank,exp);
 		}
 
 
