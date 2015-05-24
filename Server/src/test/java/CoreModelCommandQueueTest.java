@@ -23,7 +23,7 @@ public class CoreModelCommandQueueTest {
 		for(int i = 0; i < 1000; i += 10)
 			CoreModel.getInstance().addCommand(dummy);
 
-		// 20 commands
+		// 50 commands
 		Random rand = new Random();
 		List<Integer> expectedList = new ArrayList<>();
 		List<Future<Integer>> fCList = new ArrayList<>();
