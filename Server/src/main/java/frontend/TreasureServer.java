@@ -1,6 +1,8 @@
 package frontend;
 
 import frontend.TreasureServerEndpoint;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.jsr356.server.ServerContainer;
@@ -11,7 +13,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 public class TreasureServer{
     public static void main(String[] args) throws Exception {
 
-        Server server = new Server(8887);
+        Server server = new Server(7666);
 
         ServletContextHandler servletContext = new ServletContextHandler();
         servletContext.setContextPath("/loot");
@@ -41,6 +43,8 @@ public class TreasureServer{
 
         @Override
         public void configure(WebSocketServletFactory factory) {
+            Logger  logger = Logger.getLogger("com.foo");
+            logger.setLevel(Level.INFO);
             factory.register(TreasureServerEndpoint.class);
         }
     }
