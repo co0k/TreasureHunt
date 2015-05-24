@@ -8,12 +8,16 @@ public class CoreModel implements CommunicationControllerDAO {
 
 	private Queue<FutureCommand> commandQueue;
 	private Thread cQEThread;
+	private ActiveTokens activeTokens;
 
 
 	private CoreModel() {
 		this.commandQueue = new PriorityQueue<>(10, (fC1, fC2) -> fC2.getPriority() - fC1.getPriority());
 		this.cQEThread = new Thread(new CommandQueueExecutioner());
 		this.cQEThread.start();
+		// token timeout set to 60 seconds
+		this.activeTokens = new ActiveTokens(60);
+
 	}
 
 	// Singleton
@@ -23,6 +27,13 @@ public class CoreModel implements CommunicationControllerDAO {
 
 	public static CoreModel getInstance() {
 		return CoreModelHolder.INSTANCE;
+	}
+
+	public boolean isActive(int token) {
+		return activeTokens.isActive(token);
+	}
+	public void setActive(int token) {
+		activeTokens.setActive(token);
 	}
 
 	@Override

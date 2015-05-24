@@ -1,6 +1,6 @@
 import static org.junit.Assert.*;
 
-import communication_protocol.json.JsonConstructor;
+import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;

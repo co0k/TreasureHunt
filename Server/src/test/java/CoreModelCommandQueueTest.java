@@ -20,7 +20,7 @@ public class CoreModelCommandQueueTest {
 		// multiple commands are used, since then it is almost sure that there is no race condition afterwards
 		TestCommand dummy = new TestCommand(0, 0);
 		// let the core model be busy for at least one second
-		for(int i = 0; i < 1000; i += 20)
+		for(int i = 0; i < 1000; i += 10)
 			CoreModel.getInstance().addCommand(dummy);
 
 		// 20 commands
@@ -77,7 +77,7 @@ public class CoreModelCommandQueueTest {
 		@Override
 		public Integer execute() throws InterruptedException {
 			// wait a little bit, so that race conditions are mostly unlikely
-			Thread.sleep(20);
+			Thread.sleep(10);
 			return value;
 		}
 	}

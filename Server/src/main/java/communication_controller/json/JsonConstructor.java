@@ -1,4 +1,4 @@
-package communication_protocol.json;
+package communication_controller.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
