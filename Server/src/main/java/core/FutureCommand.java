@@ -18,7 +18,7 @@ public class FutureCommand<V> implements Future<V> {
 		this.value = null;
 	}
 
-	public synchronized void executeCommand() {
+	public synchronized void executeCommand() throws InterruptedException {
 		this.value = command.execute();
 		this.isDone = true;
 		notifyAll();
