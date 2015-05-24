@@ -152,7 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void updateHotColdDistance(double distance){
-        //TextView t = (TextView) findViewById(R.id.textViewDistToTreasure);
+
         HotColdManager.HOT_COLD_STATE distState = HotColdManager.determineHotCold((int) distance);
 
         int hotColdColor = Color.BLACK;
@@ -163,10 +163,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case WARM:hotColdColor = Color.MAGENTA; break;
             case HOT: hotColdColor = Color.GREEN; break;
             case VERY_HOT: hotColdColor = Color.RED; break;
+            default: hotColdColor = Color.BLACK;break;
         }
         drawRectView.setRectangleColor(hotColdColor);
-       // t.setText(distState.toString());
-       // t.setText("Distance to next Treasure: "+distance);
+        drawRectView.invalidate();
     }
 
     public void refreshMap(){
