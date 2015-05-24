@@ -2,7 +2,6 @@ package at.tba.treasurehunt.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,23 +9,21 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
+import at.tba.treasurehunt.utils.RectangleDrawView;
 import at.tba.treasurehunt.utils.GPSTracker;
 import at.tba.treasurehunt.utils.GPSUpdateHandler;
-import at.tba.treasurehunt.utils.ShowMessageHelper;
+import at.tba.treasurehunt.utils.HotColdManager;
 import data_structures.treasure.Treasure;
 
 
@@ -37,11 +34,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GPSTracker gpsTracker;
+    private RectangleDrawView drawRectView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_maps);
+
+        setContentView(R.layout.activity_maps);
+        drawRectView = (RectangleDrawView) findViewById(R.id.rectView);
+        drawRectView.setBackgroundColor(Color.TRANSPARENT);
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityManager.setCurrentActivity(this);
@@ -151,8 +152,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void updateHotColdDistance(double distance){
-        TextView t = (TextView) findViewById(R.id.textViewDistToTreasure);
-        t.setText("Distance to next Treasure: "+distance);
+        //TextView t = (TextView) findViewById(R.id.textViewDistToTreasure);
+        HotColdManager.HOT_COLD_STATE distState = HotColdManager.determineHotCold((int) distance);
+
+        int hotColdColor = Color.BLACK;
+
+        switch(distState){
+            case VERY_COLD: hotColdColor = Color.BLUE;break;
+            case COLD:hotColdColor = Color.CYAN;break;
+            case WARM:hotColdColor = Color.MAGENTA; break;
+            case HOT: hotColdColor = Color.GREEN; break;
+            case VERY_HOT: hotColdColor = Color.RED; break;
+        }
+        drawRectView.setRectangleColor(hotColdColor);
+       // t.setText(distState.toString());
+       // t.setText("Distance to next Treasure: "+distance);
     }
 
     public void refreshMap(){

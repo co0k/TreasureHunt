@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.Test;
 import at.tba.treasurehunt.datastructures.user.User;
 import at.tba.treasurehunt.datastructures.user.Inventory;
+import at.tba.treasurehunt.utils.DummyDataProvider;
 //import org.robolectric.RobolectricTestRunner;
 
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class FirstTest {
 
 
         User TestUser = new User(1,"Testuser","test111","test@email",1,200, new Inventory(null));
+
         //TestUser.getEmail();
         //Activity activity = new Activity();
 

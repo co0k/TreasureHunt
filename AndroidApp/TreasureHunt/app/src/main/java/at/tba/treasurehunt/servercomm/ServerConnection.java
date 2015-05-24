@@ -27,8 +27,8 @@ public class ServerConnection implements IServerConnection {
     private IServerConnectionCallback lastCallbackClass;
 
     private final WebSocketConnection mConnection = new WebSocketConnection();
-    private static final String SERVER_URI = "ws://philipp-m.de:8887/stocks";
-    //private static final String SERVER_URI = "ws://echo.websocket.org";
+    //private static final String SERVER_URI = "ws://philipp-m.de:8887/stocks";
+    private static final String SERVER_URI = "ws://echo.websocket.org";
 
     private boolean serverConnected = false;
 

@@ -2,6 +2,8 @@ package at.tba.treasurehunt.servercomm;
 
 import java.util.ArrayList;
 
+import at.tba.treasurehunt.controller.UserDataController;
+import at.tba.treasurehunt.utils.DummyDataProvider;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
 import data_structures.user.User;
@@ -32,6 +34,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
 
     @Override
     public boolean logInToServer(String uName, String pwd) {
+
         return true;
     }
 

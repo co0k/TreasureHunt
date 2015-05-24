@@ -1,8 +1,11 @@
 package at.tba.treasurehunt.utils;
 
 
+import java.util.ArrayList;
+
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
+import data_structures.user.HighscoreList;
 import data_structures.user.Inventory;
 import data_structures.user.User;
 
@@ -21,7 +24,7 @@ public class DummyDataProvider {
      * @return User object
      */
    public static User getDummyUserData(){
-       return new User(1,"Testuser","test111","test@email",1,200, new Inventory(null));
+       return new User(1,"Testuser","test111","test@email",1,200, getDummyInventory());
    }
 
    public static Treasure getDummyTreasureData(int pos){
@@ -55,5 +58,52 @@ public class DummyDataProvider {
    public static Quiz getDummyQuiz(){
        return new Quiz(10,"Wo is waldo?", "KA", "ka mann", "hinterm baum?", "da hinten", "da oben", "gar nit da");
    }
+
+    public static HighscoreList getDummyHighscoreList(){
+        ArrayList<HighscoreList.Entry> list = new ArrayList<>();
+
+        for (int i = 1; i <= 10; i++)
+            list.add(new HighscoreList.Entry(i, "Player "+i, i, 1000/i));
+
+        HighscoreList score = new HighscoreList(1,10, list);
+        return score;
+    }
+
+    public static Inventory getDummyInventory(){
+        Inventory inventory = new Inventory();
+        inventory.addEntry(new Inventory.Entry(1, new Treasure.Content() {
+            @Override
+            public String getType() {
+                return "Dingens1";
+            }
+
+            @Override
+            public int getXP() {
+                return 10;
+            }
+
+            @Override
+            public int getId() {
+                return 1;
+            }
+        }));
+        inventory.addEntry(new Inventory.Entry(1, new Treasure.Content() {
+            @Override
+            public String getType() {
+                return "Dingens2";
+            }
+
+            @Override
+            public int getXP() {
+                return 10;
+            }
+
+            @Override
+            public int getId() {
+                return 1;
+            }
+        }));
+        return inventory;
+    }
 
 }

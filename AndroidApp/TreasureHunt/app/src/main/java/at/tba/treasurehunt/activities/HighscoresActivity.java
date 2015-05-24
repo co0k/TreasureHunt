@@ -1,20 +1,36 @@
 package at.tba.treasurehunt.activities;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.utils.DummyDataProvider;
+import data_structures.user.HighscoreList;
 
 
-public class HighscoresActivity extends ActionBarActivity {
+public class HighscoresActivity extends Activity {
+
+    private ListView listView;
+    private ArrayList<String> listItems;
+    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscores);
         ActivityManager.setCurrentActivity(this);
+        listView = (ListView) findViewById(R.id.highscoreListView);
+        listItems = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        listView.setAdapter(arrayAdapter);
+        setList(DummyDataProvider.getDummyHighscoreList());
     }
 
     @Override
@@ -43,5 +59,15 @@ public class HighscoresActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setList(HighscoreList list){
+        //listItems.clear();
+        int i = 0;
+        for (HighscoreList.Entry e: list.getList()) {
+            arrayAdapter.insert(e.getName(), i);
+            i++;
+        }
+        arrayAdapter.notifyDataSetChanged();
     }
 }

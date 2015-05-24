@@ -6,6 +6,7 @@ package at.tba.treasurehunt.controller;
 
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.servercomm.ServerConnection;
+import at.tba.treasurehunt.utils.DummyDataProvider;
 
 /**
  * Singleton
@@ -25,6 +26,9 @@ public class AuthenticationController {
 
     public boolean authenticateUser(String uName, String password, IAuthenticationCallback callback){
         boolean result = ServerCommunication.getInstance().logInToServer(uName, password);
+
+        if (result)
+            UserDataController.getInstance().setLoggedInUser(DummyDataProvider.getDummyUserData());
 
         return result;
     }

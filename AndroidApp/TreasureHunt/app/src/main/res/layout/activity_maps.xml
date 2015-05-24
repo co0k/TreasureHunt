@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity" >
+    tools:context=".MapsActivity"
+    android:id="@+id/mapsFrameLayout">
 
     <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/map"
@@ -22,13 +23,19 @@
         android:onClick="onButtonOpenTreasureClick"
         android:visibility="invisible" />
 
-    <TextView
+    <!--<TextView
         android:layout_width="121dp"
         android:layout_height="74dp"
         android:text="Distance to next treasure: "
         android:id="@+id/textViewDistToTreasure"
-        android:layout_gravity="left|top"
+        android:layout_gravity="center_horizontal|top"
         android:textStyle="bold" />
+-->
+    <at.tba.treasurehunt.utils.RectangleDrawView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rectView"
+        android:layout_gravity="center_horizontal|top" />
 
 </FrameLayout>
 

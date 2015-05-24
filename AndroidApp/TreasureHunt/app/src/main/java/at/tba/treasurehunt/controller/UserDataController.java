@@ -16,6 +16,8 @@ public class UserDataController {
 
     private static UserDataController instance = null;
 
+    private  User LOGGED_IN_USER = null;
+
     public static UserDataController getInstance(){
         if (instance == null) instance = new UserDataController();
         return instance;
@@ -24,8 +26,18 @@ public class UserDataController {
     private UserDataController(){}
 
 
-    public User getCurrentUserData(){return DummyDataProvider.getDummyUserData();
+    public User getCurrentUserData(){return getLoggedInUser();
     }
+
+    public void setLoggedInUser(User u){
+        this.LOGGED_IN_USER = u;
+    }
+
+    public User getLoggedInUser(){
+        return LOGGED_IN_USER;
+    }
+
+
 
 
 
