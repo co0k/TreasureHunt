@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 import data_structures.treasure.GeoLocation;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
+import db.DatabaseController;
 import org.junit.*;
 import java.util.logging.LogManager;
 
