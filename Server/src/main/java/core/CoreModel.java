@@ -1,5 +1,6 @@
 package core;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.Future;
@@ -12,7 +13,12 @@ public class CoreModel implements CommunicationControllerDAO {
 
 
 	private CoreModel() {
-		this.commandQueue = new PriorityQueue<>(10, (fC1, fC2) -> fC2.getPriority() - fC1.getPriority());
+		this.commandQueue = new PriorityQueue<>(10, new Comparator<FutureCommand>() {
+			@Override
+			public int compare(FutureCommand fC1, FutureCommand fC2) {
+				return fC2.getPriority() - fC1.getPriority();
+			}
+		});
 		this.cQEThread = new Thread(new CommandQueueExecutioner());
 		this.cQEThread.start();
 		// token timeout set to 60 seconds
@@ -32,6 +38,7 @@ public class CoreModel implements CommunicationControllerDAO {
 	public boolean isActive(int token) {
 		return activeTokens.isActive(token);
 	}
+
 	public void setActive(int token) {
 		activeTokens.setActive(token);
 	}

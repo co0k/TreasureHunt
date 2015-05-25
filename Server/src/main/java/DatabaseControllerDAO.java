@@ -14,7 +14,7 @@ public interface DatabaseControllerDAO {
 	 * 
 	 * @param location
 	 *            the center of the circle that holds the treasures
-	 * @param radius
+	 * @param radius in meters
 	 * @return the list of treasures
 	 */
 	List<Treasure> getTreasures(GeoLocation location, double radius);
@@ -41,19 +41,55 @@ public interface DatabaseControllerDAO {
 	 * obviously deletes all treasures in the database, should only be used for
 	 * test cases
 	 * 
-	 * @return
+	 * @return if everything succeeded, return true otherwise false
 	 */
 	boolean deleteAllTreasures();
-
-
+	
 	/**
-	 * returns a quiz object for the given Treasure id, -1 otherwise needed ?
-	 * since its possible to get a whole Treasure with 'getTreasure(...)'
-	 * 
+	 * checks if a treasure is active
 	 * @param treasureId
 	 * @return
 	 */
-	Quiz getQuiz(int treasureId);
+	boolean isTreasureActive(int treasureId);
+	
+	/**
+	 * checks if user is allowed to open a treasure
+	 * @param userId
+	 * @param treasureId
+	 * @return
+	 */
+	boolean allowedToOpenTreasure(int userId, int treasureId);
+	
+	/**
+	 * checks if a user is allowed to open a treasure and tries to open it
+	 * it does NOT update the score of the user
+	 * @param userId
+	 * @param treasureId
+	 * @return
+	 */
+	boolean openTreasure(int userId, int treasureId);
+	
+	/**
+	 * activates a treasure, given the id
+	 * @param treasureId id of the treasure
+	 * @return 
+	 */
+	boolean activateTreasure (int treasureId);
+	
+	/**
+	 * deactivates a treasure ,given the id
+	 * @param treasureId id of the treasure
+	 * @return
+	 */
+	boolean deactivateTreasure (int treasureId);
+	
+	/**
+	 * returns the Id of all or only the inactive treasures
+	 * @param onlyInactive
+	 * @return
+	 */
+	List<Integer> getallTreasureID (boolean onlyInactive);
+
 
 	/*********************** User ***********************/
 	/**
@@ -93,7 +129,7 @@ public interface DatabaseControllerDAO {
 	/**
 	 * returns user and all user connected data
 	 * 
-	 * @param id
+	 * @param name
 	 * @return
 	 */
 	User getUser(String name);
@@ -145,4 +181,29 @@ public interface DatabaseControllerDAO {
 	 * @return the list of highscores
 	 */
 	HighscoreList getHighscoreList(int minRange, int maxRange);
+	
+	/**
+	 * checks if a user is allowed to change his Password and if so it will be updated
+	 * @param user
+	 * @param newPwdHash
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	boolean changePassword (User user, String newPwdHash) throws IllegalArgumentException;	
+	
+	/**
+	 * gives back the rank of a given user
+	 * @param user
+	 * @return 
+	 */
+	int getRank (int uID);
+	
+	/**
+	 * updates the score of a given user 
+	 * @param userId
+	 * @param score points to add
+	 * @return
+	 */
+	boolean updateScore (int userId, int score);
+	
 }
