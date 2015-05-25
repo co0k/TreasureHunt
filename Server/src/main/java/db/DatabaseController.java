@@ -151,8 +151,11 @@ public class DatabaseController implements DatabaseControllerDAO {
 	@Override
 	public boolean checkUserLogin(User user) {
 		User toCompare = getUser(user.getName());
-		return user.getPasswordHash().equals(toCompare.getPasswordHash());
-		}
+		if(user != null && user.getPasswordHash() != null &&
+			toCompare != null && toCompare.getPasswordHash() != null)
+			return user.getPasswordHash().equals(toCompare.getPasswordHash());
+		return false;
+	}
 
 	@Override
 	public boolean deleteUser(int id) {
