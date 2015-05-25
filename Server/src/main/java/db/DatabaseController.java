@@ -1,4 +1,4 @@
-
+package db;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,8 +19,8 @@ public class DatabaseController implements DatabaseControllerDAO {
     /**
      * Initializes singleton.
      *
-     * DatabaseControllerHolder is loaded on the first execution of DatabaseController.getInstance()
-     * or the first access to DatabaseController.INSTANCE, not before.
+     * DatabaseControllerHolder is loaded on the first execution of db.DatabaseController.getInstance()
+     * or the first access to db.DatabaseController.INSTANCE, not before.
      */
     private static class DatabaseControllerHolder {
             private static final DatabaseController INSTANCE = new DatabaseController();

@@ -1,3 +1,4 @@
+package db;
 
 import java.util.List;
 import data_structures.treasure.*;
