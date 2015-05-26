@@ -155,17 +155,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         HotColdManager.HOT_COLD_STATE distState = HotColdManager.determineHotCold((int) distance);
 
-        int hotColdColor = Color.BLACK;
+        int red = 0;
+        int green = 0;
+        int blue = 255;
 
         switch(distState){
-            case VERY_COLD: hotColdColor = Color.BLUE;break;
-            case COLD:hotColdColor = Color.CYAN;break;
-            case WARM:hotColdColor = Color.MAGENTA; break;
-            case HOT: hotColdColor = Color.GREEN; break;
-            case VERY_HOT: hotColdColor = Color.RED; break;
-            default: hotColdColor = Color.BLACK;break;
+            case VERY_COLD: red = 0; green = 0; blue = 255; break;
+            case COLD: red = 55; green = 0; blue = 200; break;
+            case WARM: red = 150; green = 0; blue = 100; break;
+            case HOT: red = 200; green = 0; blue = 55; break;
+            case VERY_HOT: red = 255; green = 0; blue = 0; break;
+            default: red = 0; green = 0; blue = 0;break;
         }
-        drawRectView.setRectangleColor(hotColdColor);
+        drawRectView.setRectangleColor(red, green, blue);
         drawRectView.invalidate();
     }
 

@@ -47,4 +47,8 @@ public class RectangleDrawView extends View {
         this.currentColor = color;
     }
 
+    public void setRectangleColor(int r, int g, int b){
+        this.currentColor = Color.rgb(r, g, b);
+    }
+
 }
