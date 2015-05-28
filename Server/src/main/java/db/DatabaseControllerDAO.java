@@ -44,7 +44,7 @@ public interface DatabaseControllerDAO {
 	 * 
 	 * @return if everything succeeded, return true otherwise false
 	 */
-	boolean deleteAllTreasures();
+	boolean deleteAll();
 	
 	/**
 	 * checks if a treasure is active

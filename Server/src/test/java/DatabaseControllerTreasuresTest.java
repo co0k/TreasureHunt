@@ -1,4 +1,6 @@
 import static org.junit.Assert.*;
+
+import data_structures.treasure.Coupon;
 import data_structures.treasure.GeoLocation;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
@@ -24,7 +26,7 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz1 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
 		exampleTreasuresID = new ArrayList<Integer>();
 		exampleTreasures = new ArrayList<Treasure>();
-		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), new Coupon(10,"SuperDuperMarket", 10.50)));
 		Collections.sort(exampleTreasures);
 		// add all the treasures
 		for (Treasure t : exampleTreasures)
@@ -35,7 +37,7 @@ public class DatabaseControllerTreasuresTest {
 	@After
 	public void finish() {
 		// clean the database
-		DatabaseController.getInstance().deleteAllTreasures();
+		DatabaseController.getInstance().deleteAll();
 	}
 
 	@Test

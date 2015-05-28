@@ -71,7 +71,7 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		if (location != null ? !location.equalsWithoutId(treasure.location) : treasure.location != null) return false;
 		if (type != null ? !type.equalsWithoutId(treasure.type) : treasure.type != null) return false;
 		if (size != null ? !size.equalsWithoutId(treasure.size) : treasure.size != null) return false;
-		return !(content != null ? !content.equals(treasure.content) : treasure.content != null);
+		return !(content != null ? !content.equalsWithoudId(treasure.content) : treasure.content != null);
 	}
 
 	@Override
@@ -169,6 +169,10 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 	public interface Content extends IdHolder, ExperiencePointHolder {
 		String getType();
+		// dirty trick, but time matters
+		void setId(int id);
+
+		boolean equalsWithoudId(Content content);
 	}
 
 	public static class Location extends GeoLocation implements IdHolder, ExperiencePointHolder, Serializable {

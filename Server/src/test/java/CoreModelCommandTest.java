@@ -14,6 +14,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class CoreModelCommandTest {
+	@After
+	public void deleteAllTraces() {
+		DatabaseController.getInstance().deleteAll();
+	}
 	@Test
 	public void activeTokenTest() throws ExecutionException, InterruptedException {
 		// it could be easier to get or set a token, but to keep it clean, every command to the core should go

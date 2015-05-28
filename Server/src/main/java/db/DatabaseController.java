@@ -36,7 +36,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 			return dataBaseSupervisor.getAllActiveTresures();
 		else
 			try {
-				return DatabaseManager.getAllTreasure();
+				return DatabaseManager.getAllTreasures();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return null;
@@ -75,7 +75,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 	}
 
 	@Override
-	public boolean deleteAllTreasures() {
+	public boolean deleteAll() {
 		try {
 			DatabaseManager.deleteAll();
 			return true;

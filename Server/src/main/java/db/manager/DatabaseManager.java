@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import communication_controller.json.JsonConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -97,7 +98,7 @@ public class DatabaseManager {
 		else
 			sid = sTmp.getId();
 
-		Integer cid = null; //TODO Content 
+		Integer cid = insertContent(toSave.getContent());
 
 		Integer treasureID = insertBox(lid, tid, sid, qid, cid);
 
@@ -162,6 +163,16 @@ public class DatabaseManager {
 		return record.getValue(SIZE.SID);
 	}
 
+	public static Integer insertContent(Treasure.Content content) throws SQLException, IllegalArgumentException {
+		JsonConstructor jsonC = new JsonConstructor();
+		String jsonVal = jsonC.toJson(new ContentHelperClass(content));
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(CONTENT, CONTENT.CONTENT_).values(jsonVal).returning(CONTENT.CID).fetchOne();
+		conn.close();
+		return record.getValue(CONTENT.CID);
+	}
+	/*
 	public static Integer insertContent(String content, int exp) throws SQLException, IllegalArgumentException {
 		if (content.length() > 1024)
 			throw new IllegalArgumentException();
@@ -171,6 +182,7 @@ public class DatabaseManager {
 		conn.close();
 		return record.getValue(CONTENT.CID);
 	}
+	*/
 
 
 	public static Integer insertLocation(Double x, Double y, int exp) throws SQLException {
@@ -209,7 +221,7 @@ public class DatabaseManager {
 		else
 			return true;
 	}
-	
+
 	public static boolean insertInventory(int uid, int cid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -332,6 +344,7 @@ public class DatabaseManager {
 	}
 
 	private static Connection getConnection() throws SQLException {
+		// TODO: no hardcoding, maybe take the specification from gradle
 		String userName = "root";
 		String password = "";
 		String url = "jdbc:mysql://127.0.0.1:3306/library";
@@ -393,27 +406,28 @@ public class DatabaseManager {
 		Integer exp = result.getValue(SIZE.SIZEXP);
 		Integer size = result.getValue(SIZE.SIZE_);
 		Size tmp = new Size(id, exp, size);
-		
+
 		return tmp;
 
 	}
 
-	public static Content getConntentFromId(int cid) throws SQLException {
+	public static Content getContentFromId(int cid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(CONTENT).where(CONTENT.CID.equal(cid)).fetchOne();
 		conn.close();
-		
+
 		if (result == null)
 			return null;
-		
-		Integer id = result.getValue(CONTENT.CID);
-		String content = result.getValue(CONTENT.CONTENT_);
-		Integer xp = result.getValue(CONTENT.CONTENTXP);
-		//TODO Content only interface....
-		//Content tmp = new Content (id, xp, content); 
 
-		return null;
+		Integer id = result.getValue(CONTENT.CID);
+		if(id == null)
+			return null;
+		String contentJson = result.getValue(CONTENT.CONTENT_);
+		JsonConstructor jsonC = new JsonConstructor();
+		Treasure.Content content = jsonC.fromJson(contentJson, ContentHelperClass.class).getContent();
+		content.setId(id);
+		return content;
 	}
 
 
@@ -450,20 +464,19 @@ public class DatabaseManager {
 		Type type = null;
 		Size size = getSizeFromId(sid);
 		Content content = null;
-		/*if (cid != null) {//TODO content only interface
-			 content = getConntentFromId(cid);
-		}*/
+		if (cid != null)
+			 content = getContentFromId(cid);
 		if (qid != null) {
 			Quiz quiz = getQuizFromId(qid);
 			type = setTypeAttributesFromId(tid, quiz);
 		}
 
-		Treasure tmp = new Treasure(id, location, type, size, null); //exp not  yet set
+		Treasure tmp = new Treasure(id, location, type, size, content);
 		
 		return tmp;
 	}
 
-	public static ArrayList<Treasure> getAllTreasure() throws SQLException {
+	public static ArrayList<Treasure> getAllTreasures() throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Result<Record> result = create.select().from(BOX).fetch();
@@ -480,15 +493,15 @@ public class DatabaseManager {
 			Type type = null;
 			Size size = getSizeFromId(sid);
 			Content content = null;
-			/*if (cid != null) {
-				 content = getConntentFromId(cid);
-			}*/
+			if (cid != null) {
+				 content = getContentFromId(cid);
+			}
 			if (qid != null) {
 				Quiz quiz = getQuizFromId(qid);
 				type = setTypeAttributesFromId(tid, quiz);
 			}
 
-			Treasure tmp = new Treasure(id, location, type, size, null); //exp not  yet set
+			Treasure tmp = new Treasure(id, location, type, size, content); //exp not  yet set
 			out.add(tmp);
 		}
 
@@ -666,6 +679,22 @@ public class DatabaseManager {
 			return null;
 		else
 			return out;
+	}
+
+	private static class ContentHelperClass {
+		Treasure.Content content;
+
+		public Content getContent() {
+			return content;
+		}
+
+		public void setContent(Content content) {
+			this.content = content;
+		}
+
+		public ContentHelperClass(Content content) {
+			this.content = content;
+		}
 	}
 
 }
