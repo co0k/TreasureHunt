@@ -32,6 +32,7 @@ public class Coupon implements Treasure.Content {
 
 	@Override
 	public int getXP() {
+		return experience;
 	}
 
 	@Override
