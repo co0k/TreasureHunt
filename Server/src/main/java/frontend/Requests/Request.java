@@ -12,13 +12,9 @@ import java.util.Map;
  */
 public class Request {
     private String methodName;
-    //private String[] parameters;
     private Map<String, Object> parameters;
 
-    public Request (JsonObject json, JSONRPC2Request request) {
-        //methodName = json.getString("methodName");
-        //parameters = json.getString("parameters").split(":");
-
+    public Request (JSONRPC2Request request) {
         methodName = request.getMethod();
         parameters = request.getNamedParams();
     }
@@ -27,7 +23,8 @@ public class Request {
         return methodName;
     }
 
-    //public String[] getParameters() {
-        //return parameters;
-    //}
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
 }

@@ -30,7 +30,7 @@ public interface RequestResolver {
     boolean eventTreasureOpened(Integer token, int treasureID, int userID); //[a treasure is opened when the quiz is solved]
     void eventTreasureWrongAnswer(Integer token, int treasureID, int userID); //[serverside handling of wrong answer given, maybe reset treasure or whatever]
     // HighscoreList getHighscoreListAll(int token);
-    HighscoreList getHighscoreList(Integer token, int high, int low);
+    HighscoreList getHighscoreList(Integer token, int low, int high);
     // HighscoreList getHighscoreListAroundMe(int token, int userID);, [range])
     // HighscoreList getHighscoreListAroundMe(int token, int userID, int range);
 
