@@ -27,7 +27,7 @@ public class CoreModelCommandQueueTest {
 		for (int i = 0; i < 20; i++) {
 			int value = rand.nextInt(100);
 			expectedList.add(value);
-			final Future<Integer> fC = CoreModel.getInstance().addCommand(new TestCommand(value, value, 30));
+			final Future<Integer> fC = CoreModel.getInstance().addCommand(new TestCommand(value, value, 80));
 			fCList.add(fC);
 			// create for every Future a thread, since it is otherwise 'impossible' to get the correct execution order
 			Thread t = new Thread(new Runnable() {

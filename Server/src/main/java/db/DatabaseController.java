@@ -11,7 +11,7 @@ import db.manager.DatabaseSupervisor;
 
 public class DatabaseController implements DatabaseControllerDAO {
 	private DatabaseSupervisor dataBaseSupervisor;
-    
+
 	private DatabaseController() {
     	dataBaseSupervisor = new DatabaseSupervisor();
     }
@@ -32,7 +32,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 
 	@Override
 	public List<Treasure> getAllTreasures(boolean onlyActive) {
-		if (onlyActive) 
+		if (onlyActive)
 			return dataBaseSupervisor.getAllActiveTresures();
 		else
 			try {
@@ -83,30 +83,30 @@ public class DatabaseController implements DatabaseControllerDAO {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 	}
-	
+
 	@Override
 	public List<Treasure> getTreasures(GeoLocation location, double radius) {
 		radius = radius / 6371000; // earth radius in meters
 		return dataBaseSupervisor.getTreasuresNearLocation(location.getLon(), location.getLat(), radius);
 	}
-	
+
 	@Override
 	public boolean activateTreasure(int treasureId) {
 		return dataBaseSupervisor.addTresure(treasureId);
 	}
-	
+
 	@Override
 	public boolean deactivateTreasure(int treasureId) {
 		return dataBaseSupervisor.removeTreasure(treasureId);
 	}
-	
+
 	@Override
 	public boolean isTreasureActive(int treasureId) {
 		return dataBaseSupervisor.isActive(treasureId);
 	}
-	
+
 	@Override
 	public boolean allowedToOpenTreasure(int userId, int treasureId) {
 		try {
@@ -119,7 +119,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean openTreasure(int userId, int treasureId) {
 		if (allowedToOpenTreasure(userId, treasureId))
@@ -127,7 +127,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 		else
 			return false;
 	}
-	
+
 	@Override
 	public boolean updateScore (int userId, int score) {
 		try {
@@ -149,12 +149,15 @@ public class DatabaseController implements DatabaseControllerDAO {
 	}
 
 	@Override
-	public boolean checkUserLogin(User user) {
+	public int checkUserLogin(User user) {
 		User toCompare = getUser(user.getName());
 		if(user != null && user.getPasswordHash() != null &&
-			toCompare != null && toCompare.getPasswordHash() != null)
-			return user.getPasswordHash().equals(toCompare.getPasswordHash());
-		return false;
+			toCompare != null && toCompare.getPasswordHash() != null) {
+			if (user.getPasswordHash().equals(toCompare.getPasswordHash()))
+				return toCompare.getId();
+		}
+
+		return -1;
 	}
 
 	@Override
@@ -235,10 +238,10 @@ public class DatabaseController implements DatabaseControllerDAO {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean changePassword (User user, String newPwdHash) throws IllegalArgumentException {
-		if (checkUserLogin(user))
+		if (checkUserLogin(user) != -1)
 			try {
 				return DatabaseManager.changePassword(user.getId(), newPwdHash);
 			} catch (SQLException e) {
@@ -246,17 +249,17 @@ public class DatabaseController implements DatabaseControllerDAO {
 			}
 		return false;
 	}
-	
+
 	@Override
 	public int getRank (int uId) {
 		try {
-			return DatabaseManager.getRankFromId(uId);			
+			return DatabaseManager.getRankFromId(uId);
 		} catch (IllegalArgumentException | SQLException e) {
 			e.printStackTrace();
 			return -1;
 		}
 	}
-	
+
 	public List<Integer> getallTreasureID (boolean onlyInactive) {
 			try {
 				if (!onlyInactive) {

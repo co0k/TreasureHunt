@@ -102,14 +102,14 @@ public interface DatabaseControllerDAO {
 	int addUser(User user);
 
 	/**
-	 * returns true on success, false otherwise (in 'user' only passwordHash and
+	 * returns the userId on success, -1 otherwise (in 'user' only passwordHash and
 	 * name is available) maybe not needed since this could be done with
 	 * 'getUserProfile(...)' in the Core-model
 	 * 
 	 * @param user
 	 * @return
 	 */
-	boolean checkUserLogin(User user);
+	int checkUserLogin(User user);
 
 	/**
 	 * deletes the user by reference of the id

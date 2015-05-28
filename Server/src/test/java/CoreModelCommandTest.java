@@ -36,15 +36,15 @@ public class CoreModelCommandTest {
 		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 1, null));
 
 		for(User u : exampleUsers)
-			assertFalse("the user does not exist, so it can't login!", CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get());
+			assertTrue("the user does not exist, so it can't login!", null == CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get());
 
 		for(User u : exampleUsers)
 			DatabaseController.getInstance().addUser(u);
 
 		for(User u : exampleUsers)
-			assertTrue("the user does exist, so it can login!", CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get());
+			assertTrue("the user does exist, so it can login!", null != CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get());
 		User wrongPasswdUser = new User("Hans", "wrongPasswordHash", "hans@franz.at", 1234, 1, null);
-		assertFalse("the user does not exist, so it can't login!", CoreModel.getInstance().addCommand(new CheckUserLoginCommand(wrongPasswdUser)).get());
+		assertFalse("the user does not exist, so it can't login!", null != CoreModel.getInstance().addCommand(new CheckUserLoginCommand(wrongPasswdUser)).get());
 
 	}
 
