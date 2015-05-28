@@ -3,16 +3,20 @@ package frontend;
 
 //import org.eclipse.jetty.websocket.api.Session;
 
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
+import frontend.Requests.RequestDecoder;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
 /**
  * Created by nebios on 18.05.15.
  */
-@ServerEndpoint(value="/ServerSocket")
+@ServerEndpoint(value="/ServerSocket",
+        decoders = { RequestDecoder.class }
+)
 public class TreasureServerSocket {
     private Session session;
 
@@ -36,9 +40,16 @@ public class TreasureServerSocket {
     }
     */
 
+    /*
     @OnMessage
     public void handleMessage(Session session, String message) {
         send(message);
+    }
+    */
+
+    @OnMessage
+    public void handleMessage( Session session, JSONRPC2Request request) {
+
     }
 
 

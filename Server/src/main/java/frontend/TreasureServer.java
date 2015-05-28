@@ -17,7 +17,7 @@ public class TreasureServer{
 
         ServletContextHandler servletContext = new ServletContextHandler();
         servletContext.setContextPath("/loot");
-        servletContext.addServlet(TreasureServerEndpointServlet.class, "/loot");
+       // servletContext.addServlet(TreasureServerEndpointServlet.class, "/loot");
 
         server.setHandler(servletContext);
 
@@ -38,7 +38,7 @@ public class TreasureServer{
             t.printStackTrace(System.err);
         }
     }
-
+    /*
     public static class TreasureServerEndpointServlet extends WebSocketServlet {
 
         @Override
@@ -48,4 +48,5 @@ public class TreasureServer{
             factory.register(TreasureServerEndpoint.class);
         }
     }
+    */
 }
