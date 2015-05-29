@@ -1,10 +1,11 @@
 import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Coupon;
 import data_structures.treasure.Treasure;
+import data_structures.user.HighscoreList;
+import data_structures.user.HighscoreList.Entry;
 import data_structures.user.Inventory;
 import data_structures.user.User;
 import db.DatabaseController;
-
 import static org.junit.Assert.*;
 
 import org.junit.*;
@@ -25,9 +26,11 @@ public class DatabaseControllerUserTest {
 		List<Inventory.Entry> inventoryEntries = new ArrayList<>();
 
 		Inventory inventory = new Inventory();
-		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 2, new Inventory()));
 		exampleUsers.add(new User("Jaqueline", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, new Inventory()));
+		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 2, new Inventory()));		
 		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 3, new Inventory()));
+		exampleUsers.add(new User("Natalie", "abcdefghijklmnop", "natalie@Jaqueline.at", 234, 3, new Inventory()));
+		exampleUsers.add(new User("Max", "abcdefghijklmnop", "max@Jaqueline.at", 10, 5, new Inventory()));
 		for (User u : exampleUsers) {
 			exampleUsersId.add(dC.addUser(u));
 		}
@@ -52,7 +55,7 @@ public class DatabaseControllerUserTest {
 	}
 
 	@Test
-	public void getUserTest() {
+	public void getUserTestAndRankTest() {
 		// some sample data
 		int i = 0;
 		for( User u : exampleUsers) {
@@ -61,6 +64,20 @@ public class DatabaseControllerUserTest {
 			assertTrue("the user returned was not equal to the given user!", u.equalsWithoutId(rU1));
 			assertTrue("the user returned was not equal to the given user!", u.equalsWithoutId(rU2));
 		}
+	}
+	
+	@Test
+	public void HighscoreListTest() { 
+		List<HighscoreList.Entry> hList = DatabaseController.getInstance().getHighscoreList(1, 8).getList();
+		
+		for (int i = 0; i < hList.size(); i++) {
+			Entry entry = hList.get(i);
+			int id = entry.getId();
+			assertTrue("the highscorelist is not equal to the expected values",DatabaseController.getInstance().getRank(entry.getId()) == entry.getRank());
+			assertTrue("the highscorelist is not equal to the expected values",DatabaseController.getInstance().getUser(entry.getId()).getName().equals(entry.getName()));
+			assertTrue("the highscorelist is not equal to the expected values",DatabaseController.getInstance().getUser(entry.getId()).getXP() == (entry.getXP()));
+		}
+
 	}
 
 	@Test

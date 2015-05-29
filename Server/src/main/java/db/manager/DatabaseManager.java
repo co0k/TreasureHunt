@@ -598,13 +598,13 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int score = getScoreFromId(uid);
-		Field<Integer> rank = create.selectCount().from(USER).where(USER.SCORE.lessThan(score)).asField("rank");
+		Field<Integer> rank = create.selectCount().from(USER).where(USER.SCORE.greaterThan(score)).asField("rank");
 		Record result = create.select(rank).from(USER).where(USER.UID.equal(uid)).fetchOne();
 		conn.close();
 		if (result == null)
 			throw new IllegalArgumentException("not a valid user");
 		else
-			return result.getValue(rank);
+			return result.getValue(rank) + 1;
 	}
 
 	public static Inventory getUserInventory(int uId) throws SQLException {
@@ -643,13 +643,13 @@ public class DatabaseManager {
 		
 		ArrayList<HighscoreList.Entry> out = new ArrayList<HighscoreList.Entry>();
 		for (Record3<Integer, String, Integer> tmp : result) {
-			HighscoreList.Entry tmpEntry = new HighscoreList.Entry(tmp.getValue(USER.UID), tmp.getValue(USER.NAME), fromRank++, tmp.getValue(USER.SCORE));
+			HighscoreList.Entry tmpEntry = new HighscoreList.Entry(tmp.getValue(USER.UID), tmp.getValue(USER.NAME), getRankFromId(tmp.getValue(USER.UID)), tmp.getValue(USER.SCORE));
 			out.add(tmpEntry);
 		}
 		if (out.isEmpty())
 			return null;
 		else
-			return new HighscoreList(fromRank, fromRank + numberOfEntries,  out);
+			return new HighscoreList(fromRank, out);
 	}
 	
 	public static boolean updateScore (int uid, int score) throws SQLException {

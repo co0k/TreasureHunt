@@ -47,7 +47,6 @@ primary key (Sid)
 create table content (
 Cid int NOT NULL AUTO_INCREMENT,
 content varchar(1024),
-contentXP int,
 primary key (Cid)
 );
 

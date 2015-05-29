@@ -264,9 +264,13 @@ public class DatabaseController implements DatabaseControllerDAO {
 	}
 
 	@Override
-	public HighscoreList getHighscoreList(int minRange, int maxRange) {
+	public HighscoreList getHighscoreList(int fromRank, int numberOfEntries) {
 		try {
-			return DatabaseManager.getHighScoreFromTo(minRange, maxRange-minRange);
+			if (fromRank < 1)
+				fromRank = 1;
+			if (numberOfEntries < 1)
+				numberOfEntries = 1;
+			return DatabaseManager.getHighScoreFromTo(fromRank, numberOfEntries);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

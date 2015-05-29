@@ -199,15 +199,13 @@ public interface DatabaseControllerDAO {
 	 * returns a highscore list within the given range. E.g. from the third to
 	 * the 20th rank
 	 * 
-	 * @param minRange
-	 *            the upper bound(e.g. the first place) if it is lower than 1
-	 *            the first place will be used
-	 * @param maxRange
-	 *            the lower bound(e.g. the last place) if it is higher than the
-	 *            last place the last place will be used
+	 * @param fromRank
+	 *            the starting rank. If lower then 1, 1 will be used
+	 * @param numberOfEntries
+	 *            desired number of entries in the highscore. If lower then 1, 1 will be used
 	 * @return the list of highscores
 	 */
-	HighscoreList getHighscoreList(int minRange, int maxRange);
+	HighscoreList getHighscoreList(int fromRank, int numberOfEntries);
 	
 	/**
 	 * checks if a user is allowed to change his Password and if so it will be updated

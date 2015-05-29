@@ -44,11 +44,11 @@ public class JsonConstructorTest {
 		highscoreListEntries.add(new HighscoreList.Entry("Vanessa", 3, 666));
 		highscoreListEntries.add(new HighscoreList.Entry("Rupert", 4, 192));
 		highscoreListEntries.add(new HighscoreList.Entry("Mogli", 5, 128));
-		exampleHighscoreLists.add(new HighscoreList(1, 5, new ArrayList<HighscoreList.Entry>(highscoreListEntries)));
+		exampleHighscoreLists.add(new HighscoreList(1, new ArrayList<HighscoreList.Entry>(highscoreListEntries)));
 		highscoreListEntries.add(new HighscoreList.Entry("Jaqueline", 6, 111));
-		exampleHighscoreLists.add(new HighscoreList(1, 6, new ArrayList<HighscoreList.Entry>(highscoreListEntries)));
+		exampleHighscoreLists.add(new HighscoreList(1, new ArrayList<HighscoreList.Entry>(highscoreListEntries)));
 		highscoreListEntries.add(new HighscoreList.Entry("Chantal", 7, 99));
-		exampleHighscoreLists.add(new HighscoreList(1, 7, new ArrayList<HighscoreList.Entry>(highscoreListEntries)));
+		exampleHighscoreLists.add(new HighscoreList(1, new ArrayList<HighscoreList.Entry>(highscoreListEntries)));
 		Collections.sort(exampleTreasures);
 		Collections.sort(exampleUsers);
 		Collections.sort(exampleHighscoreLists);

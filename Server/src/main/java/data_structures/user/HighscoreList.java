@@ -9,24 +9,22 @@ import data_structures.IdHolder;
 public class HighscoreList  implements Serializable, Comparable<HighscoreList> {
 
 	private static final long serialVersionUID = 1855455260769203099L;
-	private int minRange;
-	private int maxRange;
+	private int fromRank;
 	private List<Entry> list;
 	
 	
-	public HighscoreList(int minRange, int maxRange, List<Entry> list) {
+	public HighscoreList(int fromRank, List<Entry> list) {
 		super();
-		this.minRange = minRange;
-		this.maxRange = maxRange;
+		this.fromRank = fromRank;
 		this.list = list;
 	}
 
-	public int getMinRange() {
-		return minRange;
+	public int getfromRank() {
+		return fromRank;
 	}
 
-	public int getMaxRange() {
-		return maxRange;
+	public int getNumberOfEntries() {
+		return list.size();
 	}
 
 	public List<Entry> getList() {
@@ -63,16 +61,15 @@ public class HighscoreList  implements Serializable, Comparable<HighscoreList> {
 
 		HighscoreList that = (HighscoreList) o;
 
-		if (minRange != that.minRange) return false;
-		if (maxRange != that.maxRange) return false;
+		if (fromRank != that.fromRank) return false;
+		if (getNumberOfEntries() != that.getNumberOfEntries()) return false;
 		return !(list != null ? !list.equals(that.list) : that.list != null);
 
 	}
 
 	@Override
 	public int hashCode() {
-		int result = minRange;
-		result = 31 * result + maxRange;
+		int result = fromRank;
 		result = 31 * result + (list != null ? list.hashCode() : 0);
 		return result;
 	}
@@ -80,20 +77,20 @@ public class HighscoreList  implements Serializable, Comparable<HighscoreList> {
 	@Override
 	public String toString() {
 		return "HighscoreList{" +
-				"minRange=" + minRange +
-				", maxRange=" + maxRange +
+				"fromRank=" + fromRank +
+				", numberOfEntries=" + getNumberOfEntries() +
 				", list=" + list +
 				'}';
 	}
 
 	@Override
 	public int compareTo(HighscoreList highscoreList) {
-		if(minRange < highscoreList.minRange)
+		if(fromRank < highscoreList.fromRank)
 			return -1;
-		else if(minRange > highscoreList.minRange)
+		else if(fromRank > highscoreList.fromRank)
 			return 1;
 		else  {
-			if(maxRange < highscoreList.maxRange)
+			if(getNumberOfEntries() < highscoreList.getNumberOfEntries())
 				return -1;
 			else return 1;
 		}
