@@ -36,11 +36,13 @@ import at.tba.treasurehunt.controller.IAuthenticationCallback;
 import at.tba.treasurehunt.servercomm.IServerConnectionCallback;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.servercomm.ServerConnection;
+import at.tba.treasurehunt.tasks.ITaskCallback;
+import at.tba.treasurehunt.tasks.UserAuthTask;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, IServerConnectionCallback {
+public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, IServerConnectionCallback, IAuthenticationCallback, ITaskCallback {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -52,7 +54,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private UserAuthTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -154,7 +156,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserAuthTask(email, password, this, this);
             connectServer();
             //mAuthTask.execute((Void) null);
         }
@@ -244,6 +246,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
     }
 
+    @Override
+    public void onTaskCancelled() {
+        mAuthTask = null;
+        showProgress(false);
+    }
+
+    @Override
+    public void onTaskPostExecute() {
+        mAuthTask = null;
+    }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -268,64 +281,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> implements IAuthenticationCallback {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            if (!ServerConnection.getInstance().isConnected()) return false;
-
-            return AuthenticationController.getInstance().authenticateUser(mEmail, mPassword, this);
-
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-               // finish();
-                loginSuccess();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-
-        @Override
-        public void onAuthenticationSuccess() {
-
-        }
-
-        @Override
-        public void onAuthenticationFailure(AuthenticationError err) {
-
-        }
-
-        @Override
-        public void onRegistrationSuccess() {
-
-        }
-
-        @Override
-        public void onRegistrationError(AuthenticationError err) {
-
-        }
-    }
 
     public void connectServer(){
         //ActivityManager.showLoadingSpinner("Connecting to server..");
@@ -352,6 +307,31 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     public void onButtonRegister(View v){
         Intent actSwitch = new Intent(this, RegisterActivity.class);
         startActivity(actSwitch);
+    }
+
+    @Override
+    public void onAuthenticationSuccess() {
+        ActivityManager.dismissLoadingSpinner();
+        showProgress(false);
+        loginSuccess();
+    }
+
+    @Override
+    public void onAuthenticationFailure(AuthenticationError err) {
+        mAuthTask = null;
+        showProgress(false);
+        mPasswordView.setError(getString(R.string.error_incorrect_password));
+        mPasswordView.requestFocus();
+    }
+
+    @Override
+    public void onRegistrationSuccess() {
+
+    }
+
+    @Override
+    public void onRegistrationError(AuthenticationError err) {
+
     }
 
 }

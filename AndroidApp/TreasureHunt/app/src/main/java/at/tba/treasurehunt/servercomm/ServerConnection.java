@@ -3,6 +3,8 @@ package at.tba.treasurehunt.servercomm;
 
 import android.util.Log;
 
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
+
 import at.tba.treasurehunt.activities.ActivityManager;
 import at.tba.treasurehunt.utils.AlertHelper;
 import de.tavendo.autobahn.WebSocketConnection;
@@ -27,14 +29,21 @@ public class ServerConnection implements IServerConnection {
     private IServerConnectionCallback lastCallbackClass;
 
     private final WebSocketConnection mConnection = new WebSocketConnection();
-    //private static final String SERVER_URI = "ws://philipp-m.de:8887/stocks";
-    private static final String SERVER_URI = "ws://echo.websocket.org";
+    private static final String SERVER_URI = "ws://philipp-m.de:7666/loot/ServerSocket";
+   // private static final String SERVER_URI = "ws://echo.websocket.org";
 
     private boolean serverConnected = false;
 
 
     @Override
     public boolean connectServer(final IServerConnectionCallback callback) {
+
+        if (serverConnected){
+            callback.onServerConnected();
+            Log.i(TAG, "Already connected !");
+            return true;
+        }
+
         if (callback != null)
             lastCallbackClass = callback;
 
@@ -51,12 +60,12 @@ public class ServerConnection implements IServerConnection {
                     serverConnected = true;
                     ActivityManager.dismissLoadingSpinner();
                     lastCallbackClass.onServerConnected();
-                    mConnection.sendTextMessage("start");
                 }
 
                 @Override
                 public void onTextMessage(String payload) {
-                    Log.d(TAG, "Got echo: " + payload);
+
+                    ServerCommunication.getInstance().messageReceived(payload);
                 }
 
                 @Override
@@ -94,5 +103,17 @@ public class ServerConnection implements IServerConnection {
 
     public IServerConnectionCallback getLastCallbackClass(){
         return lastCallbackClass;
+    }
+
+
+    public boolean sendJSONRequest(JSONRPC2Request req){
+        return sendMessage(req.toJSONString());
+    }
+
+
+    public boolean sendMessage(String s){
+        if (mConnection == null || !mConnection.isConnected()) return false;
+        mConnection.sendTextMessage(s);
+        return true;
     }
 }

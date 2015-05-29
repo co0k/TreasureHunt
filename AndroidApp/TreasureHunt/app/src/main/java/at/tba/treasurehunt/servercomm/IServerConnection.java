@@ -13,4 +13,6 @@ public interface IServerConnection {
 
     public boolean isConnected();
 
+    public boolean sendMessage(String s);
+
 }

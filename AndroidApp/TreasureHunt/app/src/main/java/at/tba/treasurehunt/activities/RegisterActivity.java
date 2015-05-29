@@ -16,9 +16,11 @@ import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.AuthenticationController;
 import at.tba.treasurehunt.controller.AuthenticationError;
 import at.tba.treasurehunt.controller.IAuthenticationCallback;
+import at.tba.treasurehunt.servercomm.IServerConnectionCallback;
+import at.tba.treasurehunt.servercomm.ServerConnection;
 import at.tba.treasurehunt.utils.AlertHelper;
 
-public class RegisterActivity extends Activity implements IAuthenticationCallback {
+public class RegisterActivity extends Activity implements IAuthenticationCallback, IServerConnectionCallback {
 
     private EditText inputUsername;
     private EditText inputEmail;
@@ -69,13 +71,25 @@ public class RegisterActivity extends Activity implements IAuthenticationCallbac
 
         showProgress(true);
 
+        if (!ServerConnection.getInstance().isConnected()){
+            connectServer();
+        }else{
+            attemptRegistration();
+        }
+
+    }
+
+    private void connectServer(){
+        ServerConnection.getInstance().connectServer(this);
+    }
+
+    private void attemptRegistration(){
         String uName = inputUsername.getText().toString();
         String email = inputEmail.getText().toString();
         String pwd = inputPassword.getText().toString();
         String pwdRetype = inputPasswordRetype.getText().toString();
 
         AuthenticationController.getInstance().registerNewUser(uName, email, pwd, pwdRetype, this);
-
     }
 
 
@@ -147,5 +161,16 @@ public class RegisterActivity extends Activity implements IAuthenticationCallbac
         if (err == AuthenticationError.UNKNOWN_ERROR){
             AlertHelper.showUnknownErrorAlert(this);
         }
+    }
+
+    @Override
+    public void onServerConnected() {
+        attemptRegistration();
+    }
+
+    @Override
+    public void onServerNotConnected() {
+        //mAuthTask = null;
+        showProgress(false);
     }
 }
