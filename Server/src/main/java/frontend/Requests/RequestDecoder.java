@@ -32,6 +32,7 @@ public class RequestDecoder implements Decoder.Text<JSONRPC2Request> {
         try {
             requestIn = JSONRPC2Request.parse(recieved);
         } catch (JSONRPC2ParseException pex) {
+            System.err.println("\n\n Could not parse Request: " + recieved + " \n\n");
             return false;
         }
 

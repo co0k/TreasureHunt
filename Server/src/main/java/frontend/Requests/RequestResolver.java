@@ -9,11 +9,13 @@ import java.util.List;
 
 /**
  * Created by nebios on 28.05.15.
- *
- *  checkLogIn(username, password)
- *  registerUser(email, username, password)
- *  getAllTreasures(token)
- *  getNearTreasures(token, myLongitude, myLatitude, [optional radius?])
+ *  <br />
+ *  This interface shows all methods which an client can remotely invoke <br />
+ *  <br />
+ *  checkLogIn(username, password) <br />
+ *  registerUser(email, username, password) <br />
+ *  getAllTreasures(token) <br />
+ *  getNearTreasures(token, myLongitude, myLatitude, [optional radius?]) <br />
  *  getProfileData(token, userID)
  *  eventTreasureOpened(token, treasureID, userID) [a treasure is opened when the quiz is solved]
  *  eventTreasureWrongAnswer(token, treasureID, userID) [serverside handling of wrong answer given, maybe reset treasure or whatever]
