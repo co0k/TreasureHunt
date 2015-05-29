@@ -17,7 +17,7 @@ public class TreasureServer{
 
         ServletContextHandler servletContext = new ServletContextHandler();
         servletContext.setContextPath("/loot");
-       // servletContext.addServlet(TreasureServerEndpointServlet.class, "/loot");
+        // servletContext.addServlet(TreasureServerEndpointServlet.class, "/loot");
 
         server.setHandler(servletContext);
 

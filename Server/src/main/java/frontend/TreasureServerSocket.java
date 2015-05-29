@@ -1,10 +1,11 @@
 package frontend;
 
-
-//import org.eclipse.jetty.websocket.api.Session;
-
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import frontend.Requests.RequestDecoder;
+import frontend.Requests.RequestHandler;
+import frontend.Requests.RequestResolver;
+import frontend.Requests.ResponsEncoder;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -15,13 +16,16 @@ import java.io.IOException;
  * Created by nebios on 18.05.15.
  */
 @ServerEndpoint(value="/ServerSocket",
-        decoders = { RequestDecoder.class }
+        decoders = { RequestDecoder.class },
+        encoders = { ResponsEncoder.class }
 )
 public class TreasureServerSocket {
     private Session session;
+    RequestResolver requestResolver;
 
     @OnOpen
     public void handleConnect(Session session) {
+        this.requestResolver = new RequestHandler();
         this.session = session;
         System.out.println("Client connected: " + session.toString());
     }
@@ -40,37 +44,20 @@ public class TreasureServerSocket {
     }
     */
 
-    /*
-    @OnMessage
-    public void handleMessage(Session session, String message) {
-        send(message);
-    }
-    */
-
     @OnMessage
     public void handleMessage( Session session, JSONRPC2Request request) {
-
+        String response;
+        response = requestResolver.handleRequest(request).toString();
+        send(response);
     }
 
-
     private void send(String message) {
-        //for (Session session : sessions) {
-            try {
+        try {
                 if (session.isOpen()) {
-                    //session.getRemote().sendString(message);
                     session.getBasicRemote().sendText(message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-        //}
-    }
-
-    private void stop(Session session) {
-        try {
-            session.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

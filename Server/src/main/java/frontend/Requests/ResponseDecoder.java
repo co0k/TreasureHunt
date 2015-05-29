@@ -1,7 +1,7 @@
 package frontend.Requests;
 
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParseException;
-import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
@@ -10,9 +10,9 @@ import javax.websocket.EndpointConfig;
 /**
  * Created by nebios on 28.05.15.
  */
-public class RequestDecoder implements Decoder.Text<JSONRPC2Request> {
+public class ResponseDecoder implements Decoder.Text<JSONRPC2Response> {
 
-    private JSONRPC2Request requestIn = null;
+    private JSONRPC2Response response = null;
 
     @Override
     public void init(EndpointConfig config) {
@@ -25,16 +25,16 @@ public class RequestDecoder implements Decoder.Text<JSONRPC2Request> {
     }
 
     @Override
-    public JSONRPC2Request decode(String recieved) throws DecodeException { return requestIn; }
+    public JSONRPC2Response decode(String recieved) throws DecodeException { return response; }
 
     @Override
     public boolean willDecode(String recieved) {
         try {
-            requestIn = JSONRPC2Request.parse(recieved);
-        } catch (JSONRPC2ParseException pex) {
+            response = JSONRPC2Response.parse(recieved);
+        } catch (JSONRPC2ParseException e) {
             return false;
         }
-
-        return (requestIn != null);
+        return (response != null);
     }
+
 }
