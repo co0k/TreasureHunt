@@ -29,13 +29,13 @@ public class FutureCommand<V> implements Future<V> {
 	}
 
 	@Override
-	public boolean cancel(boolean b) {
+	public synchronized boolean cancel(boolean b) {
 		this.isCancelled = b;
 		return true;
 	}
 
 	@Override
-	public boolean isCancelled() {
+	public synchronized boolean isCancelled() {
 		return isCancelled;
 	}
 
@@ -46,42 +46,43 @@ public class FutureCommand<V> implements Future<V> {
 
 	@Override
 	public synchronized V get() throws InterruptedException, ExecutionException {
-		if (value == null)
+		while (!this.isDone)
 			wait();
 		return value;
 	}
 
 	@Override
 	public synchronized V get(long timeout, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
-
-		long tBefore = System.currentTimeMillis();
-		// change the time prefix to milliseconds
-		switch (timeUnit) {
-			case NANOSECONDS:
-				timeout /= 1000 * 1000;
-				break;
-			case MICROSECONDS:
-				timeout /= 1000;
-				break;
-			case MILLISECONDS:
-				break;
-			case SECONDS:
-				timeout *= 1000;
-				break;
-			case MINUTES:
-				timeout *= 60 * 1000;
-				break;
-			case HOURS:
-				timeout *= 60 * 60 * 1000;
-				break;
-			case DAYS:
-				timeout *= 24 * 60 * 60 * 1000;
-				break;
+		while (!this.isDone) {
+			long tBefore = System.currentTimeMillis();
+			// change the time prefix to milliseconds
+			switch (timeUnit) {
+				case NANOSECONDS:
+					timeout /= 1000 * 1000;
+					break;
+				case MICROSECONDS:
+					timeout /= 1000;
+					break;
+				case MILLISECONDS:
+					break;
+				case SECONDS:
+					timeout *= 1000;
+					break;
+				case MINUTES:
+					timeout *= 60 * 1000;
+					break;
+				case HOURS:
+					timeout *= 60 * 60 * 1000;
+					break;
+				case DAYS:
+					timeout *= 24 * 60 * 60 * 1000;
+					break;
+			}
+			// wait till the commandQueue executed this command
+			wait(timeout);
+			if ((System.currentTimeMillis() - tBefore) >= timeout)
+				throw new TimeoutException();
 		}
-		// wait till the commanQueue executed this command
-		wait(timeout);
-		if ((System.currentTimeMillis() - tBefore) >= timeout)
-			throw new TimeoutException();
 		return value;
 	}
 }

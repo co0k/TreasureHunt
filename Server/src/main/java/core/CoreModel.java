@@ -73,17 +73,19 @@ public class CoreModel implements CommunicationControllerDAO {
 
 				// execute the current command at the head of the queue;
 				if (f != null) {
-					try {
-						f.executeCommand();
-					} catch (InterruptedException e) {
-						return;
+					if (!f.isCancelled()) {
+						try {
+							f.executeCommand();
+						} catch (InterruptedException e) {
+							return;
+						}
 					}
 				}
 
 				synchronized (commandQueue) {
 					if (commandQueue.isEmpty()) {
 						try {
-							commandQueue.wait();
+							commandQueue.wait(500);
 						} catch (InterruptedException e) {
 							return;
 						}

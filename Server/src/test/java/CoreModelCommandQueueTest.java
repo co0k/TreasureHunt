@@ -16,8 +16,10 @@ public class CoreModelCommandQueueTest {
 		// dummy commands are necessary, since it *will* be executed first
 		// multiple commands are used, since then it is almost sure that there is no race condition afterwards
 		TestCommand dummy = new TestCommand(0, 0, 2000);
+		TestCommand dummy2 = new TestCommand(0, 0, 500);
 		// let the core model be busy for at least one second
 		CoreModel.getInstance().addCommand(dummy);
+		CoreModel.getInstance().addCommand(dummy2);
 
 		// 20 commands
 		Random rand = new Random();
