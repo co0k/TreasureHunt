@@ -78,6 +78,15 @@ public class HighscoreList  implements Serializable, Comparable<HighscoreList> {
 	}
 
 	@Override
+	public String toString() {
+		return "HighscoreList{" +
+				"minRange=" + minRange +
+				", maxRange=" + maxRange +
+				", list=" + list +
+				'}';
+	}
+
+	@Override
 	public int compareTo(HighscoreList highscoreList) {
 		if(minRange < highscoreList.minRange)
 			return -1;
@@ -164,6 +173,16 @@ public class HighscoreList  implements Serializable, Comparable<HighscoreList> {
 			result = 31 * result + rank;
 			result = 31 * result + experience;
 			return result;
+		}
+
+		@Override
+		public String toString() {
+			return "Entry{" +
+					"id=" + id +
+					", name='" + name + '\'' +
+					", rank=" + rank +
+					", experience=" + experience +
+					'}';
 		}
 	}
 }

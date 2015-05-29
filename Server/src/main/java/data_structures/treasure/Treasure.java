@@ -54,14 +54,6 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		return 0;
 	}
 
-	@Override
-	public String toString() {
-		String out = "bid: " + this.getId() + " lat: " + this.getLocation().getLat() + " lon: " + this.getLocation().getLon() +
-				"\ntype: " + (type == null ? null : this.getType().getType()) +
-				"\nsize: " + this.getSize().getSize() + " size exp: " + this.getSize().getXP();
-		return out;
-	}
-
 	public boolean equalsWithoutId(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -97,6 +89,17 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 		result = 31 * result + (size != null ? size.hashCode() : 0);
 		result = 31 * result + (content != null ? content.hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "Treasure{" +
+				"id=" + id +
+				", location=" + location +
+				", type=" + type +
+				", size=" + size +
+				", content=" + content +
+				'}';
 	}
 
 	@Override
@@ -164,7 +167,13 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			return result;
 		}
 
-
+		@Override
+		public String toString() {
+			return "Type{" +
+					"experience=" + experience +
+					", id=" + id +
+					'}';
+		}
 	}
 
 	public interface Content extends IdHolder, ExperiencePointHolder {
@@ -232,6 +241,15 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 			result = 31 * result + experience;
 			return result;
 		}
+
+		@Override
+		public String toString() {
+			return "Location{" +
+					super.toString() + ", " +
+					"id=" + id +
+					", experience=" + experience +
+					'}';
+		}
 	}
 
 	public static class Size implements IdHolder, ExperiencePointHolder, Serializable {
@@ -294,6 +312,15 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 			if (experience != size1.experience) return false;
 			return size == size1.size;
+		}
+
+		@Override
+		public String toString() {
+			return "Size{" +
+					"id=" + id +
+					", experience=" + experience +
+					", size=" + size +
+					'}';
 		}
 	}
 }

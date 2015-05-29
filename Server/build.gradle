@@ -38,7 +38,7 @@ task libs(type: Jar, dependsOn: classes) {
     }
     baseName = 'TreasureHunt-libs'
     from(sourceSets.main.output) {
-        include "data_structures/**"
+        includes = ['data_structures/**', 'communication_controller/json/**']
     }
 }
 buildscript {

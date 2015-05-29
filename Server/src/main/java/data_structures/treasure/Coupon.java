@@ -87,4 +87,14 @@ public class Coupon implements Serializable, Treasure.Content {
 		result = 31 * result + id;
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "Coupon{" +
+				"experience=" + experience +
+				", companyName='" + companyName + '\'' +
+				", value=" + value +
+				", id=" + id +
+				'}';
+	}
 }
