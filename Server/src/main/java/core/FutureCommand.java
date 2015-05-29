@@ -80,7 +80,7 @@ public class FutureCommand<V> implements Future<V> {
 		}
 		// wait till the commanQueue executed this command
 		wait(timeout);
-		if ((System.currentTimeMillis() - tBefore) > timeout)
+		if ((System.currentTimeMillis() - tBefore) >= timeout)
 			throw new TimeoutException();
 		return value;
 	}

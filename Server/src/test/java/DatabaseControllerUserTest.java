@@ -1,3 +1,4 @@
+import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Coupon;
 import data_structures.treasure.Treasure;
 import data_structures.user.Inventory;
@@ -24,9 +25,9 @@ public class DatabaseControllerUserTest {
 		List<Inventory.Entry> inventoryEntries = new ArrayList<>();
 
 		Inventory inventory = new Inventory();
-		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 2, null));
-		exampleUsers.add(new User("Jaqueline", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, null));
-		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 3, null));
+		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 2, new Inventory()));
+		exampleUsers.add(new User("Jaqueline", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, new Inventory()));
+		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 3, new Inventory()));
 		for (User u : exampleUsers) {
 			exampleUsersId.add(dC.addUser(u));
 		}
@@ -39,14 +40,26 @@ public class DatabaseControllerUserTest {
 
 	@Test
 	public void checkUserLoginTest() {
-		User tU1 = new User("Hans", "wrongHash", "hans@franz.at", 1234, 2, null);
-		User tU2 = new User("wrongUserName", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, null);
+		User tU1 = new User("Hans", "wrongHash", "hans@franz.at", 1234, 2, new Inventory());
+		User tU2 = new User("wrongUserName", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, new Inventory());
 		assertEquals("user could login although it shouldn't", -1, dC.checkUserLogin(tU1));
 		assertEquals("user could login although it shouldn't", -1, dC.checkUserLogin(tU2));
 		int i = 0;
 		for (User u : exampleUsers) {
 			int uid = exampleUsersId.get(i++);
 			assertEquals("user couldn't login or the returned user id is wrong", uid, dC.checkUserLogin(u));
+		}
+	}
+
+	@Test
+	public void getUserTest() {
+		// some sample data
+		int i = 0;
+		for( User u : exampleUsers) {
+			User rU1 = DatabaseController.getInstance().getUser(exampleUsersId.get(i++));
+			User rU2 = DatabaseController.getInstance().getUser(u.getName());
+			assertTrue("the user returned was not equal to the given user!", u.equalsWithoutId(rU1));
+			assertTrue("the user returned was not equal to the given user!", u.equalsWithoutId(rU2));
 		}
 	}
 
@@ -85,11 +98,6 @@ public class DatabaseControllerUserTest {
 		assertEquals("the length of the inventories is not equal!", i2.getInventoryList().size(), i2R.getInventoryList().size());
 		assertEquals("the content count of the inventories is not equal!", i2.getContentCount(), i2R.getContentCount());
 		// further checks are too elaborate
-
-	}
-	// TODO
-	@Test
-	public void userGetTest() {
 
 	}
 }

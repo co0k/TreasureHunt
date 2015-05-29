@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class CoreModelCommandTest {
 	@After
@@ -19,20 +21,20 @@ public class CoreModelCommandTest {
 		DatabaseController.getInstance().deleteAll();
 	}
 	@Test
-	public void activeTokenTest() throws ExecutionException, InterruptedException {
+	public void activeTokenTest() throws ExecutionException, InterruptedException, TimeoutException {
 		// it could be easier to get or set a token, but to keep it clean, every command to the core should go
 		// through the Command Queue bus
 		Future<Boolean> v = CoreModel.getInstance().addCommand(new IsActiveTokenCommand(10));
-		assertFalse("the Token has to be unset!", v.get());
+		assertFalse("the Token has to be unset!", v.get(5, TimeUnit.SECONDS));
 
-		CoreModel.getInstance().addCommand(new SetActiveTokenCommand(10)).get();
+		CoreModel.getInstance().addCommand(new SetActiveTokenCommand(10)).get(5, TimeUnit.SECONDS);
 
 		v = CoreModel.getInstance().addCommand(new IsActiveTokenCommand(10));
-		assertTrue("the Token has to be set!", v.get());
+		assertTrue("the Token has to be set!", v.get(5, TimeUnit.SECONDS));
 	}
 
 	@Test
-	public void checkUserLoginTest() throws ExecutionException, InterruptedException {
+	public void checkUserLoginTest() throws ExecutionException, InterruptedException, TimeoutException {
 		// some sample data
 		List<User> exampleUsers = new ArrayList<>();
 		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 1, null));
@@ -40,29 +42,28 @@ public class CoreModelCommandTest {
 		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 1, null));
 
 		for(User u : exampleUsers)
-			assertTrue("the user does not exist, so it can't login!", null == CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get());
+			assertTrue("the user does not exist, so it can't login!", null == CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get(5, TimeUnit.SECONDS));
 
 		for(User u : exampleUsers)
 			DatabaseController.getInstance().addUser(u);
 
 		for(User u : exampleUsers)
-			assertTrue("the user does exist, so it can login!", null != CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get());
+			assertTrue("the user does exist, so it can login!", null != CoreModel.getInstance().addCommand(new CheckUserLoginCommand(u)).get(5, TimeUnit.SECONDS));
 		User wrongPasswdUser = new User("Hans", "wrongPasswordHash", "hans@franz.at", 1234, 1, null);
-		assertFalse("the user does not exist, so it can't login!", null != CoreModel.getInstance().addCommand(new CheckUserLoginCommand(wrongPasswdUser)).get());
+		assertFalse("the user does not exist, so it can't login!", null != CoreModel.getInstance().addCommand(new CheckUserLoginCommand(wrongPasswdUser)).get(5, TimeUnit.SECONDS));
 
 	}
 
-/*  will fail since there can't be added a inventory yet
 	@Test
 	public void getUserByNameTest() {
-		// some sample data
-		List<User> exampleUsers = new ArrayList<>();
-		List<Inventory.Entry> inventoryEntries = new ArrayList<>();
-		inventoryEntries.add(new Inventory.Entry(1, null));
-		inventoryEntries.add(new Inventory.Entry(2, null));
-		Inventory i = new Inventory(inventoryEntries);
-		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 1, i));
-		exampleUsers.add(new User("Jaqueline", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, null));
-		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 1, i));
-	}*/
+//		// some sample data
+//		List<User> exampleUsers = new ArrayList<>();
+//		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 2, null));
+//		exampleUsers.add(new User("Jaqueline", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, null));
+//		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 3, null));
+//		for( User u : exampleUsers) {
+//			User rU = DatabaseController.getInstance().getUser(DatabaseController.getInstance().addUser(u));
+//			assertTrue("the user returned was not equal to the given user!", u, rU);
+//		}
+	}
 }
