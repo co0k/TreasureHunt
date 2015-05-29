@@ -141,7 +141,8 @@ public class DatabaseController implements DatabaseControllerDAO {
 	@Override
 	public int addUser(User user) {
 		try {
-			return DatabaseManager.insertUser(user.getName(), user.getPasswordHash(), user.getEmail());
+			return DatabaseManager.insertUser(user);
+//			return DatabaseManager.insertUser(user.getName(), user.getPasswordHash(), user.getEmail());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -215,8 +216,41 @@ public class DatabaseController implements DatabaseControllerDAO {
 
 	@Override
 	public Inventory getUserInventory(int uId) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return DatabaseManager.getUserInventory(uId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public boolean insertInInventory(int uId, List<Inventory.Entry> contentEntries) {
+		try {
+			for (Inventory.Entry cE : contentEntries) {
+				for (int i = 0; i < cE.getCount(); i++) {
+					if (cE.getContent().getId() != -1)
+						DatabaseManager.insertInInventory(uId, cE.getContent().getId());
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean insertInInventory(int uId, Inventory.Entry contentEntry) {
+		try {
+			for (int i = 0; i < contentEntry.getCount(); i++) {
+				if (contentEntry.getContent().getId() != -1)
+					DatabaseManager.insertInInventory(uId, contentEntry.getContent().getId());
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return true;
 	}
 
 	@Override
@@ -273,6 +307,28 @@ public class DatabaseController implements DatabaseControllerDAO {
 				e.printStackTrace();
 				return null;
 			}
+	}
+
+	@Override
+	public int addContent(Treasure.Content content) {
+		Integer retVal;
+		try {
+			retVal = DatabaseManager.insertContent(content);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		return retVal == null ? -1 : retVal;
+	}
+
+	@Override
+	public Treasure.Content getContent(int id) {
+		try {
+			return DatabaseManager.getContentFromId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 

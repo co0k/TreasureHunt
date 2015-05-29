@@ -6,9 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import communication_controller.json.JsonConstructor;
+import data_structures.user.Inventory;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -25,25 +28,6 @@ import data_structures.user.HighscoreList;
 import data_structures.user.User;
 
 public class DatabaseManager {
-
-	public static void main(String[] args) {
-		//try {
-			//System.out.println("inserted id: " + insertType("InsertTest", 0));
-            
-			/*Quiz quiz1 = new Quiz("Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
-			quiz1.setId(-1);
-			quiz1.setXP(0);
-			ArrayList<Integer> exampleTreasuresID = new ArrayList<Integer>();
-			ArrayList<Treasure> exampleTreasures = new ArrayList<Treasure>();
-			exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), null));
-			// add all the treasures
-			for (Treasure t : exampleTreasures)
-				exampleTreasuresID.add(saveTreasure(t)); */
-			
-		//} catch (SQLException e) {
-		//	e.printStackTrace();
-		//}
-	}
 
 	public static boolean userAllowedToOpenTreasure(int bid, int uid) throws SQLException {
 		Connection conn = getConnection();
@@ -97,7 +81,6 @@ public class DatabaseManager {
 			sid = insertSize(sTmp.getSize(), sTmp.getXP());
 		else
 			sid = sTmp.getId();
-
 		Integer cid = insertContent(toSave.getContent());
 
 		Integer treasureID = insertBox(lid, tid, sid, qid, cid);
@@ -164,26 +147,20 @@ public class DatabaseManager {
 	}
 
 	public static Integer insertContent(Treasure.Content content) throws SQLException, IllegalArgumentException {
-		JsonConstructor jsonC = new JsonConstructor();
-		String jsonVal = jsonC.toJson(new ContentHelperClass(content));
-		Connection conn = getConnection();
-		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record record = create.insertInto(CONTENT, CONTENT.CONTENT_).values(jsonVal).returning(CONTENT.CID).fetchOne();
-		conn.close();
-		return record.getValue(CONTENT.CID);
+		if(content != null) {
+			if(content.getId() == -1) {
+				JsonConstructor jsonC = new JsonConstructor();
+				String jsonVal = jsonC.toJson(new ContentHelperClass(content));
+				Connection conn = getConnection();
+				DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+				Record record = create.insertInto(CONTENT, CONTENT.CONTENT_).values(jsonVal).returning(CONTENT.CID).fetchOne();
+				conn.close();
+				return record.getValue(CONTENT.CID);
+			} else
+				return content.getId();
+		}
+		return null;
 	}
-	/*
-	public static Integer insertContent(String content, int exp) throws SQLException, IllegalArgumentException {
-		if (content.length() > 1024)
-			throw new IllegalArgumentException();
-		Connection conn = getConnection();
-		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record record = create.insertInto(CONTENT, CONTENT.CONTENT_, CONTENT.CONTENTXP).values(content, exp).returning(CONTENT.CID).fetchOne();
-		conn.close();
-		return record.getValue(CONTENT.CID);
-	}
-	*/
-
 
 	public static Integer insertLocation(Double x, Double y, int exp) throws SQLException {
 		Connection conn = getConnection();
@@ -202,7 +179,14 @@ public class DatabaseManager {
 		conn.close();
 		return record.getValue(TYPE.TID);
 	}
-	
+
+	public static Integer insertUser(User user) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record record = create.insertInto(USER, USER.NAME, USER.PWDHASH, USER.EMAIL, USER.SCORE).values(user.getName(), user.getPasswordHash(), user.getEmail(), user.getXP()).returning(USER.UID).fetchOne();
+		conn.close();
+		return record.getValue(USER.UID);
+	}
 	public static Integer insertUser(String name, String pwdHash, String email) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -222,7 +206,7 @@ public class DatabaseManager {
 			return true;
 	}
 
-	public static boolean insertInventory(int uid, int cid) throws SQLException {
+	public static boolean insertInInventory(int uid, int cid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int record = create.insertInto(INVENTORY, INVENTORY.UID, INVENTORY.CID).values(uid, cid).execute();
@@ -315,14 +299,17 @@ public class DatabaseManager {
 	}
 
 	public static boolean deleteContent(int cid) throws SQLException {
-		Connection conn = getConnection();
-		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		int delete = create.delete(CONTENT).where(CONTENT.CID.equal(cid)).execute();
-		conn.close();
-		if (delete != 0)
+		if(cid != -1) {
+			Connection conn = getConnection();
+			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+			int delete = create.delete(CONTENT).where(CONTENT.CID.equal(cid)).execute();
+			conn.close();
+			if (delete != 0)
+				return true;
+			else
+				return false;
+		} else
 			return true;
-		else
-			return false;
 	}
 
 	public static void deleteAll() throws SQLException {
@@ -412,22 +399,25 @@ public class DatabaseManager {
 	}
 
 	public static Content getContentFromId(int cid) throws SQLException {
-		Connection conn = getConnection();
-		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record result = create.select().from(CONTENT).where(CONTENT.CID.equal(cid)).fetchOne();
-		conn.close();
+		if(cid != -1) {
+			Connection conn = getConnection();
+			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+			Record result = create.select().from(CONTENT).where(CONTENT.CID.equal(cid)).fetchOne();
+			conn.close();
 
-		if (result == null)
-			return null;
+			if (result == null)
+				return null;
 
-		Integer id = result.getValue(CONTENT.CID);
-		if(id == null)
+			Integer id = result.getValue(CONTENT.CID);
+			if (id == null)
+				return null;
+			String contentJson = result.getValue(CONTENT.CONTENT_);
+			JsonConstructor jsonC = new JsonConstructor();
+			Treasure.Content content = jsonC.fromJson(contentJson, ContentHelperClass.class).getContent();
+			content.setId(id);
+			return content;
+		} else
 			return null;
-		String contentJson = result.getValue(CONTENT.CONTENT_);
-		JsonConstructor jsonC = new JsonConstructor();
-		Treasure.Content content = jsonC.fromJson(contentJson, ContentHelperClass.class).getContent();
-		content.setId(id);
-		return content;
 	}
 
 
@@ -535,7 +525,9 @@ public class DatabaseManager {
 		String pwdHash = result.getValue(USER.PWDHASH);
 		String eMail = result.getValue(USER.EMAIL);
 		int score = result.getValue(USER.SCORE);
-		User out = new User(uidFromDB, name, pwdHash, eMail, score, -1, null);
+		Inventory inventory = getUserInventory(uid);
+		int rank = getRankFromId(uid);
+		User out = new User(uidFromDB, name, pwdHash, eMail, score, rank, inventory);
 		return out;
 	}
 	
@@ -550,7 +542,9 @@ public class DatabaseManager {
 		String name = result.getValue(USER.NAME);
 		String eMail = result.getValue(USER.EMAIL);
 		int score = result.getValue(USER.SCORE);
-		User out = new User(uidFromDB, name, null, eMail, score, -1, null);
+		Inventory inventory = getUserInventory(uid);
+		int rank = getRankFromId(uid);
+		User out = new User(uidFromDB, name, null, eMail, score, rank, inventory);
 		return out;
 	}
 	
@@ -566,7 +560,9 @@ public class DatabaseManager {
 		String pwdHash = result.getValue(USER.PWDHASH);
 		String eMail = result.getValue(USER.EMAIL);
 		int score = result.getValue(USER.SCORE);
-		User out = new User(uid, nameFromDB, pwdHash, eMail, score, -1, null);
+		Inventory inventory = getUserInventory(uid);
+		int rank = getRankFromId(uid);
+		User out = new User(uid, nameFromDB, pwdHash, eMail, score, rank, inventory);
 		return out;
 	}
 	
@@ -581,7 +577,9 @@ public class DatabaseManager {
 		String nameFromDB = result.getValue(USER.NAME);
 		String eMail = result.getValue(USER.EMAIL);
 		int score = result.getValue(USER.SCORE);
-		User out = new User(uid, nameFromDB, null, eMail, score, -1, null);
+		Inventory inventory = getUserInventory(uid);
+		int rank = getRankFromId(uid);
+		User out = new User(uid, nameFromDB, null, eMail, score, rank, inventory);
 		return out;
 	}
 	
@@ -607,6 +605,34 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("not a valid user");
 		else
 			return result.getValue(rank);
+	}
+
+	public static Inventory getUserInventory(int uId) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Result<Record> result = create.select().from(INVENTORY).where(INVENTORY.UID.equal(uId)).fetch();
+		conn.close();
+
+		if (result == null)
+			return new Inventory();
+
+		// count the contents
+		Map<Integer, Integer> contentEntriesMap = new HashMap<>();
+
+		for (Record r : result) {
+			Integer curCId = r.getValue(INVENTORY.CID);
+			if (contentEntriesMap.containsKey(curCId))
+				contentEntriesMap.put(curCId, contentEntriesMap.get(curCId) + 1);
+			else
+				contentEntriesMap.put(curCId, 1);
+		}
+
+		// generate the actual Inventory
+		Inventory inventory = new Inventory();
+		for (Map.Entry<Integer, Integer> e : contentEntriesMap.entrySet()) {
+			inventory.addEntry(new Inventory.Entry(e.getValue(), getContentFromId(e.getKey())));
+		}
+		return inventory;
 	}
 	
 	public static HighscoreList getHighScoreFromTo (int fromRank, int numberOfEntries) throws SQLException { 

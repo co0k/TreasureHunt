@@ -91,6 +91,16 @@ public interface DatabaseControllerDAO {
 	 */
 	List<Integer> getallTreasureID (boolean onlyInactive);
 
+	/**
+	 * inserts the given content
+	 *
+	 * @param content the content to save
+	 * @return the id or -1 if something went wrong
+	 */
+	int addContent(Treasure.Content content);
+
+	Treasure.Content getContent(int id);
+
 
 	/*********************** User ***********************/
 	/**
@@ -161,6 +171,22 @@ public interface DatabaseControllerDAO {
 	Inventory getUserInventory(int uId);
 
 	/**
+	 * inserts a list of contents into the inventory of the user
+	 * @param uId the user Id
+	 * @param contentEntries the entry consisting of count of the content and the content it links to
+	 * @return
+	 */
+	boolean insertInInventory(int uId, List<Inventory.Entry> contentEntries);
+
+	/**
+	 * inserts an Inventory.Entry into the inventory of the user
+	 * @param uId the user Id
+	 * @param contentEntry the entry consisting of count of the content and the content it links to
+	 * @return
+	 */
+	boolean insertInInventory(int uId, Inventory.Entry contentEntry);
+
+	/**
 	 * returns a list of treasures, the treasures only need to be filled partly
 	 * like size, id, type experience...
 	 * 
@@ -194,10 +220,10 @@ public interface DatabaseControllerDAO {
 	
 	/**
 	 * gives back the rank of a given user
-	 * @param user
+	 * @param uId
 	 * @return 
 	 */
-	int getRank (int uID);
+	int getRank (int uId);
 	
 	/**
 	 * updates the score of a given user 
