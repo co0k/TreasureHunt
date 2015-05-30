@@ -16,8 +16,8 @@ import java.io.IOException;
 /**
  * Created by nebios on 18.05.15.
  */
-@ServerEndpoint(value="/ServerSocket"/*,
-        decoders = { RequestDecoder.class },
+@ServerEndpoint(value="/ServerSocket",
+        decoders = { RequestDecoder.class }/*,
         encoders = { ResponsEncoder.class }*/
 )
 public class TreasureServerSocket {
@@ -35,6 +35,9 @@ public class TreasureServerSocket {
     @OnClose
     public void handleClose(Session session, CloseReason reason) {
         System.out.println("Connection closed! - Reason: " + reason);
+        String error = "Coulden parse your request";
+        JSONRPC2Response response = new JSONRPC2Response(error, "000");
+        send(response.toJSONString());
     }
 
     /*
@@ -46,30 +49,12 @@ public class TreasureServerSocket {
     */
 
     @OnMessage
-    public void handleMessage(Session session, String request) {
-        JSONRPC2Request jRequest = null;
-
-        try {
-            jRequest = JSONRPC2Request.parse(request);
-        } catch (JSONRPC2ParseException e) {
-            System.err.println("\n\nError parsing request: " + request + "\n\n");
-        }
-
-        if (jRequest != null) {
-            String response;
-            response = requestResolver.handleRequest(jRequest).toString();
-            send(response);
-        }
-    }
-
-    /*
-    @OnMessage
     public void handleMessage( Session session, JSONRPC2Request request) {
+        System.err.println("\n\nGot the following request: " + request + "\n\n");
         String response;
         response = requestResolver.handleRequest(request).toString();
         send(response);
     }
-    */
 
     private void send(String message) {
         try {

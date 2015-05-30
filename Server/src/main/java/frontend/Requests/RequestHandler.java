@@ -3,13 +3,17 @@ package frontend.Requests;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import communication_controller.json.JsonConstructor;
+import core.CoreModel;
+import core.commands.CheckUserLoginCommand;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
+import data_structures.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by nebios on 28.05.15.
@@ -36,8 +40,8 @@ public class RequestHandler implements RequestResolver {
         checks which method the client wants to invoke
          */
         switch(methodName.toLowerCase()) {
-            case "checklogin":          checkLogIn((String) parameters.get("username"),
-                                                (String) parameters.get("pwHash"));
+            case "checklogin":          response = checkLogIn((String) parameters.get("username"),
+                                                (String) parameters.get("pwHash")).toString();
                                         break;
 
             case "registeruser":        registerUser((String) parameters.get("email"),
@@ -75,7 +79,15 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public Integer checkLogIn(String username, String pwHash) {
-        return null;
+        int result = 0;
+        try {
+            result = CoreModel.getInstance().addCommand(new CheckUserLoginCommand(new User(username,pwHash,null,0,0,null))).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
