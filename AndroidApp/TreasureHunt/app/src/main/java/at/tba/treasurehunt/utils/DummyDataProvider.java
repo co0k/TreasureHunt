@@ -3,6 +3,7 @@ package at.tba.treasurehunt.utils;
 
 import java.util.ArrayList;
 
+import data_structures.treasure.Coupon;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
@@ -65,13 +66,13 @@ public class DummyDataProvider {
         for (int i = 1; i <= 10; i++)
             list.add(new HighscoreList.Entry(i, "Player "+i, i, 1000/i));
 
-        HighscoreList score = new HighscoreList(1,10, list);
+        HighscoreList score = new HighscoreList(0,null);
         return score;
     }
 
     public static Inventory getDummyInventory(){
         Inventory inventory = new Inventory();
-        inventory.addEntry(new Inventory.Entry(1, new Treasure.Content() {
+        inventory.addEntry(new Inventory.Entry(1, new Coupon(12,"dummy",100) {
             @Override
             public String getType() {
                 return "Dingens1";
@@ -87,7 +88,7 @@ public class DummyDataProvider {
                 return 1;
             }
         }));
-        inventory.addEntry(new Inventory.Entry(1, new Treasure.Content() {
+        inventory.addEntry(new Inventory.Entry(1, new Coupon(12,"dummy",100) {
             @Override
             public String getType() {
                 return "Dingens2";
