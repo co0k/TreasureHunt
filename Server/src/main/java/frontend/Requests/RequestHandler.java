@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by nebios on 28.05.15.
@@ -81,12 +82,15 @@ public class RequestHandler implements RequestResolver {
     public Integer checkLogIn(String username, String pwHash) {
         int result = 0;
         try {
-            result = CoreModel.getInstance().addCommand(new CheckUserLoginCommand(new User(username,pwHash,null,0,0,null))).get();
+            Future<Integer> future =  CoreModel.getInstance().addCommand(new CheckUserLoginCommand(new User(username,pwHash,null,0,0,null)));
+            System.err.println("\nIn checkLogIn \n");
+            result = future.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        System.err.println("\n\n checkLogIn got a result \n\n");
         return result;
     }
 

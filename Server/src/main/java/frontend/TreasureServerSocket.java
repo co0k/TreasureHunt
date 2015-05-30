@@ -60,6 +60,7 @@ public class TreasureServerSocket {
         try {
                 if (session.isOpen()) {
                     session.getBasicRemote().sendText(message);
+                    System.err.println("\n\nSend the following reponse to Client: " + message + "\n\n");
                 }
             } catch (IOException e) {
                 System.err.println("\n\n Error in Sending Message to Client \n\n");
