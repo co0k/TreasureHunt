@@ -20,7 +20,6 @@ import org.jooq.Record3;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.jooq.types.Unsigned;
 
 import data_structures.treasure.*;
 import data_structures.treasure.Treasure.*;

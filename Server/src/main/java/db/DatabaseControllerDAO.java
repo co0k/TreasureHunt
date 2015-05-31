@@ -62,8 +62,8 @@ public interface DatabaseControllerDAO {
 	boolean allowedToOpenTreasure(int userId, int treasureId);
 	
 	/**
-	 * checks if a user is allowed to open a treasure and tries to open it
-	 * it does NOT update the score of the user
+	 * checks if a user is allowed to open a treasure and tries to open it.
+	 * It will add a history entry. It does NOT update the score of the user
 	 * @param userId
 	 * @param treasureId
 	 * @return

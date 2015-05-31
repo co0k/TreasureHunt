@@ -122,9 +122,15 @@ public class DatabaseController implements DatabaseControllerDAO {
 
 	@Override
 	public boolean openTreasure(int userId, int treasureId) {
-		if (allowedToOpenTreasure(userId, treasureId))
+		if (allowedToOpenTreasure(userId, treasureId)){
+			try {
+				DatabaseManager.insertHistory(userId, treasureId);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
 			return deactivateTreasure(treasureId);
-		else
+		} else
 			return false;
 	}
 
@@ -249,6 +255,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			return false;
 		}
 		return true;
 	}
