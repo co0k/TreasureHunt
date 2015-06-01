@@ -241,6 +241,7 @@ public interface DatabaseControllerDAO {
 	
 	/**
 	 * updates the score of a given user, from his id.
+	 * the resulting score is the score the user had before, plus the score given by this method
 	 * @param userId
 	 * @param score points to add
 	 * @return
