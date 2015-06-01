@@ -60,13 +60,13 @@ public class RequestHandler implements RequestResolver {
                                               (String) parameters.get("pwHash"));
 
             case "getalltreasures":
-                getAllTreasures((Integer) parameters.get("token"));
+                response = getAllTreasures((Integer) parameters.get("token"));
                 break;
 
             case "getneartreasures":    break;
 
             case "eventtreasureopen":
-                eventTreasureOpened((Integer) parameters.get("token"),
+                response = eventTreasureOpened((Integer) parameters.get("token"),
                                     (Integer)parameters.get("treauserID"),
                                     (Integer)parameters.get("userID"));
                 break;
@@ -75,10 +75,11 @@ public class RequestHandler implements RequestResolver {
                 eventTreasureWrongAnswer((Integer) parameters.get("token"),
                                          (Integer) parameters.get("treauserID"),
                                          (Integer) parameters.get("userID"));
+
                 break;
 
             case "gethighscorelist":
-                getHighscoreList((Integer) parameters.get("token"),
+                response = getHighscoreList((Integer) parameters.get("token"),
                                  (Integer) parameters.get("low"),
                                  (Integer) parameters.get("high"));
                 break;
