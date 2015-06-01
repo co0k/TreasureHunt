@@ -12,7 +12,6 @@ import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
 import data_structures.user.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -114,7 +113,7 @@ public class RequestHandler implements RequestResolver {
     }
 
     @Override
-    public boolean registerUser(String email, String username, String pwHash) {
+    public Boolean registerUser(String email, String username, String pwHash) {
         Future<Integer> future = CoreModel.getInstance().addCommand(new AddUserCommand(email, username, pwHash));
         try {
             return (future.get() != null);
@@ -143,7 +142,7 @@ public class RequestHandler implements RequestResolver {
     }
 
     @Override
-    public boolean eventTreasureOpened(Integer token, Integer treasureID, Integer userID) {
+    public Boolean eventTreasureOpened(Integer token, Integer treasureID, Integer userID) {
         return false;
     }
 
