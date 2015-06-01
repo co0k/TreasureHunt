@@ -19,11 +19,11 @@ public interface IServerCommunicationDAO {
 
     public void registerUserOnServer(String uName, String email, String pwd, IResponseCallback responseCallback);
 
-    public User getUserById(int userId);
+    public void getUserById(int userId, IResponseCallback responseCallback);
 
-    public HighscoreList getHighscoreListFromServer();
+    public void getHighscoreListFromServer(IResponseCallback responseCallback);
 
-    public HighscoreList getHighscoreListInRangeFromServer(int from, int to);
+    public void getHighscoreListInRangeFromServer(int from, int to, IResponseCallback responseCallback);
 
     public void messageReceived(String payload);
 

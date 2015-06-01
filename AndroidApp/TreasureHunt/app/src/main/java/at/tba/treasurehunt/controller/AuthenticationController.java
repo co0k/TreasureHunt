@@ -26,6 +26,7 @@ public class AuthenticationController implements IResponseCallback {
 
     private AuthenticationController(){}
     private IAuthenticationCallback callback;
+    private Integer userID = 0;
 
     public void authenticateUser(String uName, String password, IAuthenticationCallback callback){
         this.callback = callback;
@@ -45,6 +46,7 @@ public class AuthenticationController implements IResponseCallback {
         if (response.toJSONObject().get("id").equals("0")){
             UserDataController.getInstance().setLoggedInUser(DummyDataProvider.getDummyUserData());
             callback.onAuthenticationSuccess();
+            userID = Integer.parseInt((String)response.toJSONObject().get("result"));
         }else if (response.toJSONObject().get("id").equals("-1")){
             callback.onRegistrationSuccess();
         }else{
@@ -56,5 +58,9 @@ public class AuthenticationController implements IResponseCallback {
     @Override
     public void onResponseReceiveError() {
         callback.onAuthenticationFailure(AuthenticationError.UNKNOWN_ERROR);
+    }
+
+    public Integer getLoggedInUserID(){
+        return userID;
     }
 }

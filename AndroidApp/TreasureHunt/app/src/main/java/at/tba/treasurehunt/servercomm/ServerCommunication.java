@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import at.tba.treasurehunt.controller.AuthenticationController;
 import at.tba.treasurehunt.tasks.IResponseCallback;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
@@ -49,9 +50,9 @@ public class ServerCommunication implements IServerCommunicationDAO{
     public ArrayList<Treasure> getTreasuresFromServer(IResponseCallback callback) {
         JSONRPC2Request request;
         request = new JSONRPC2Request("getalltreasures", (requestID++).toString());
-        int dummyToken = 1337;
+        Integer token = AuthenticationController.getInstance().getLoggedInUserID();
         Map<String, Object> params = new HashMap<>();
-        params.put("token", dummyToken);
+        params.put("token", token.toString());
         request.setNamedParams(params);
         sendAndWait(request, callback);
         return null;
@@ -82,18 +83,26 @@ public class ServerCommunication implements IServerCommunicationDAO{
     }
 
     @Override
-    public User getUserById(int userId) {
-        return null;
+    public void getUserById(int userId, IResponseCallback callback) {
+        JSONRPC2Request request;
+        request = new JSONRPC2Request("getprofiledata", (requestID++).toString());
+        Map<String, Object> params = new HashMap<>();
+        Integer token = AuthenticationController.getInstance().getLoggedInUserID();
+        params.put("token", token.toString());
+        params.put("userid", new Integer(userId).toString());
+        request.setNamedParams(params);
+        sendAndWait(request, callback);
+        return;
     }
 
     @Override
-    public HighscoreList getHighscoreListFromServer() {
-        return null;
+    public void getHighscoreListFromServer(IResponseCallback callback) {
+        return ;
     }
 
     @Override
-    public HighscoreList getHighscoreListInRangeFromServer(int from, int to) {
-        return null;
+    public void getHighscoreListInRangeFromServer(int from, int to, IResponseCallback callback) {
+        return ;
     }
 
     @Override

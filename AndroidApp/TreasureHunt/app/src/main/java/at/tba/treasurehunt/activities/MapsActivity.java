@@ -27,6 +27,7 @@ import at.tba.treasurehunt.dataprovider.ITreasureLoadedCallback;
 import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
+import at.tba.treasurehunt.utils.AlertHelper;
 import at.tba.treasurehunt.utils.RectangleDrawView;
 import at.tba.treasurehunt.utils.GPSTracker;
 import at.tba.treasurehunt.utils.GPSUpdateHandler;
@@ -49,7 +50,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadTreasures();
         setContentView(R.layout.activity_maps);
         drawRectView = (RectangleDrawView) findViewById(R.id.rectView);
         drawRectView.setBackgroundColor(Color.TRANSPARENT);
@@ -58,6 +58,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityManager.setCurrentActivity(this);
+        loadTreasures();
+
     }
 
     @Override
@@ -245,6 +247,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onTreasureLoadedFailure() {
-
+        AlertHelper.showUnknownErrorAlert(this);
     }
 }
