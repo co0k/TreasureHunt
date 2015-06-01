@@ -39,7 +39,7 @@ public class DatabaseManager {
 		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid))
 			return false;
 		else
-			return false;
+			return true;
 	}
 
 	public static int saveTreasure(Treasure toSave) throws IllegalArgumentException, SQLException {
