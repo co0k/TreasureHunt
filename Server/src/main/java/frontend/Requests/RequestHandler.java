@@ -4,6 +4,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import communication_controller.json.JsonConstructor;
 import core.CoreModel;
+import core.commands.AddUserCommand;
 import core.commands.CheckUserLoginCommand;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
@@ -21,7 +22,11 @@ import java.util.concurrent.Future;
  */
 public class RequestHandler implements RequestResolver {
 
-
+    /**
+     * this Method parses the request
+     * @param request
+     * @return
+     */
     @Override
     public JSONRPC2Response handleRequest(JSONRPC2Request request) {
         String methodName;
@@ -41,28 +46,34 @@ public class RequestHandler implements RequestResolver {
         checks which method the client wants to invoke
          */
         switch(methodName.toLowerCase()) {
-            case "checklogin":          response = checkLogIn((String) parameters.get("username"),
-                                                (String) parameters.get("pwHash")).toString();
-                                        break;
+            case "checklogin":
+                response = checkLogIn((String) parameters.get("username"),
+                                      (String) parameters.get("pwHash")).toString();
+                break;
 
-            case "registeruser":        registerUser((String) parameters.get("email"),
-                                                (String)parameters.get("username"),
-                                                (String) parameters.get("pwHash"));
-                                        break;
+            case "registeruser":
+                registerUser((String) parameters.get("email"),
+                             (String)parameters.get("username"),
+                             (String) parameters.get("pwHash"));
+                break;
 
-            case "getalltreasures":     getAllTreasures((Integer) parameters.get("token")); break;
+            case "getalltreasures":
+                getAllTreasures((Integer) parameters.get("token"));
+                break;
 
             case "getneartreasures":    break;
 
-            case "eventtreasureopen":   eventTreasureOpened((Integer) parameters.get("token"),
-                                                (Integer)parameters.get("treauserID"),
-                                                (Integer)parameters.get("userID"));
-                                        break;
+            case "eventtreasureopen":
+                eventTreasureOpened((Integer) parameters.get("token"),
+                                    (Integer)parameters.get("treauserID"),
+                                    (Integer)parameters.get("userID"));
+                break;
 
-            case "eventtreasurewronganswer":    eventTreasureWrongAnswer((Integer) parameters.get("token"),
-                                                    (Integer) parameters.get("treauserID"),
-                                                    (Integer) parameters.get("userID"));
-                                        break;
+            case "eventtreasurewronganswer":
+                eventTreasureWrongAnswer((Integer) parameters.get("token"),
+                                         (Integer) parameters.get("treauserID"),
+                                         (Integer) parameters.get("userID"));
+                break;
 
             case "gethighscorelist":
                 getHighscoreList((Integer) parameters.get("token"),
@@ -80,7 +91,7 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public Integer checkLogIn(String username, String pwHash) {
-        int result = 0;
+        Integer result = 0;
         try {
             Future<Integer> future =  CoreModel.getInstance().addCommand(new CheckUserLoginCommand(new User(username,pwHash,null,0,0,null)));
             System.err.println("\nIn checkLogIn \n");
@@ -96,6 +107,14 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public boolean registerUser(String email, String username, String pwHash) {
+        Future<Integer> future = CoreModel.getInstance().addCommand(new AddUserCommand(email, username, pwHash));
+        try {
+            return (future.get() != null);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
