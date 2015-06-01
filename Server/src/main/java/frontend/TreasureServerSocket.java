@@ -1,5 +1,6 @@
 package frontend;
 
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParseException;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
@@ -35,9 +36,7 @@ public class TreasureServerSocket {
     @OnClose
     public void handleClose(Session session, CloseReason reason) {
         System.out.println("Connection closed! - Reason: " + reason);
-        String error = "Coulden parse your request";
-        JSONRPC2Response response = new JSONRPC2Response(error, "000");
-        send(response.toJSONString());
+
     }
 
     /*
@@ -47,6 +46,13 @@ public class TreasureServerSocket {
                 + statusCode + ", reason=" + reason);
     }
     */
+    /*
+    String errorMsg = "Coulden parse your request";
+        JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+        JSONRPC2Response response = new JSONRPC2Response(error, errorMsg);
+        //JSONRPC2Response response = new JSONRPC2Response(error, "000");
+        send(response.toJSONString());
+     */
 
     @OnMessage
     public void handleMessage( Session session, JSONRPC2Request request) {

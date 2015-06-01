@@ -40,7 +40,10 @@ public class RequestHandler implements RequestResolver {
 
         int argc = parameters.size();
 
-        String response = "response";
+        JsonConstructor jsonC = new JsonConstructor();
+
+        Object response = new String("respnse");
+        //String response = "response";
 
         /*
         checks which method the client wants to invoke
@@ -48,14 +51,13 @@ public class RequestHandler implements RequestResolver {
         switch(methodName.toLowerCase()) {
             case "checklogin":
                 response = checkLogIn((String) parameters.get("username"),
-                                      (String) parameters.get("pwHash")).toString();
+                        (String) parameters.get("pwHash"));
                 break;
 
             case "registeruser":
-                registerUser((String) parameters.get("email"),
-                             (String)parameters.get("username"),
-                             (String) parameters.get("pwHash"));
-                break;
+                response = registerUser((String) parameters.get("email"),
+                                              (String)parameters.get("username"),
+                                              (String) parameters.get("pwHash"));
 
             case "getalltreasures":
                 getAllTreasures((Integer) parameters.get("token"));
@@ -86,7 +88,7 @@ public class RequestHandler implements RequestResolver {
                 response = jCon.toJson(getTestTreasure());
         }
 
-        return new JSONRPC2Response(response, request.getID());
+        return new JSONRPC2Response(jsonC.toJson(response), request.getID());
     }
 
     @Override
@@ -115,6 +117,7 @@ public class RequestHandler implements RequestResolver {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        System.err.println("\n\n registerUser got a result \n\n");
         return false;
     }
 
