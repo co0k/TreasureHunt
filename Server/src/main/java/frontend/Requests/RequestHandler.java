@@ -84,8 +84,7 @@ public class RequestHandler implements RequestResolver {
                 break;
 
             case "gettesttreasure":
-                JsonConstructor jCon = new JsonConstructor();
-                response = jCon.toJson(getTestTreasure());
+                response = jsonC.toJson(getTestTreasure());
         }
 
         return new JSONRPC2Response(jsonC.toJson(response), request.getID());
