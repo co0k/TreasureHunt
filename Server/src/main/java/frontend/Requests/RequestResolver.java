@@ -28,12 +28,12 @@ public interface RequestResolver {
     JSONRPC2Response handleRequest(JSONRPC2Request request);
 
     Integer checkLogIn(String username, String pwHash);
-    boolean registerUser(String email, String username, String pwHash);
+    Boolean registerUser(String email, String username, String pwHash);
     List<Treasure> getAllTreasures(Integer token);
     List<Treasure> getNearTreasures(Integer token, Double longitude, Double latitude);
     List<Treasure> getNearTreasures(Integer token, Double longitude, Double latitude, Double radius);
     // getProfileData(int token, int userID);
-    boolean eventTreasureOpened(Integer token, Integer treasureID, Integer userID); //[a treasure is opened when the quiz is solved]
+    Boolean eventTreasureOpened(Integer token, Integer treasureID, Integer userID); //[a treasure is opened when the quiz is solved]
     void eventTreasureWrongAnswer(Integer token, Integer treasureID, Integer userID); //[serverside handling of wrong answer given, maybe reset treasure or whatever]
     // HighscoreList getHighscoreListAll(int token);
     HighscoreList getHighscoreList(Integer token, Integer low, Integer high);
