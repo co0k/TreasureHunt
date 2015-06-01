@@ -44,7 +44,7 @@ public class DatabaseManager {
 
 	public static int saveTreasure(Treasure toSave) throws IllegalArgumentException, SQLException {
 
-		if (toSave.getId() != -1 && toSave.getXP() != -1)
+		if (toSave.getId() != -1 && !toSave.isValidTreasure())
 			throw new IllegalArgumentException();
 
 		Location lTmp = toSave.getLocation();

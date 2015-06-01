@@ -51,7 +51,31 @@ public class Treasure implements ExperiencePointHolder, IdHolder, Comparable<Tre
 
 	@Override
 	public int getXP() {
-		return 0;
+		int exp = 0;
+		
+		if (location != null)
+			exp += location.getXP();
+		
+		if (type != null) {
+			exp += type.getXP();
+			if (type instanceof Quiz && location != null && ((Quiz) type).getLocationId() != null &&((Quiz) type).getLocationId() != location.getId())
+				exp *= 1.5;	//TODO maybe you need to adapt the factor		
+		}
+		
+		if (size != null)
+			exp += size.getXP();
+		
+		if (content != null)
+			exp += content.getXP();
+		
+		return exp;
+	}
+	
+	public boolean isValidTreasure () {
+		if(location == null || size == null)
+			return false;
+		else
+			return true;
 	}
 
 	public boolean equalsWithoutId(Object o) {
