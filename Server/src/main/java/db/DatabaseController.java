@@ -2,6 +2,7 @@ package db;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import data_structures.treasure.*;
 import data_structures.user.*;
@@ -261,7 +262,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 	}
 
 	@Override
-	public List<Treasure> getTreasureHistory(int uId) {
+	public Map<Treasure, Long> getTreasureHistory(int uId) {
 		try {
 			return DatabaseManager.getHistory(uId);
 		} catch (SQLException e) {
