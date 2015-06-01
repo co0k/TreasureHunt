@@ -1,5 +1,6 @@
 package frontend.Requests;
 
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import communication_controller.json.JsonConstructor;
@@ -42,8 +43,7 @@ public class RequestHandler implements RequestResolver {
 
         JsonConstructor jsonC = new JsonConstructor();
 
-        Object response = new String("respnse");
-        //String response = "response";
+        Object response = null;
 
         /*
         checks which method the client wants to invoke
@@ -85,6 +85,12 @@ public class RequestHandler implements RequestResolver {
 
             case "gettesttreasure":
                 response = jsonC.toJson(getTestTreasure());
+                break;
+
+            default:
+                String errorMsg = "Could not parse your request";
+                JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                return new JSONRPC2Response(error, errorMsg);
         }
 
         return new JSONRPC2Response(jsonC.toJson(response), request.getID());
