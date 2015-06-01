@@ -5,6 +5,7 @@ import static db.generated.Tables.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +13,12 @@ import java.util.Map;
 
 import communication_controller.json.JsonConstructor;
 import data_structures.user.Inventory;
+
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
@@ -662,15 +665,15 @@ public class DatabaseManager {
 			return true;
 	}
 	
-	public static List<Treasure> getHistory(int uid) throws SQLException {
+	public static Map<Treasure, Long> getHistory(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record1<Integer>> result = create.select(HISTORY.BID).from(HISTORY).where(HISTORY.UID.equal(uid)).fetch();
+		Result<Record2<Integer, Timestamp>> result = create.select(HISTORY.BID, HISTORY.TIME_STAMP).from(HISTORY).where(HISTORY.UID.equal(uid)).fetch();
 		conn.close();
-		ArrayList<Treasure> out = new ArrayList<Treasure>();
+		Map<Treasure, Long> out = new HashMap<Treasure, Long>();
 		
-		for (Record1<Integer> tmp : result) {
-			out.add(getTreasureFromId(tmp.getValue(HISTORY.BID))); 
+		for (Record2<Integer, Timestamp> tmp : result) {
+			out.put(getTreasureFromId(tmp.getValue(HISTORY.BID)),tmp.getValue(HISTORY.TIME_STAMP).getTime());
 		}
 		if (!out.isEmpty())
 			return out;
