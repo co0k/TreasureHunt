@@ -23,15 +23,36 @@ public class DatabaseControllerTreasuresTest {
 		Logger globalLogger = Logger.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
 		globalLogger.setLevel(java.util.logging.Level.OFF);
 		// TODO add more test data
+
 		Quiz quiz1 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+		Quiz quiz2 = new Quiz(10,"Wo ist der Rechnerraum 15?", "Uni Innsbruck", "dein zuhause", "Bank", "Konzerthaus", null, null);
+		Quiz quiz3 = new Quiz(10,"In welchen Gebäude befindet sich Frau Webber?", "ICT Gebäude", "Rathaus", "Bauingenieurgebäude", "Mensa", "Bei dir zuhause", null);
+		Quiz quiz4 = new Quiz(10,"Wo bekommt man den besten Kaffee am Campus?", "Jollys", "ICT Gebäude", "Bauingenieurgebäude", "Mensa", null, null);
+		Quiz quiz5 = new Quiz(25,"Wofür ist der Alpenzoo bekannt?", "höchstgelegener Zoo Europas", "artenreichster Zoo Europas", "sauberster Zoo Europas", "was ist ein Zoo?", null, null);
+		Quiz quiz6 = new Quiz(20,"Welches bekannte Snowboardevent findet alljährlich in Innsbruck statt?", "Air+Style", "PipetoPipe", "AlpinFreeze", "Rail Jam", null, null);
+		Quiz quiz7 = new Quiz(15,"Wie viele vergoldete Kupferschindeln wurden beim goldenen Dachl verlegt?", "2.657", "1.529", "403", "86", null, null);
+		Quiz quiz8 = new Quiz(10,"Wie viele Bäcker Ruetz gibt es in Innsbruck?", "16", "7", "pro Einwohner einen", "ist schon schlimmer als McDonalds", null, null);
+
 		exampleTreasuresID = new ArrayList<Integer>();
 		exampleTreasures = new ArrayList<Treasure>();
-		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), new Coupon(10,"SuperDuperMarket", 10.50)));
+
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.26952, 11.39570), quiz1, new Treasure.Size(-1, 20, 1), new Coupon(10, "SuperDuperMarket", 10.50)));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.263372, 11.345269), quiz2, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.263567, 11.345916), quiz3, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.264659,11.3445717), quiz4, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.263567, 11.345916), quiz5, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.249058,11.399484), quiz6, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.2686516, 11.393286), quiz7, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.2675584, 11.3923194), quiz7, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.267785, 11.390727), quiz7, new Treasure.Size(-1, 20, 1), null));
+
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.2635802, 11.3945087), quiz8, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.2654258,11.3936075), quiz8, new Treasure.Size(-1, 20, 1), null));
+
 		Collections.sort(exampleTreasures);
 		// add all the treasures
 		for (Treasure t : exampleTreasures)
 			exampleTreasuresID.add(DatabaseController.getInstance().saveTreasure(t));
-
 	}
 
 	@After
