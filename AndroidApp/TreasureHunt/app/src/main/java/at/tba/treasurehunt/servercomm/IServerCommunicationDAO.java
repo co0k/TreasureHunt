@@ -13,7 +13,7 @@ import data_structures.user.User;
  */
 public interface IServerCommunicationDAO {
 
-    public ArrayList<Treasure> getTreasuresFromServer();
+    public ArrayList<Treasure> getTreasuresFromServer(IResponseCallback responseCallback);
 
     public boolean logInToServer(String uName, String pwd, IResponseCallback responseCallback);
 

@@ -1,7 +1,11 @@
 package at.tba.treasurehunt.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +23,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.LocationController;
+import at.tba.treasurehunt.dataprovider.ITreasureLoadedCallback;
+import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
+import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
 import at.tba.treasurehunt.utils.RectangleDrawView;
 import at.tba.treasurehunt.utils.GPSTracker;
@@ -30,23 +37,27 @@ import data_structures.treasure.Treasure;
 /**
  * MAP Activity keeps screen alive! Set in onCreate.
  */
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ITreasureLoadedCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GPSTracker gpsTracker;
     private RectangleDrawView drawRectView;
 
+    private View mProgressView;
+    private View mMapsFrameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        loadTreasures();
         setContentView(R.layout.activity_maps);
         drawRectView = (RectangleDrawView) findViewById(R.id.rectView);
         drawRectView.setBackgroundColor(Color.TRANSPARENT);
+        mProgressView = findViewById(R.id.load_treasure_progress);
+        mMapsFrameLayout = findViewById(R.id.mapsContent);
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityManager.setCurrentActivity(this);
-
     }
 
     @Override
@@ -184,5 +195,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
+            mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+            mMapsFrameLayout.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    public void loadTreasures(){
+        showProgress(true);
+        TreasureChestsProvider.getInstance().loadTreasures(this);
+    }
+
+
+    @Override
+    public void onTreasuresLoadedSuccess() {
+        refreshMap();
+        showProgress(false);
+    }
+
+    @Override
+    public void onTreasureLoadedFailure() {
+
+    }
 }

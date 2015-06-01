@@ -31,6 +31,8 @@ public class ServerCommunication implements IServerCommunicationDAO{
 
     private IResponseCallback responseCallback;
 
+    private Integer requestID = 1;
+
     private boolean newMessage = false;
 
     public static ServerCommunication getInstance(){
@@ -44,7 +46,14 @@ public class ServerCommunication implements IServerCommunicationDAO{
     }
 
     @Override
-    public ArrayList<Treasure> getTreasuresFromServer() {
+    public ArrayList<Treasure> getTreasuresFromServer(IResponseCallback callback) {
+        JSONRPC2Request request;
+        request = new JSONRPC2Request("getalltreasures", (requestID++).toString());
+        int dummyToken = 1337;
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", dummyToken);
+        request.setNamedParams(params);
+        sendAndWait(request, callback);
         return null;
     }
 
