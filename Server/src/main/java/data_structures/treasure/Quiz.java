@@ -94,7 +94,7 @@ public class Quiz extends Treasure.Type implements Serializable {
 		return qid;
 	}
 
-	public int getLocationId() {
+	public Integer getLocationId() {
 		return lid;
 	}
 
