@@ -46,13 +46,6 @@ public class TreasureServerSocket {
                 + statusCode + ", reason=" + reason);
     }
     */
-    /*
-    String errorMsg = "Coulden parse your request";
-        JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
-        JSONRPC2Response response = new JSONRPC2Response(error, errorMsg);
-        //JSONRPC2Response response = new JSONRPC2Response(error, "000");
-        send(response.toJSONString());
-     */
 
     @OnMessage
     public void handleMessage( Session session, JSONRPC2Request request) {
