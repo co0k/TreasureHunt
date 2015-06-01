@@ -1,87 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="2">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/image_view"
-        android:src="@mipmap/ic_launcher"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginTop="57dp" />
+
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello User,"
-        android:id="@+id/user_name"
-        android:textSize="30dp"
-        android:layout_alignTop="@+id/image_view"
-        android:layout_toLeftOf="@+id/image_view"
-        android:layout_toStartOf="@+id/image_view" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="User Profile"
+        android:layout_weight="1.3"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:gravity="center"
+        android:textSize="50dp"
+        android:layout_gravity="center_horizontal|top" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/user_name"
-        android:layout_alignStart="@+id/user_name" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/enter_passw"
-        android:text="Password"
-        android:inputType="textVisiblePassword|textPassword"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/user_name" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_weight="0.7"
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/reenter_passw"
-        android:text="Re-Enter Password"
-        android:inputType="textVisiblePassword|textPassword"
-        android:layout_below="@+id/enter_passw"
-        android:layout_alignLeft="@+id/user_name" />
+        >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="History / Log"
-        android:id="@+id/log"
-        android:layout_below="@+id/reenter_passw"
-        android:layout_alignLeft="@+id/reenter_passw"
-        android:layout_alignStart="@+id/reenter_passw"
-        android:layout_alignRight="@+id/reenter_passw"
-        android:layout_alignEnd="@+id/reenter_passw" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Username"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:id="@+id/profile_username"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="0.25" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:id="@+id/cancel"
-        android:layout_below="@+id/log"
-        android:layout_alignLeft="@+id/log"
-        android:layout_alignStart="@+id/log"
-        android:layout_marginTop="39dp" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="E-Mail"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:id="@+id/profile_email"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="0.25" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Accept"
-        android:id="@+id/acc"
-        android:layout_alignTop="@+id/cancel"
-        android:layout_alignRight="@+id/log"
-        android:layout_alignEnd="@+id/log" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Level"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:id="@+id/profile_level"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="0.25" />
 
-</RelativeLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -9,6 +9,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.tasks.IResponseCallback;
 import at.tba.treasurehunt.utils.DummyDataProvider;
+import communication_controller.json.JsonConstructor;
 
 /**
  * Singleton
@@ -43,11 +44,31 @@ public class AuthenticationController implements IResponseCallback {
 
     @Override
     public void onResponseReceived(JSONRPC2Response response) {
+        JsonConstructor constr = new JsonConstructor();
+
         if (response.toJSONObject().get("id").equals("0")){
-            UserDataController.getInstance().setLoggedInUser(DummyDataProvider.getDummyUserData());
+            if (response.toJSONObject().get("result").equals("null")){
+                callback.onAuthenticationFailure(AuthenticationError.UNKNOWN_ERROR);
+                return;
+            }
+            Integer result = constr.fromJson(response.toJSONString(), Integer.class);
+            if (result == null) {
+                callback.onAuthenticationFailure(AuthenticationError.UNKNOWN_ERROR);
+                return;
+            }
             callback.onAuthenticationSuccess();
-            userID = Integer.parseInt((String)response.toJSONObject().get("result"));
+            userID = result;
         }else if (response.toJSONObject().get("id").equals("-1")){
+            if (response.toJSONObject().get("result").equals("null")){
+                callback.onRegistrationError(AuthenticationError.UNKNOWN_ERROR);
+                return;
+            }
+            Integer result = constr.fromJson(response.toJSONString(), Integer.class);
+            if (result == null) {
+                callback.onRegistrationError(AuthenticationError.UNKNOWN_ERROR);
+                return;
+            }
+
             callback.onRegistrationSuccess();
         }else{
             callback.onRegistrationError(AuthenticationError.UNKNOWN_ERROR);

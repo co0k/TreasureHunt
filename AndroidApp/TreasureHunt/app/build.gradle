@@ -56,4 +56,5 @@ dependencies {
     compile 'com.thetransactioncompany:jsonrpc2-base:1.34.4'
     //compile files('libs/Server-0.1.jar')
     compile files('libs/TreasureHunt-libs-0.1.jar')
+    compile 'com.google.code.gson:gson:2.3.1'
 }
