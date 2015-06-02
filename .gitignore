@@ -15,4 +15,18 @@ Server/build
 
 Server/.idea/ 
 
+.gradle/
+
+Server/src/main/java/db/generated/
+
 *~
+
+Server/Server.iml
+
+TreasureHunt.iml
+
+build/
+
+.idea/
+
+Server/ServerLog.log
