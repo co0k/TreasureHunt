@@ -1,29 +1,27 @@
 package db.manager;
 
 import java.sql.SQLException;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import data_structures.treasure.GeoLocation;
 import data_structures.treasure.Treasure;
-import data_structures.treasure.Treasure.*;
-import db.quadtree.*;
+import data_structures.treasure.Treasure.Location;
+
 
 public class DatabaseSupervisor {
-	private QuadTree<Integer> activeTree = null;
-	private ArrayList<Integer> activeId = null;
+	private HashMap <Integer, Location> activeTreasures = null;
 
 	public DatabaseSupervisor() {
 		setupSupervisor();
 	}
 	
 	private void setupSupervisor() {
-		if (activeTree == null) {
-			activeTree = new QuadTree<Integer>(-180, -90, 180, 90);
-		}
-		if (activeId == null) {
-			activeId = new ArrayList<Integer>();
-		}
+		if (activeTreasures == null)
+			activeTreasures = new HashMap <Integer, Location>();
 	}
 	
 	public boolean addTresure(int bid) {
@@ -34,44 +32,42 @@ public class DatabaseSupervisor {
 			e.printStackTrace();
 			return false;			
 		}
-		activeTree.put(tmp.getLon(), tmp.getLat(), bid);
-		activeId.add(bid);
+		activeTreasures.put(bid, tmp);
 		return true;
 	}
 	
 	public boolean removeTreasure(int bid) {
-		Location tmp;
-		try {
-			tmp = DatabaseManager.getLocationFromBid(bid);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;			
-		}
-		activeTree.remove(tmp.getLon(), tmp.getLat(), bid);
-		activeId.remove(bid);
-		return true;
+		if (activeTreasures.remove(bid) == null)
+			return false;
+		else
+			return true;
 	}
 	
 	public boolean isActive(Integer bid) {
-		return activeId.contains(bid);
+		return activeTreasures.containsKey(bid);
 	}
 	
 	public ArrayList<Treasure> getTreasuresNearLocation (double lon, double lat, double radius) {
-		ArrayList<Integer> tmp = activeTree.get(lon, lat, radius);
+		GeoLocation userLocation = new GeoLocation (lat, lon);
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
-		for (Integer i : tmp ) {
-			try {
-				out.add(DatabaseManager.getTreasureFromId(i));
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-		return out;
+		for(Entry<Integer, Location> tmp : activeTreasures.entrySet()) {
+	        Location value = tmp.getValue();
+	        if ( value.getDistanceTo(userLocation) <= radius) {
+	        	try {
+					out.add(DatabaseManager.getTreasureFromId(tmp.getKey()));
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return null;
+				}
+	        	
+	        }
+	    }
+		
+		return (!out.isEmpty() ? out : null);
 	}
 	
 	public ArrayList<Treasure> getAllActiveTresures () {
-		AbstractCollection<Integer> tmp = activeTree.values();
+		Set<Integer> tmp = activeTreasures.keySet();
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
 		for (Integer i : tmp ) {
 			try {
@@ -86,7 +82,7 @@ public class DatabaseSupervisor {
 	
 	public List<Integer> getAllActiveTresuresId () {
 		List<Integer> out = new ArrayList<Integer>();
-		out.addAll(activeTree.values());
+		out.addAll(activeTreasures.keySet());
 		return out;
 	}
 
