@@ -3,6 +3,10 @@ package core.commands;
 import core.Command;
 import core.CoreModel;
 
+/**
+ * returns if the user is active and logged in
+ * it also refreshes the timeout
+ */
 public class IsActiveTokenCommand implements Command<Boolean> {
 	private int token;
 
