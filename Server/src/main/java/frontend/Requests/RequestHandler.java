@@ -1,12 +1,15 @@
 package frontend.Requests;
 
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import communication_controller.json.JsonConstructor;
 import core.CoreModel;
 import core.commands.AddUserCommand;
 import core.commands.CheckUserLoginCommand;
+import core.commands.GetAllTreasuresCommand;
+import core.commands.OpenTreasureCommand;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
@@ -30,15 +33,19 @@ public class RequestHandler implements RequestResolver {
     @Override
     public JSONRPC2Response handleRequest(JSONRPC2Request request) {
         String methodName;
-        Map<String, Object> parameters;
+        Map<String, Object> parameters = null;
         String id;
 
         // extract the necessary informations from the request
         methodName = request.getMethod();
-        parameters = request.getNamedParams();
-        id = (String) request.getID();
 
-        int argc = parameters.size();
+        JSONRPC2ParamsType type = request.getParamsType();
+        if (type == JSONRPC2ParamsType.OBJECT ) {
+            parameters = request.getNamedParams();
+            int argc = parameters.size();
+        }
+
+        id = (String) request.getID();
 
         JsonConstructor jsonC = new JsonConstructor();
 
@@ -49,28 +56,33 @@ public class RequestHandler implements RequestResolver {
          */
         switch(methodName.toLowerCase()) {
             case "checklogin":
+                assert(parameters != null);
                 response = checkLogIn((String) parameters.get("username"),
                         (String) parameters.get("pwHash"));
                 break;
 
             case "registeruser":
+                assert(parameters != null);
                 response = registerUser((String) parameters.get("email"),
                                               (String)parameters.get("username"),
                                               (String) parameters.get("pwHash"));
 
             case "getalltreasures":
+                assert(parameters != null);
                 response = getAllTreasures((Integer) parameters.get("token"));
                 break;
 
             case "getneartreasures":    break;
 
             case "eventtreasureopen":
+                assert(parameters != null);
                 response = eventTreasureOpened((Integer) parameters.get("token"),
                                     (Integer)parameters.get("treauserID"),
                                     (Integer)parameters.get("userID"));
                 break;
 
             case "eventtreasurewronganswer":
+                assert(parameters != null);
                 eventTreasureWrongAnswer((Integer) parameters.get("token"),
                                          (Integer) parameters.get("treauserID"),
                                          (Integer) parameters.get("userID"));
@@ -78,13 +90,14 @@ public class RequestHandler implements RequestResolver {
                 break;
 
             case "gethighscorelist":
+                assert(parameters != null);
                 response = getHighscoreList((Integer) parameters.get("token"),
                                  (Integer) parameters.get("low"),
                                  (Integer) parameters.get("high"));
                 break;
 
             case "gettesttreasure":
-                response = jsonC.toJson(getTestTreasure());
+                response = getTestTreasure();
                 break;
 
             default:
@@ -128,6 +141,14 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public List<Treasure> getAllTreasures(Integer token) {
+        Future<List<Treasure>> future = CoreModel.getInstance().addCommand(new GetAllTreasuresCommand(true));
+        try {
+            return future.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -143,6 +164,14 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public Boolean eventTreasureOpened(Integer token, Integer treasureID, Integer userID) {
+        Future<Boolean> future = CoreModel.getInstance().addCommand(new OpenTreasureCommand(treasureID, userID));
+        try {
+            return future.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -156,11 +185,10 @@ public class RequestHandler implements RequestResolver {
         return null;
     }
 
-    private Treasure getTestTreasure() {
+    public Treasure getTestTreasure() {
         Quiz quiz1 = new Quiz(10, "Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
         Treasure.Location testLocation = new Treasure.Location(1, 10, 47.2641234, 11.3451889 );
         Treasure t = new Treasure(1, testLocation, quiz1, new Treasure.Size(-1, 20, 1), null);
-
         return t;
     }
 
