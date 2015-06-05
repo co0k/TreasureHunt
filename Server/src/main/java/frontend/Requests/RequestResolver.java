@@ -29,7 +29,7 @@ public interface RequestResolver {
 
     Integer checkLogIn(String username, String pwHash);
     Boolean registerUser(String email, String username, String pwHash);
-    List<Treasure> getAllTreasures(Integer token);
+    List<Treasure> getAllTreasures();
     List<Treasure> getNearTreasures(Integer token, Double longitude, Double latitude);
     List<Treasure> getNearTreasures(Integer token, Double longitude, Double latitude, Double radius);
     // getProfileData(int token, int userID);

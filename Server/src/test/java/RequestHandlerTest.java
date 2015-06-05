@@ -22,12 +22,24 @@ public class RequestHandlerTest {
     public void init() {
         handler = new RequestHandler();
         jsonC = new JsonConstructor();
+
+        String method = "registerUser";
+        String reqID = "id-00-init";
+        Map<String, Object> params = new HashMap<>();
+        String email = "junit@example.com";
+        String username = "junit";
+        String pwHash = "unsavepassword";
+        params.put("email", jsonC.toJson(email));
+        params.put("username", jsonC.toJson(username));
+        params.put("pwHash", jsonC.toJson(pwHash));
+        JSONRPC2Request request = new JSONRPC2Request(method, params, reqID);
+        handler.handleRequest(request);
     }
 
     @Test
     public void checkLogInTest() {
         String method = "checkLogIn";
-        String username = "tester";
+        String username = "testernoexist";
         String pwHash = "unsavepassword";
         String reqID = "id-0-chl";
         Map<String, Object> params = new HashMap<>();
@@ -55,6 +67,25 @@ public class RequestHandlerTest {
         params.put("pwHash", jsonC.toJson(pwHash));
         JSONRPC2Request request = new JSONRPC2Request(method, params, reqID);
         JSONRPC2Response response = handler.handleRequest(request);
+    }
+
+    @Test
+    public void getAllTreasuresTest() {
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> paramsL = new HashMap<>();
+        String email = "junit@example.com";
+        String username = "junit";
+        String pwHash = "unsavepassword";
+        paramsL.put("email", jsonC.toJson(email));
+        paramsL.put("username", jsonC.toJson(username));
+        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
+        JSONRPC2Response responseL = handler.handleRequest(requestL);
+        Integer token = jsonC.fromJson((String)responseL.getResult(), Integer.class);
+        params.put("token", jsonC.toJson(token));
+        JSONRPC2Request request = new JSONRPC2Request("getAllTreasures",params, "id-2-at");
+        JSONRPC2Response response = handler.handleRequest(request);
+        assertNotNull(response.getResult());
     }
 
     @Test
