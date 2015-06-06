@@ -170,6 +170,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 	@Override
 	public boolean deleteUser(int id) {
 		try {
+			DatabaseManager.deleteAllBlockForUser(id);
 			DatabaseManager.deleteInventory(id);
 			DatabaseManager.deleteHistory(id);
 			return DatabaseManager.deleteUser(id);
@@ -339,6 +340,36 @@ public class DatabaseController implements DatabaseControllerDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	@Override
+	public boolean addBlock (int uID, int treasureId) {
+		try {
+			return DatabaseManager.insertBlock(uID, treasureId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean removeBlock (int uID, int treasureId) {
+		try {
+			return DatabaseManager.deleteBlock(uID, treasureId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	@Override
+	public long getLockTime (int uID, int treasureId) {
+		try {
+			return DatabaseManager.getLockTime(uID, treasureId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
 		}
 	}
 
