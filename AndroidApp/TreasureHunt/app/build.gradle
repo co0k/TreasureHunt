@@ -47,7 +47,7 @@ check.dependsOn unitTest
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     unitTestCompile files("$project.buildDir/classes/release")
-    unitTestCompile 'junit:junit:4.10'
+    testCompile 'junit:junit:4.10'
     unitTestCompile 'org.robolectric:robolectric:2.1.+'
     unitTestCompile 'com.google.android:android:4.0.1.2'
     //    compile 'org.eclipse.jetty.websocket:websocket-client:9.3.0.M2'
