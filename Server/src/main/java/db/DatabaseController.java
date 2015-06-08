@@ -352,7 +352,17 @@ public class DatabaseController implements DatabaseControllerDAO {
 			return false;
 		}
 	}
-	
+
+	@Override
+	public boolean isBlocked (int uID, int treasureId) {
+		try {
+			return DatabaseManager.isUserBlockedForTreasure(uID, treasureId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	@Override
 	public boolean removeBlock (int uID, int treasureId) {
 		try {

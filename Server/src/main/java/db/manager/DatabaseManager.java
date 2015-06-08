@@ -31,20 +31,29 @@ import data_structures.user.User;
 
 public class DatabaseManager {
 
+	private static long treasureBlockTime;
+
 	public static boolean userAllowedToOpenTreasure(int bid, int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne();
 		conn.close();
-		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid) || isUserBlockForTreasure(uid, bid))
+		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid) || isUserBlockedForTreasure(uid, bid))
 			return false;
 		else
 			return true;
 	}
 
-	private static boolean isUserBlockForTreasure(int uid, int bid) throws SQLException{
-		// TODO decide how long a user is blocked
-		return false;
+	public static boolean isUserBlockedForTreasure(int uid, int bid) throws SQLException {
+		long timestamp = getLockTime(uid, bid);
+		if (timestamp == -1)
+			return false;
+
+		if(System.currentTimeMillis()-timestamp >= treasureBlockTime) {
+			deleteBlock(uid, bid);
+			return false;
+		}
+		return true;
 	}
 
 	public static int saveTreasure(Treasure toSave) throws IllegalArgumentException, SQLException {
@@ -73,9 +82,8 @@ public class DatabaseManager {
 					qLid = null;
 				else
 					qLid = qTmp.getLocationId();
-				qid = insertQuiz(qTmp.getQuestion(), qTmp.getAnswer1(), qTmp.getAnswer2(), qTmp.getAnswer3(), qTmp.getAnswer4(), qTmp.getAnswer5(), qTmp.getAnswer6(),qTmp.getXP(), qLid);
-			}
-			else
+				qid = insertQuiz(qTmp.getQuestion(), qTmp.getAnswer1(), qTmp.getAnswer2(), qTmp.getAnswer3(), qTmp.getAnswer4(), qTmp.getAnswer5(), qTmp.getAnswer6(), qTmp.getXP(), qLid);
+			} else
 				qid = qTmp.getQuizId();
 		} else {
 			tid = null;
@@ -104,35 +112,35 @@ public class DatabaseManager {
 		return record.getValue(BOX.BID);
 	}
 
-	public static Integer insertQuiz(String question, String correct1, String answer2, String answer3, String answer4, String answer5, String answer6,int exp, Integer lid) throws SQLException, IllegalArgumentException {
+	public static Integer insertQuiz(String question, String correct1, String answer2, String answer3, String answer4, String answer5, String answer6, int exp, Integer lid) throws SQLException, IllegalArgumentException {
 		// check if the quiz and answer pattern is correct
 		if (correct1 == null || question == null)
 			throw new IllegalArgumentException("no correct answer or question given!");
-		if(answer2 == null) {
-			if(answer3 != null || answer4 != null || answer5 != null || answer6 != null)
+		if (answer2 == null) {
+			if (answer3 != null || answer4 != null || answer5 != null || answer6 != null)
 				throw new IllegalArgumentException("an answer was given although the previous answer is null");
-			if(answer3 == null) {
-				if(answer4 != null || answer5 != null || answer6 != null)
+			if (answer3 == null) {
+				if (answer4 != null || answer5 != null || answer6 != null)
 					throw new IllegalArgumentException("an answer was given although the previous answer is null");
-				if(answer4 == null) {
-					if(answer5 != null || answer6 != null)
+				if (answer4 == null) {
+					if (answer5 != null || answer6 != null)
 						throw new IllegalArgumentException("an answer was given although the previous answer is null");
 				}
 			}
 		} else {
-			if(answer3 == null) {
-				if(answer4 != null || answer5 != null || answer6 != null)
+			if (answer3 == null) {
+				if (answer4 != null || answer5 != null || answer6 != null)
 					throw new IllegalArgumentException("an answer was given although the previous answer is null");
-				if(answer4 == null) {
-					if(answer5 != null || answer6 != null)
+				if (answer4 == null) {
+					if (answer5 != null || answer6 != null)
 						throw new IllegalArgumentException("an answer was given although the previous answer is null");
 				}
 			} else {
-				if(answer4 == null) {
-					if(answer5 != null || answer6 != null)
+				if (answer4 == null) {
+					if (answer5 != null || answer6 != null)
 						throw new IllegalArgumentException("an answer was given although the previous answer is null");
-				} else if(answer5 == null && answer6 != null)
-						throw new IllegalArgumentException("an answer was given although the previous answer is null");
+				} else if (answer5 == null && answer6 != null)
+					throw new IllegalArgumentException("an answer was given although the previous answer is null");
 			}
 		}
 		if (question.length() > 1024 || correct1.length() > 1024 || (answer2 != null && answer2.length() > 1024) || (answer3 != null && answer3.length() > 1024) ||
@@ -140,7 +148,7 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("strings longer than 256 characters not allowed!");
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record record = create.insertInto(QUIZ, QUIZ.QUESTION, QUIZ.ANSWER1, QUIZ.ANSWER2, QUIZ.ANSWER3, QUIZ.ANSWER4, QUIZ.ANSWER5, QUIZ.ANSWER6,QUIZ.EXP, QUIZ.LID).values(question, correct1, answer2, answer3, answer4, answer5, answer6, exp, lid).returning(QUIZ.QID).fetchOne();
+		Record record = create.insertInto(QUIZ, QUIZ.QUESTION, QUIZ.ANSWER1, QUIZ.ANSWER2, QUIZ.ANSWER3, QUIZ.ANSWER4, QUIZ.ANSWER5, QUIZ.ANSWER6, QUIZ.EXP, QUIZ.LID).values(question, correct1, answer2, answer3, answer4, answer5, answer6, exp, lid).returning(QUIZ.QID).fetchOne();
 		conn.close();
 		return record.getValue(QUIZ.QID);
 	}
@@ -154,8 +162,8 @@ public class DatabaseManager {
 	}
 
 	public static Integer insertContent(Treasure.Content content) throws SQLException, IllegalArgumentException {
-		if(content != null) {
-			if(content.getId() == -1) {
+		if (content != null) {
+			if (content.getId() == -1) {
 				JsonConstructor jsonC = new JsonConstructor();
 				String jsonVal = jsonC.toJson(new ContentHelperClass(content));
 				Connection conn = getConnection();
@@ -178,7 +186,7 @@ public class DatabaseManager {
 	}
 
 	public static Integer insertType(String name) throws SQLException, IllegalArgumentException {
-		if ( name == null ||name.length() > 256)
+		if (name == null || name.length() > 256)
 			throw new IllegalArgumentException("Type has no name or name is too long");
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -194,6 +202,7 @@ public class DatabaseManager {
 		conn.close();
 		return record.getValue(USER.UID);
 	}
+
 	public static Integer insertUser(String name, String pwdHash, String email) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -201,7 +210,7 @@ public class DatabaseManager {
 		conn.close();
 		return record.getValue(USER.UID);
 	}
-	
+
 	public static boolean insertHistory(int uid, int bid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -212,7 +221,7 @@ public class DatabaseManager {
 		else
 			return true;
 	}
-	
+
 	public static boolean insertBlock(int uid, int bid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -234,7 +243,7 @@ public class DatabaseManager {
 		else
 			return true;
 	}
-	
+
 	public static boolean deleteUser(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -245,14 +254,14 @@ public class DatabaseManager {
 		else
 			return false;
 	}
-	
+
 	public static void deleteHistory(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		create.delete(HISTORY).where(HISTORY.UID.equal(uid)).execute();
 		conn.close();
 	}
-	
+
 	public static void deleteInventory(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -317,7 +326,7 @@ public class DatabaseManager {
 	}
 
 	public static boolean deleteContent(int cid) throws SQLException {
-		if(cid != -1) {
+		if (cid != -1) {
 			Connection conn = getConnection();
 			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 			int delete = create.delete(CONTENT).where(CONTENT.CID.equal(cid)).execute();
@@ -329,7 +338,7 @@ public class DatabaseManager {
 		} else
 			return true;
 	}
-	
+
 	public static boolean deleteAllBlockForUser(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -340,11 +349,11 @@ public class DatabaseManager {
 		else
 			return false;
 	}
-	
+
 	public static boolean deleteBlock(int uid, int bid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		int delete = create.delete(BLOCK).where(BLOCK.UID.equal(uid),BLOCK.BID.equal(bid)).execute();
+		int delete = create.delete(BLOCK).where(BLOCK.UID.equal(uid), BLOCK.BID.equal(bid)).execute();
 		conn.close();
 		if (delete != 0)
 			return true;
@@ -355,19 +364,19 @@ public class DatabaseManager {
 	public static void deleteAll() throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		
+
 		create.deleteFrom(BLOCK).execute();
 		create.deleteFrom(HISTORY).execute();
 		create.deleteFrom(BOX).execute();
 		create.deleteFrom(QUIZ).execute();
 		create.deleteFrom(INVENTORY).execute();
-		
+
 		create.deleteFrom(USER).execute();
 		create.deleteFrom(LOCATION).execute();
 		create.deleteFrom(SIZE).execute();
 		create.deleteFrom(TYPE).execute();
 		create.deleteFrom(CONTENT).execute();
-		
+
 		conn.close();
 	}
 
@@ -386,10 +395,10 @@ public class DatabaseManager {
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(QUIZ).where(QUIZ.QID.equal(qid)).fetchOne();
 		conn.close();
-		
+
 		if (result == null)
 			return null;
-		
+
 		int id = result.getValue(QUIZ.QID);
 		String question = result.getValue(QUIZ.QUESTION);
 		String answer1 = result.getValue(QUIZ.ANSWER1);
@@ -411,10 +420,10 @@ public class DatabaseManager {
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(LOCATION).where(LOCATION.LID.equal(lid)).fetchOne();
 		conn.close();
-		
+
 		if (result == null)
 			return null;
-		
+
 		Integer id = result.getValue(LOCATION.LID);
 		Double x = result.getValue(LOCATION.X);
 		Double y = result.getValue(LOCATION.Y);
@@ -440,7 +449,7 @@ public class DatabaseManager {
 	}
 
 	public static Content getContentFromId(int cid) throws SQLException {
-		if(cid != -1) {
+		if (cid != -1) {
 			Connection conn = getConnection();
 			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 			Record result = create.select().from(CONTENT).where(CONTENT.CID.equal(cid)).fetchOne();
@@ -467,10 +476,10 @@ public class DatabaseManager {
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(TYPE).where(TYPE.TID.equal(tid)).fetchOne();
 		conn.close();
-		
+
 		if (result == null)
 			return null;
-		
+
 		toset.setId(result.getValue(TYPE.TID));
 
 		return toset;
@@ -481,10 +490,10 @@ public class DatabaseManager {
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(BOX).where(BOX.BID.equal(bid)).fetchOne();
 		conn.close();
-		
+
 		if (result == null)
 			return null;
-		
+
 		Integer id = result.getValue(BOX.BID);
 		Integer lid = result.getValue(BOX.LID);
 		Integer tid = result.getValue(BOX.TID);
@@ -496,14 +505,14 @@ public class DatabaseManager {
 		Size size = getSizeFromId(sid);
 		Content content = null;
 		if (cid != null)
-			 content = getContentFromId(cid);
+			content = getContentFromId(cid);
 		if (qid != null) {
 			Quiz quiz = getQuizFromId(qid);
 			type = setTypeAttributesFromId(tid, quiz);
 		}
 
 		Treasure tmp = new Treasure(id, location, type, size, content);
-		
+
 		return tmp;
 	}
 
@@ -525,7 +534,7 @@ public class DatabaseManager {
 			Size size = getSizeFromId(sid);
 			Content content = null;
 			if (cid != null) {
-				 content = getContentFromId(cid);
+				content = getContentFromId(cid);
 			}
 			if (qid != null) {
 				Quiz quiz = getQuizFromId(qid);
@@ -547,13 +556,13 @@ public class DatabaseManager {
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(BOX).where(BOX.BID.equal(bid)).fetchOne();
 		conn.close();
-		
+
 		if (result == null)
 			return null;
-		
+
 		return getLocationFromId(result.getValue(BOX.LID));
 	}
-	
+
 	public static User getUserFromId(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -571,7 +580,7 @@ public class DatabaseManager {
 		User out = new User(uidFromDB, name, pwdHash, eMail, score, rank, inventory);
 		return out;
 	}
-	
+
 	public static User getUserProfileFromId(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -588,7 +597,7 @@ public class DatabaseManager {
 		User out = new User(uidFromDB, name, null, eMail, score, rank, inventory);
 		return out;
 	}
-	
+
 	public static User getUserFromName(String name) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -606,7 +615,7 @@ public class DatabaseManager {
 		User out = new User(uid, nameFromDB, pwdHash, eMail, score, rank, inventory);
 		return out;
 	}
-	
+
 	public static User getUserProfileFromName(String name) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -623,7 +632,7 @@ public class DatabaseManager {
 		User out = new User(uid, nameFromDB, null, eMail, score, rank, inventory);
 		return out;
 	}
-	
+
 	private static int getScoreFromId(int uid) throws SQLException, IllegalArgumentException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -634,7 +643,7 @@ public class DatabaseManager {
 		else
 			return result.getValue(USER.SCORE);
 	}
-	
+
 	public static int getRankFromId(int uid) throws SQLException, IllegalArgumentException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -675,13 +684,13 @@ public class DatabaseManager {
 		}
 		return inventory;
 	}
-	
-	public static HighscoreList getHighScoreFromTo (int fromRank, int numberOfEntries) throws SQLException { 
+
+	public static HighscoreList getHighScoreFromTo(int fromRank, int numberOfEntries) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Result<Record3<Integer, String, Integer>> result = create.select(USER.UID, USER.NAME, USER.SCORE).from(USER).orderBy(USER.SCORE.desc()).limit(fromRank, numberOfEntries).fetch();
 		conn.close();
-		
+
 		ArrayList<HighscoreList.Entry> out = new ArrayList<HighscoreList.Entry>();
 		for (Record3<Integer, String, Integer> tmp : result) {
 			HighscoreList.Entry tmpEntry = new HighscoreList.Entry(tmp.getValue(USER.UID), tmp.getValue(USER.NAME), getRankFromId(tmp.getValue(USER.UID)), tmp.getValue(USER.SCORE));
@@ -692,29 +701,29 @@ public class DatabaseManager {
 		else
 			return new HighscoreList(fromRank, out);
 	}
-	
+
 	public static Map<Treasure, Long> getHistory(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Result<Record2<Integer, Timestamp>> result = create.select(HISTORY.BID, HISTORY.TIME_STAMP).from(HISTORY).where(HISTORY.UID.equal(uid)).fetch();
 		conn.close();
 		Map<Treasure, Long> out = new HashMap<Treasure, Long>();
-		
+
 		for (Record2<Integer, Timestamp> tmp : result) {
-			out.put(getTreasureFromId(tmp.getValue(HISTORY.BID)),tmp.getValue(HISTORY.TIME_STAMP).getTime());
+			out.put(getTreasureFromId(tmp.getValue(HISTORY.BID)), tmp.getValue(HISTORY.TIME_STAMP).getTime());
 		}
 		if (!out.isEmpty())
 			return out;
 		else
 			return null;
 	}
-	
-	public static List<Integer> getAllBoxId () throws SQLException {
+
+	public static List<Integer> getAllBoxId() throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Result<Record1<Integer>> result = create.select(BOX.BID).from(BOX).fetch();
 		ArrayList<Integer> out = new ArrayList<Integer>();
-		
+
 		for (Record1<Integer> tmp : result) {
 			out.add(tmp.getValue(BOX.BID));
 		}
@@ -723,18 +732,18 @@ public class DatabaseManager {
 		else
 			return out;
 	}
-	
-	public static long getLockTime (int uid, int bid) throws SQLException {
-		Connection conn = getConnection();		
+
+	public static long getLockTime(int uid, int bid) throws SQLException {
+		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Record result = create.select(BLOCK.TIME_STAMP).from(BLOCK).where(BLOCK.UID.equal(uid),BLOCK.BID.equal(bid)).fetchOne();
+		Record result = create.select(BLOCK.TIME_STAMP).from(BLOCK).where(BLOCK.UID.equal(uid), BLOCK.BID.equal(bid)).fetchOne();
 		if (result == null)
 			return -1;
 		else
 			return result.getValue(BLOCK.TIME_STAMP).getTime();
 	}
-	
-	public static boolean changePassword (int uid, String newPwdHash) throws SQLException, IllegalArgumentException {
+
+	public static boolean changePassword(int uid, String newPwdHash) throws SQLException, IllegalArgumentException {
 		if (newPwdHash == null || newPwdHash.length() > 1024)
 			throw new IllegalArgumentException("your hash is null or too long");
 		Connection conn = getConnection();
@@ -744,10 +753,10 @@ public class DatabaseManager {
 		if (count != 1)
 			return false;
 		else
-			return true;		
-	}	
-	
-	public static boolean updateScore (int uid, int score) throws SQLException {
+			return true;
+	}
+
+	public static boolean updateScore(int uid, int score) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int count = create.update(USER).set(USER.SCORE, getScoreFromId(uid) + score).where(USER.UID.equal(uid)).execute();
@@ -757,7 +766,7 @@ public class DatabaseManager {
 		else
 			return true;
 	}
-	
+
 
 	private static class ContentHelperClass {
 		Treasure.Content content;
