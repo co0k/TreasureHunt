@@ -57,6 +57,15 @@
             android:gravity="center"
             android:layout_weight="0.25" />
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Experience"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:id="@+id/profile_experience"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="0.25" />
 
     </LinearLayout>
 

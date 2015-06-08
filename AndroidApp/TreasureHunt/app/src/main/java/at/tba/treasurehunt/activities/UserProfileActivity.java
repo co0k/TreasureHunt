@@ -1,5 +1,6 @@
 package at.tba.treasurehunt.activities;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,10 +12,13 @@ import at.tba.treasurehunt.controller.UserDataController;
 import data_structures.user.User;
 
 
-public class UserProfileActivity extends ActionBarActivity {
+public class UserProfileActivity extends Activity {
 
 
-    TextView f_userName;
+    private TextView f_userName;
+    private TextView f_email;
+    private TextView f_level;
+    private TextView f_experience;
 
 
     @Override
@@ -61,11 +65,18 @@ public class UserProfileActivity extends ActionBarActivity {
      */
     private void fillUserData(){
         User userData = UserDataController.getInstance().getCurrentUserData();
-        f_userName.setText(userData.getName());
+        f_userName.setText("Username: "+userData.getName());
+        f_email.setText("Email: "+userData.getEmail());
+        f_level.setText("Level: "+userData.getRank());
+        f_experience.setText("Experience: "+userData.getXP());
     }
 
 
     private void initLayoutFields(){
-        this.f_userName = (TextView) this.findViewById(R.id.editText);
+        this.f_userName = (TextView) this.findViewById(R.id.profile_username);
+        this.f_email = (TextView) this.findViewById(R.id.profile_email);
+        this.f_level = (TextView) this.findViewById(R.id.profile_level);
+        this.f_experience = (TextView) this.findViewById(R.id.profile_experience);
+
     }
 }

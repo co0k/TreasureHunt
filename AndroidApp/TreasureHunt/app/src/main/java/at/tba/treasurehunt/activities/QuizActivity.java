@@ -2,6 +2,7 @@ package at.tba.treasurehunt.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -141,6 +142,8 @@ public class QuizActivity extends Activity {
             //ShowMessageHelper.showSimpleInfoMessagePopUp("Right Answer! Nice bro.", this);
             TreasureChestHolder.getInstance().openTreasure(this.treasure);
             this.finish();
+            Intent actSwitch = new Intent(this, TreasureOpenActivity.class);
+            startActivity(actSwitch);
         } else {
             ShowMessageHelper.showSimpleInfoMessagePopUp("Wrong answer bro. sry.", this);
         }

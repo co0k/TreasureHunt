@@ -18,12 +18,18 @@ public class UserDataController {
 
     private  User LOGGED_IN_USER = null;
 
+    private static boolean DEBUG_DATA = true;
+
     public static UserDataController getInstance(){
         if (instance == null) instance = new UserDataController();
         return instance;
     }
 
-    private UserDataController(){}
+    private UserDataController(){
+        if (DEBUG_DATA){
+            setLoggedInUser(DummyDataProvider.getDummyUserData());
+        }
+    }
 
 
     public User getCurrentUserData(){return getLoggedInUser();

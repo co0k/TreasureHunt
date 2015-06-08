@@ -66,7 +66,7 @@ public class DummyDataProvider {
         for (int i = 1; i <= 10; i++)
             list.add(new HighscoreList.Entry(i, "Player "+i, i, 1000/i));
 
-        HighscoreList score = new HighscoreList(0,null);
+        HighscoreList score = new HighscoreList(0,list);
         return score;
     }
 

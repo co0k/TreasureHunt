@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="Welcome to TreasureHunt"
+        android:text="You have opened a Treasure!"
         android:layout_weight="1.3"
         style="@style/Base.TextAppearance.AppCompat.Title"
         android:gravity="center"
@@ -27,43 +27,49 @@
 
         >
 
-        <Button
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Hunt!"
-            android:id="@+id/quiz_answer1"
-            android:onClick="onButtonPlayClick"
+            android:text="You received: "
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:id="@+id/you_received_text"
             android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="0.25" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Experience: "
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:id="@+id/received_xp_text"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="0.25" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Content: "
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:id="@+id/received_content_text"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_weight="0.25" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Profile"
-            android:id="@+id/profile_view"
-            android:onClick="onButtonUserProfileClick"
+            android:text="Great!"
+            android:id="@+id/btn_finish_open"
+            android:onClick="onButtonFinishClick"
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Loot"
-            android:id="@+id/loot_view"
-            android:clickable="true"
-            android:onClick="onButtonInventoryClick"
-            android:layout_gravity="center"
-            android:layout_weight="0.25" />
 
-            <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Score"
-            android:id="@+id/score_view"
-            android:clickable="true"
-            android:onClick="onButtonHighscoresClick"
-            android:layout_gravity="center"
-            android:layout_weight="0.25" />
+
+
+
 
     </LinearLayout>
 

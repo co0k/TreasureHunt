@@ -34,7 +34,8 @@ public class TreasureChestHolder {
 
     private Treasure currentTreasureInRange = null;
     private Treasure nearestTreasure = null;
-    private double distanceToNearestTreasure = 0;
+    private double distanceToNearestTreasure = Double.MAX_VALUE;
+    private Treasure currentSelectedTreasure = null;
 
 
     /**
@@ -140,6 +141,20 @@ public class TreasureChestHolder {
      */
     public void openTreasure(Treasure t){
         TreasureChestsProvider.getInstance().getTreasureChestsList().remove(t);
+    }
+
+
+    /**
+     * The current selected treasure chest will be set when the "Open Treasure" is pressed in MapsActivity
+     * It will then be used by TreasureOpenActivity to get the treasure data
+     * @param t Treasure to be set as current selected (when selecting "Open Treasure")
+     */
+    public void setCurrentSelectedTreasure(Treasure t){
+        this.currentSelectedTreasure = t;
+    }
+
+    public Treasure getCurrentSelectedTreasure(){
+        return this.currentSelectedTreasure;
     }
 
 

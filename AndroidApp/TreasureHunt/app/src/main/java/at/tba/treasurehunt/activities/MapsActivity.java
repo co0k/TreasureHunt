@@ -48,8 +48,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Used for single loading of treasures.
     When the android devices orientation is changed, the onCreate method is called again.
      */
-    private boolean TREASURE_LOAD_INITIALIZED = false;
-
     private View mProgressView;
     private View mMapsFrameLayout;
 
@@ -59,13 +57,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         drawRectView = (RectangleDrawView) findViewById(R.id.rectView);
         drawRectView.setBackgroundColor(Color.TRANSPARENT);
-        mProgressView = findViewById(R.id.load_treasure_progress);
-        mMapsFrameLayout = findViewById(R.id.mapsContent);
+        //mProgressView = findViewById(R.id.load_treasure_progress);
+       // mMapsFrameLayout = findViewById(R.id.mapsContent);
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityManager.setCurrentActivity(this);
         loadTreasures();
-
     }
 
     @Override
@@ -156,6 +153,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onButtonOpenTreasureClick(View v){
         //ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
         if (isQuiz(TreasureChestHolder.getInstance().getNearestTreasure().getType())) {
+            TreasureChestHolder.getInstance().setCurrentSelectedTreasure(TreasureChestHolder.getInstance().getNearestTreasure());
             Intent actSwitch = new Intent(this, QuizActivity.class);
             startActivity(actSwitch);
         }
@@ -240,21 +238,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void loadTreasures(){
-        if (!TREASURE_LOAD_INITIALIZED) {
-            showProgress(true);
+            //showProgress(true);
             TreasureChestsProvider.getInstance().loadTreasures(this);
-            TREASURE_LOAD_INITIALIZED = true;
-        }else{
-            Log.i("LoadTreasures", "TreasureLoad already initialized!");
-        }
     }
 
 
     @Override
     public void onTreasuresLoadedSuccess() {
-        setUpMapIfNeeded();
+        //setUpMapIfNeeded();
         refreshMap();
-        showProgress(false);
+       // showProgress(false);
     }
 
     @Override

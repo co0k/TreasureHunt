@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import at.tba.treasurehunt.controller.AuthenticationController;
+import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.tasks.IResponseCallback;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;

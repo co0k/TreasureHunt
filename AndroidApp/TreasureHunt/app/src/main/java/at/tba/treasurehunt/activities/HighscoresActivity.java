@@ -65,7 +65,7 @@ public class HighscoresActivity extends Activity {
         //listItems.clear();
         int i = 0;
         for (HighscoreList.Entry e: list.getList()) {
-            arrayAdapter.insert(e.getName(), i);
+            arrayAdapter.insert(e.getName()+" with "+e.getXP()+" XP", i);
             i++;
         }
         arrayAdapter.notifyDataSetChanged();

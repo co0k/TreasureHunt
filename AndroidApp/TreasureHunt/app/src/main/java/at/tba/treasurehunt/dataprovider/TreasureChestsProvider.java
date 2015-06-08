@@ -19,6 +19,8 @@ public class TreasureChestsProvider implements IResponseCallback {
     private static TreasureChestsProvider instance = null;
     private ITreasureLoadedCallback treasureLoadedCallback;
 
+    private static boolean DEBUG_DATA = false;
+
     public static TreasureChestsProvider getInstance(){
         if (instance == null) instance = new TreasureChestsProvider();
         return instance;
@@ -27,17 +29,23 @@ public class TreasureChestsProvider implements IResponseCallback {
     private ArrayList<Treasure> treasures = new ArrayList<Treasure>();
 
     private TreasureChestsProvider(){
-       /* treasures.add(DummyDataProvider.getDummyTreasureData(0));
-        treasures.add(DummyDataProvider.getDummyTreasureData(1));
-        treasures.add(DummyDataProvider.getDummyTreasureData(2));
-        treasures.add(DummyDataProvider.getDummyTreasureData(3));
-        treasures.add(DummyDataProvider.getDummyTreasureData(4));*/
+        if (DEBUG_DATA) {
+            treasures.add(DummyDataProvider.getDummyTreasureData(0));
+            treasures.add(DummyDataProvider.getDummyTreasureData(1));
+            treasures.add(DummyDataProvider.getDummyTreasureData(2));
+            treasures.add(DummyDataProvider.getDummyTreasureData(3));
+            treasures.add(DummyDataProvider.getDummyTreasureData(4));
+        }
         //ServerCommunication.getInstance().getTreasuresFromServer(this);
     }
 
     public void loadTreasures(ITreasureLoadedCallback callback){
         this.treasureLoadedCallback = callback;
-        ServerCommunication.getInstance().getTreasuresFromServer(this);
+        if (!DEBUG_DATA) {
+            ServerCommunication.getInstance().getTreasuresFromServer(this);
+        }else{
+            treasureLoadedCallback.onTreasuresLoadedSuccess();
+        }
     }
 
 

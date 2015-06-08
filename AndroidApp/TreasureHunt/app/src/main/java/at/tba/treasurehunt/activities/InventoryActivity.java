@@ -66,7 +66,8 @@ public class InventoryActivity extends Activity {
     private void setInventoryList(Inventory inventory){
         int i = 0;
         for (Inventory.Entry e: inventory.getInventoryList()) {
-            arrayAdapter.insert(e.toString(), i);
+            String entryString = e.getCount()+"x "+e.getContent().getType();
+            arrayAdapter.insert(entryString, i);
             i++;
         }
         arrayAdapter.notifyDataSetChanged();
