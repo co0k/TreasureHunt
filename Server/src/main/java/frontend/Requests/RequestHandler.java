@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 public class RequestHandler implements RequestResolver {
 
     private String[] tokenFree = {"checklogin","registeruser","gettesttreasure"};
-
+    private Integer token;
     /**
      * this Method parses the request
      * @param request
@@ -71,103 +71,109 @@ public class RequestHandler implements RequestResolver {
         checks which method the client wants to invoke
          */
         switch(methodName.toLowerCase()) {
-            case "checklogin":
+             case "checklogin":
                 if(parameters == null) {
                     response = "illegal arguments";
+                    break;
                 }
-                response = checkLogIn((String) parameters.get("username"),
-                        (String) parameters.get("pwHash"));
+                else {
+                    response = checkLogIn((String) parameters.get("username"),
+                            (String) parameters.get("pwHash"));
+                }
                 break;
 
             case "registeruser":
                 if(parameters == null) {
                     response = "illegal arguments";
+                    break;
                 }
-                response = registerUser((String) parameters.get("email"),
-                                              (String)parameters.get("username"),
-                                              (String) parameters.get("pwHash"));
+                else {
+                    response = registerUser((String) parameters.get("email"),
+                            (String) parameters.get("username"),
+                            (String) parameters.get("pwHash"));
+                }
                 break;
 
             case "getalltreasures":
                 if(parameters == null) {
                     response = "illegal arguments";
                 }
-                Integer token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
-                if(isTokenActive(token)) {
-                    response = getAllTreasures();
-                }
                 else {
-                    response = "illegal operation";
+                    token = jsonC.fromJson((String) parameters.get("token"), Integer.class);
+                    if (isTokenActive(token)) {
+                        response = getAllTreasures();
+                    } else {
+                        response = "illegal operation";
+                    }
                 }
                 break;
 
             case "getneartreasures":
                 if(parameters == null) {
                     response = "illegal arguments";
+                    break;
                 }
                 token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
                 if(isTokenActive(token)) {
-                    response = getAllTreasures();
+                    Double lat = jsonC.fromJson((String)parameters.get("latitude"), Double.class);
+                    Double longitude = jsonC.fromJson((String)parameters.get("longitude"), Double.class);
+                    switch(argc) {
+                        case 3: response = getNearTreasures(token, longitude, lat); break;
+                        case 4: response = getNearTreasures(token, longitude, lat, jsonC.fromJson((String)parameters.get("radius"),Double.class));
+                    }
                 }
                 else {
                     response = "illegal operation";
-                }
-                token = jsonC.fromJson((String) parameters.get("token"), Integer.class);
-                Double lat = jsonC.fromJson((String)parameters.get("latitude"), Double.class);
-                Double longitude = jsonC.fromJson((String)parameters.get("longitude"), Double.class);
-                switch(argc) {
-                    case 3: response = getNearTreasures(token, longitude, lat); break;
-                    case 4: response = getNearTreasures(token, longitude, lat, jsonC.fromJson((String)parameters.get("radius"),Double.class));
                 }
                 break;
 
             case "eventtreasureopen":
                 if(parameters == null) {
                     response = "illegal arguments";
+                    break;
                 }
                 token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
                 if(isTokenActive(token)) {
-                    response = getAllTreasures();
+                    response = eventTreasureOpened((Integer) parameters.get("token"),
+                            (Integer)parameters.get("treauserID"),
+                            (Integer)parameters.get("userID"));
                 }
                 else {
                     response = "illegal operation";
                 }
-                response = eventTreasureOpened((Integer) parameters.get("token"),
-                                    (Integer)parameters.get("treauserID"),
-                                    (Integer)parameters.get("userID"));
                 break;
 
             case "eventtreasurewronganswer":
                 if(parameters == null) {
                     response = "illegal arguments";
+                    break;
                 }
                 token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
                 if(isTokenActive(token)) {
-                    response = getAllTreasures();
+                    eventTreasureWrongAnswer((Integer) parameters.get("token"),
+                            (Integer) parameters.get("treauserID"),
+                            (Integer) parameters.get("userID"));
                 }
                 else {
                     response = "illegal operation";
                 }
-                eventTreasureWrongAnswer((Integer) parameters.get("token"),
-                                         (Integer) parameters.get("treauserID"),
-                                         (Integer) parameters.get("userID"));
 
                 break;
 
             case "gethighscorelist":
                 if(parameters == null) {
                     response = "illegal arguments";
+                    break;
                 }
                 token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
                 if(isTokenActive(token)) {
-                    response = getAllTreasures();
+                    response = getHighscoreList((Integer) parameters.get("token"),
+                            (Integer) parameters.get("low"),
+                            (Integer) parameters.get("high"));
                 }
                 else {
                     response = "illegal operation";
                 }
-                response = getHighscoreList((Integer) parameters.get("token"),
-                                 (Integer) parameters.get("low"),
-                                 (Integer) parameters.get("high"));
                 break;
 
             case "gettesttreasure":
