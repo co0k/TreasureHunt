@@ -25,6 +25,8 @@ public interface IServerCommunicationDAO {
 
     public void getHighscoreListInRangeFromServer(int from, int to, IResponseCallback responseCallback);
 
+    public void sendOpenTreasureRequest(Treasure t, IResponseCallback callback);
+
     public void messageReceived(String payload);
 
 }

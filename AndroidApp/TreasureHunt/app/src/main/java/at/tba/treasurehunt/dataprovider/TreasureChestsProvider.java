@@ -3,6 +3,8 @@ package at.tba.treasurehunt.dataprovider;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.tasks.IResponseCallback;
@@ -71,8 +73,10 @@ public class TreasureChestsProvider implements IResponseCallback {
     @Override
     public void onResponseReceived(JSONRPC2Response response) {
         JsonConstructor constr = new JsonConstructor();
-        Treasure t = constr.fromJson((String)response.getResult(), Treasure.class);
-        treasures.add(t);
+        Treasure[] ts = constr.fromJson((String)response.getResult(), Treasure[].class);
+        List<Treasure> list = new ArrayList<Treasure>(Arrays.asList(ts));
+        treasures.clear();
+        treasures.addAll(list);
         treasureLoadedCallback.onTreasuresLoadedSuccess();
     }
 

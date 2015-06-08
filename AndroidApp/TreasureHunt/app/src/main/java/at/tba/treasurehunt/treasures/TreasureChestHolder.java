@@ -5,19 +5,24 @@ import android.location.Location;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
 import java.util.ArrayList;
 import android.util.Log;
 
 
+import at.tba.treasurehunt.dataprovider.IOpenTreasureCallback;
+import at.tba.treasurehunt.dataprovider.ITreasureLoadedCallback;
 import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
+import at.tba.treasurehunt.servercomm.ServerCommunication;
+import at.tba.treasurehunt.tasks.IResponseCallback;
 import at.tba.treasurehunt.utils.MapLocationHelper;
 import data_structures.treasure.Treasure;
 
 /**
  * Created by dAmihl on 28.04.15.
  */
-public class TreasureChestHolder {
+public class TreasureChestHolder implements IResponseCallback{
 
     private static TreasureChestHolder instance = null;
 
@@ -36,6 +41,8 @@ public class TreasureChestHolder {
     private Treasure nearestTreasure = null;
     private double distanceToNearestTreasure = Double.MAX_VALUE;
     private Treasure currentSelectedTreasure = null;
+
+    private IOpenTreasureCallback openTreasureCallback;
 
 
     /**
@@ -139,8 +146,10 @@ public class TreasureChestHolder {
      * Called from QuizActivity when the chest is opened successfully.
      * Treasure will be set inactive
      */
-    public void openTreasure(Treasure t){
-        TreasureChestsProvider.getInstance().getTreasureChestsList().remove(t);
+    public void openTreasure(Treasure t, IOpenTreasureCallback callback){
+        //TreasureChestsProvider.getInstance().getTreasureChestsList().remove(t);
+        this.openTreasureCallback = callback;
+        ServerCommunication.getInstance().sendOpenTreasureRequest(t, this);
     }
 
 
@@ -158,6 +167,13 @@ public class TreasureChestHolder {
     }
 
 
+    @Override
+    public void onResponseReceived(JSONRPC2Response response) {
+        openTreasureCallback.onOpenTreasureSuccess();
+    }
 
-
+    @Override
+    public void onResponseReceiveError() {
+        openTreasureCallback.onOpenTreasureFailure();
+    }
 }

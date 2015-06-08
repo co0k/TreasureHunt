@@ -1,8 +1,12 @@
 package at.tba.treasurehunt.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -18,7 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.dataprovider.IOpenTreasureCallback;
+import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
+import at.tba.treasurehunt.utils.AlertHelper;
 import at.tba.treasurehunt.utils.ShowMessageHelper;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
@@ -31,17 +38,21 @@ import data_structures.treasure.Treasure;
  *
  * The layout gets programmatically generated, dependent on the Quiz' structure.
  */
-public class QuizActivity extends Activity {
+public class QuizActivity extends Activity implements IOpenTreasureCallback {
 
     private Quiz quiz;
     private Treasure treasure;
+
+    private View mLayoutView;
+    private View mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         ActivityManager.setCurrentActivity(this);
-
+        mProgressView = findViewById(R.id.open_treasure_progress);
+        mLayoutView = findViewById(R.id.quizLayout);
 
         /**
          * Get the quiz of the opened Treasure.
@@ -82,6 +93,43 @@ public class QuizActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mLayoutView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLayoutView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mLayoutView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mLayoutView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
 
 
     /**
@@ -140,10 +188,7 @@ public class QuizActivity extends Activity {
         if (answerId == 1) { // correct answer is always id == 1
 
             //ShowMessageHelper.showSimpleInfoMessagePopUp("Right Answer! Nice bro.", this);
-            TreasureChestHolder.getInstance().openTreasure(this.treasure);
-            this.finish();
-            Intent actSwitch = new Intent(this, TreasureOpenActivity.class);
-            startActivity(actSwitch);
+            openTreasure();
         } else {
             ShowMessageHelper.showSimpleInfoMessagePopUp("Wrong answer bro. sry.", this);
         }
@@ -163,5 +208,36 @@ public class QuizActivity extends Activity {
 
     public void onButtonAnswer4Click(View v) {
         onAnswerClick(4);
+    }
+
+
+    private void treasureOpenedSuccessfully(){
+        this.finish();
+        Intent actSwitch = new Intent(this, TreasureOpenActivity.class);
+        startActivity(actSwitch);
+    }
+
+    private void openTreasure(){
+        showProgress(true);
+        TreasureChestHolder.getInstance().openTreasure(this.treasure, this);
+    }
+
+    @Override
+    public void onOpenTreasureSuccess() {
+        showProgress(false);
+        treasureOpenedSuccessfully();
+    }
+
+    @Override
+    public void onOpenTreasureFailure() {
+        AlertHelper.showNewAlertSingleButton(this, "Something went wrong.."
+                , "You are not allowed to open this treasure! Sorry.",
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
+        showProgress(false);
     }
 }
