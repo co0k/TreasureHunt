@@ -1,4 +1,4 @@
-create table location (
+create table if not exists location (
 Lid int NOT NULL AUTO_INCREMENT,
 x double,
 y double,
@@ -6,9 +6,9 @@ outXP int,
 primary key (Lid)
 );
 
-create table user (
+create table if not exists user (
 Uid int NOT NULL AUTO_INCREMENT,
-name varchar(256) NOT NULL,
+name varchar(255) NOT NULL,
 pwdHash varchar(1024) NOT NULL,
 email varchar(1024),
 score int default 0,
@@ -16,7 +16,7 @@ primary key (Uid),
 unique key (name)
 );
 
-create table quiz (
+create table if not exists quiz (
 Qid int NOT NULL AUTO_INCREMENT,
 question varchar(1024),
 answer1 varchar(1024),
@@ -31,27 +31,26 @@ primary key (Qid),
 foreign key (Lid) references location (Lid)
 );
 
-create table type (
+create table if not exists type (
 Tid int NOT NULL AUTO_INCREMENT,
 name varchar(256),
 primary key (Tid)
 );
 
-create table size (
+create table if not exists size (
 Sid int NOT NULL AUTO_INCREMENT,
 sizeXP int,
 size int,
 primary key (Sid)
 );
 
-create table content (
+create table if not exists content (
 Cid int NOT NULL AUTO_INCREMENT,
 content varchar(1024),
-contentXP int,
 primary key (Cid)
 );
 
-create table box (
+create table if not exists box (
 Bid int NOT NULL AUTO_INCREMENT,
 Lid int,
 Tid int,
@@ -68,7 +67,7 @@ foreign key (Cid) references content (Cid),
 foreign key (last_userid) references user (Uid)
 );
 
-create table history (
+create table if not exists history (
 Uid int NOT NULL,
 Bid int NOT NULL,
 time_stamp timestamp default CURRENT_TIMESTAMP,
@@ -76,11 +75,17 @@ foreign key (Uid) references user (Uid),
 foreign key (Bid) references box (Bid)
 );
 
-create table inventory (
+create table if not exists block (
+Uid int NOT NULL,
+Bid int NOT NULL,
+time_stamp timestamp default CURRENT_TIMESTAMP,
+foreign key (Uid) references user (Uid),
+foreign key (Bid) references box (Bid)
+);
+
+create table if not exists inventory (
 Uid int,
 Cid int,
 foreign key (Uid) references user (Uid),
 foreign key (Cid) references content (Cid)
 );
-
-

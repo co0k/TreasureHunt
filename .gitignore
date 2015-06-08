@@ -3,6 +3,20 @@
 
 .settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
 
+.gradle
+
+TreasureHuntApp/app/libs/TreasureHunt-libs-0.1.jar
+
+TreasureHuntApp/.idea
+
+TreasureHuntApp/TreasureHunt.iml
+
+TreasureHuntApp/TreasureHuntApp.iml
+
+TreasureHuntApp/app/app.iml
+
+.DS_STORE
+
 Server/.classpath
 
 Server/.project
@@ -13,16 +27,20 @@ Server/.settings/gradle/org.springsource.ide.eclipse.gradle.refresh.prefs
 
 Server/build
 
-Server/src/main/java/db/
+Server/.idea/ 
 
-.gradle
+.gradle/
 
-AndroidApp/TreasureHunt/app/libs/TreasureHunt-libs-0.1.jar
+Server/src/main/java/db/generated/
 
-AndroidApp/.idea
+*~
 
-AndroidApp/TreasureHunt/TreasureHunt.iml
+Server/Server.iml
 
-AndroidApp/TreasureHunt/app/app.iml
+TreasureHunt.iml
 
-.DS_STORE
+build/
+
+.idea/
+
+Server/ServerLog.log
