@@ -242,7 +242,7 @@ public interface DatabaseControllerDAO {
 	/**
 	 * updates the score of a given user, from his id.
 	 * the resulting score is the score the user had before, plus the score given by this method
-	 * @param userId
+	 * @param uId
 	 * @param score points to add
 	 * @return
 	 */
@@ -255,6 +255,15 @@ public interface DatabaseControllerDAO {
 	 * @return
 	 */
 	boolean addBlock (int uID, int treasureId);
+
+	/**
+	 * checks if a user is blocked for the given treasure id
+	 * @param uID
+	 * @param treasureId
+	 * @return
+	 */
+	boolean isBlocked (int uID, int treasureId);
+
 	/**
 	 * removes a block for a user for a specific treasure
 	 * @param uID
