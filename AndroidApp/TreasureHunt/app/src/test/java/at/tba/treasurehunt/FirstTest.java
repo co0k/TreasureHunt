@@ -1,3 +1,5 @@
+package at.tba.treasurehunt;
+
 import at.tba.treasurehunt.utils.HotColdManager;
 import at.tba.treasurehunt.utils.MapLocationHelper;
 import data_structures.treasure.Quiz;

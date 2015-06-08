@@ -1,2 +1,2 @@
 include 'Server'
-include 'AndroidApp/TreasureHunt'
+include 'AndroidApp/TreasureHunt/app'
