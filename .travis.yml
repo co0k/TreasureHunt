@@ -9,7 +9,7 @@ language: android
 # language: java
 jdk: oraclejdk8
 env:
-    matrix:
+    global: 
         - ANDROID_TARGET=android-21
         - ANDROID_ABI=armeabi-v7a
         - ADB_INSTALL_TIMEOUT=10 # minutes (2 minutes by default)
