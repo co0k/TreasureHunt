@@ -48,6 +48,13 @@ public class Inventory implements Serializable{
 	}
 
 	@Override
+	public String toString() {
+		return "Inventory{" +
+				"inventoryList=" + inventoryList +
+				'}';
+	}
+
+	@Override
 	public int hashCode() {
 		return inventoryList != null ? inventoryList.hashCode() : 0;
 	}
@@ -92,6 +99,14 @@ public class Inventory implements Serializable{
 			int result = 31 * count;
 			result = 31 * result + (content != null ? content.hashCode() : 0);
 			return result;
+		}
+
+		@Override
+		public String toString() {
+			return "Entry{" +
+					"count=" + count +
+					", content=" + content +
+					'}';
 		}
 	}
 }
