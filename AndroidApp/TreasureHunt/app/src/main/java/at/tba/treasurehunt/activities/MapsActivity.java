@@ -44,6 +44,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GPSTracker gpsTracker;
     private RectangleDrawView drawRectView;
 
+    /*
+    Used for single loading of treasures.
+    When the android devices orientation is changed, the onCreate method is called again.
+     */
+    private boolean TREASURE_LOAD_INITIALIZED = false;
+
     private View mProgressView;
     private View mMapsFrameLayout;
 
@@ -234,19 +240,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void loadTreasures(){
-        showProgress(true);
-        TreasureChestsProvider.getInstance().loadTreasures(this);
+        if (!TREASURE_LOAD_INITIALIZED) {
+            showProgress(true);
+            TreasureChestsProvider.getInstance().loadTreasures(this);
+            TREASURE_LOAD_INITIALIZED = true;
+        }else{
+            Log.i("LoadTreasures", "TreasureLoad already initialized!");
+        }
     }
 
 
     @Override
     public void onTreasuresLoadedSuccess() {
+        setUpMapIfNeeded();
         refreshMap();
         showProgress(false);
     }
 
     @Override
     public void onTreasureLoadedFailure() {
-        AlertHelper.showUnknownErrorAlert(this);
+        AlertHelper.showNewAlertSingleButton(this, "Something went wrong..",
+                "An error occured loading the Treasures!. Please try again.",
+                new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        });
     }
 }

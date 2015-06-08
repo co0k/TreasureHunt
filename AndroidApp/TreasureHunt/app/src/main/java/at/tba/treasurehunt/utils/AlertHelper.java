@@ -40,4 +40,17 @@ public class AlertHelper {
                 .show();
     }
 
+    public static void showNewAlertSingleButton(Context context, String title, String message, final Runnable btnAction){
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        btnAction.run();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
 }

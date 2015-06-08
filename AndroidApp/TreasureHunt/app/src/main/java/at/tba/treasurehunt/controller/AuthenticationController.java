@@ -51,7 +51,8 @@ public class AuthenticationController implements IResponseCallback {
                 callback.onAuthenticationFailure(AuthenticationError.UNKNOWN_ERROR);
                 return;
             }
-            Integer result = constr.fromJson((String)(response.getResult()), Integer.class);
+            Integer result = constr.fromJson((String)(response.getResult())
+                    , Integer.class);
             if (result == null) {
                 callback.onAuthenticationFailure(AuthenticationError.UNKNOWN_ERROR);
                 return;

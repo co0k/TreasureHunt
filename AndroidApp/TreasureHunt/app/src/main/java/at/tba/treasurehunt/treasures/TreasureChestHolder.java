@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import android.util.Log;
+
 
 import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
 import at.tba.treasurehunt.utils.MapLocationHelper;
@@ -122,6 +124,10 @@ public class TreasureChestHolder {
      * @param mMap GoogleMap to draw on
      */
     public void drawChestsOnMap(GoogleMap mMap){
+        if (mMap == null){
+            Log.d("drawChests", "Map is null!");
+            return;
+        }
         mMap.clear();
         for (Treasure t: treasureList){
             mMap.addCircle(new CircleOptions().center(new LatLng(t.getLocation().getLat(), t.getLocation().getLon())).radius(1));

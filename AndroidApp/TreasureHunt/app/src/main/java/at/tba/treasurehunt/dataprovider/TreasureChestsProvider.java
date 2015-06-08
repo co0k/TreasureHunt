@@ -63,7 +63,7 @@ public class TreasureChestsProvider implements IResponseCallback {
     @Override
     public void onResponseReceived(JSONRPC2Response response) {
         JsonConstructor constr = new JsonConstructor();
-        Treasure t = constr.fromJson(response.toJSONString(), Treasure.class);
+        Treasure t = constr.fromJson((String)response.getResult(), Treasure.class);
         treasures.add(t);
         treasureLoadedCallback.onTreasuresLoadedSuccess();
     }

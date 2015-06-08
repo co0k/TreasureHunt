@@ -119,7 +119,11 @@ public class ServerCommunication implements IServerCommunicationDAO{
 
         Log.d(TAG, "Got message: " + payload);
         Log.d(TAG, "Got JSON: "+response);
-        responseCallback.onResponseReceived(response);
+        if (response.getError() == null) { // no error
+            responseCallback.onResponseReceived(response);
+        }else{ // JSON RPC error
+            responseCallback.onResponseReceiveError();
+        }
     }
 
     private void sendAndWait(JSONRPC2Request req, IResponseCallback callback){
