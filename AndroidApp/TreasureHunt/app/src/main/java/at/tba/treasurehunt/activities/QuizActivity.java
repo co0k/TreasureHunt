@@ -240,4 +240,5 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
                 });
         showProgress(false);
     }
+
 }

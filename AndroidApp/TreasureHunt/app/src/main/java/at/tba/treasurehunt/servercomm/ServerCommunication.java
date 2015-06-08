@@ -106,14 +106,31 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return ;
     }
 
+
+
     @Override
     public void sendOpenTreasureRequest(Treasure t, IResponseCallback callback) {
         JSONRPC2Request request;
-        request = new JSONRPC2Request("eventtreasureopened", (requestID++).toString());
+        request = new JSONRPC2Request("eventtreasureopen", (requestID++).toString());
         Map<String, Object> params = new HashMap<>();
         Integer token = AuthenticationController.getInstance().getLoggedInUserID();
         params.put("token", token.toString());
         params.put("treasureid", new Integer(t.getId()).toString());
+        params.put("userid",token.toString());
+        request.setNamedParams(params);
+        sendAndWait(request, callback);
+        return;
+    }
+
+    @Override
+    public void sendOpenTreasureWrongAnswerEvent(Treasure t, IResponseCallback callback) {
+        JSONRPC2Request request;
+        request = new JSONRPC2Request("eventtreasurewronganswer", (requestID++).toString());
+        Map<String, Object> params = new HashMap<>();
+        Integer token = AuthenticationController.getInstance().getLoggedInUserID();
+        params.put("token", token.toString());
+        params.put("treasureid", new Integer(t.getId()).toString());
+        params.put("userid",token.toString());
         request.setNamedParams(params);
         sendAndWait(request, callback);
         return;

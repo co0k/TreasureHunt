@@ -9,4 +9,5 @@ public interface IOpenTreasureCallback {
 
     public void onOpenTreasureFailure();
 
+
 }
