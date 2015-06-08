@@ -94,20 +94,9 @@ public class Quiz extends Treasure.Type implements Serializable {
 		return qid;
 	}
 
-	public int getLocationId() {
+	public Integer getLocationId() {
 		return lid;
 	}
-
-	@Override
-	public String toString() {
-		return "Tid: " + this.getId() + "\n" + "Lid: " + lid + "\n" + "name: " + this.getType() + "\n"
-				+ "exp: " + this.getXP() + "\n" + "Qid: " + qid + "\n" + "q: "
-				+ question + "\n" + "1: " + answer1 + "\n" + "2: " + answer2
-				+ "\n" + "3: " + answer3 + "\n" + "4: " + answer4 + "\n"
-				+ "5: " + answer5 + "\n" + "6: " + answer6 + "\n";
-
-	}
-
 
 	@Override
 	public String getType() {
@@ -163,5 +152,21 @@ public class Quiz extends Treasure.Type implements Serializable {
 		result = 31 * result + (answer5 != null ? answer5.hashCode() : 0);
 		result = 31 * result + (answer6 != null ? answer6.hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "Quiz{" +
+				super.toString() + ", " +
+				"qid=" + qid +
+				", question='" + question + '\'' +
+				", answer1='" + answer1 + '\'' +
+				", answer2='" + answer2 + '\'' +
+				", answer3='" + answer3 + '\'' +
+				", answer4='" + answer4 + '\'' +
+				", answer5='" + answer5 + '\'' +
+				", answer6='" + answer6 + '\'' +
+				", lid=" + lid +
+				'}';
 	}
 }

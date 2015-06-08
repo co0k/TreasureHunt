@@ -106,4 +106,17 @@ public class User implements IdHolder, ExperiencePointHolder, Comparable<User>, 
 		result = 31 * result + (inventory != null ? inventory.hashCode() : 0);
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", rank=" + rank +
+				", experience=" + experience +
+				", name='" + name + '\'' +
+				", passwordHash='" + passwordHash + '\'' +
+				", email='" + email + '\'' +
+				", inventory=" + inventory +
+				'}';
+	}
 }

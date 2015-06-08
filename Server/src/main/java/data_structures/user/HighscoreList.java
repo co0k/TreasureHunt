@@ -6,27 +6,25 @@ import java.util.List;
 import data_structures.ExperiencePointHolder;
 import data_structures.IdHolder;
 
-public class HighscoreList  implements Serializable{
+public class HighscoreList  implements Serializable, Comparable<HighscoreList> {
 
 	private static final long serialVersionUID = 1855455260769203099L;
-	private int minRange;
-	private int maxRange;
+	private int fromRank;
 	private List<Entry> list;
 	
 	
-	public HighscoreList(int minRange, int maxRange, List<Entry> list) {
+	public HighscoreList(int fromRank, List<Entry> list) {
 		super();
-		this.minRange = minRange;
-		this.maxRange = maxRange;
+		this.fromRank = fromRank;
 		this.list = list;
 	}
 
-	public int getMinRange() {
-		return minRange;
+	public int getfromRank() {
+		return fromRank;
 	}
 
-	public int getMaxRange() {
-		return maxRange;
+	public int getNumberOfEntries() {
+		return list.size();
 	}
 
 	public List<Entry> getList() {
@@ -63,18 +61,39 @@ public class HighscoreList  implements Serializable{
 
 		HighscoreList that = (HighscoreList) o;
 
-		if (minRange != that.minRange) return false;
-		if (maxRange != that.maxRange) return false;
+		if (fromRank != that.fromRank) return false;
+		if (getNumberOfEntries() != that.getNumberOfEntries()) return false;
 		return !(list != null ? !list.equals(that.list) : that.list != null);
 
 	}
 
 	@Override
 	public int hashCode() {
-		int result = minRange;
-		result = 31 * result + maxRange;
+		int result = fromRank;
 		result = 31 * result + (list != null ? list.hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "HighscoreList{" +
+				"fromRank=" + fromRank +
+				", numberOfEntries=" + getNumberOfEntries() +
+				", list=" + list +
+				'}';
+	}
+
+	@Override
+	public int compareTo(HighscoreList highscoreList) {
+		if(fromRank < highscoreList.fromRank)
+			return -1;
+		else if(fromRank > highscoreList.fromRank)
+			return 1;
+		else  {
+			if(getNumberOfEntries() < highscoreList.getNumberOfEntries())
+				return -1;
+			else return 1;
+		}
 	}
 
 	/****************** (sub-)interfaces and classes ******************/
@@ -96,6 +115,10 @@ public class HighscoreList  implements Serializable{
 			this.name = name;
 			this.rank = rank;
 			this.experience = exp;
+		}
+
+		public Entry(String name, int rank, int exp) {
+			this(-1, name,rank,exp);
 		}
 
 
@@ -147,6 +170,16 @@ public class HighscoreList  implements Serializable{
 			result = 31 * result + rank;
 			result = 31 * result + experience;
 			return result;
+		}
+
+		@Override
+		public String toString() {
+			return "Entry{" +
+					"id=" + id +
+					", name='" + name + '\'' +
+					", rank=" + rank +
+					", experience=" + experience +
+					'}';
 		}
 	}
 }
