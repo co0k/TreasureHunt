@@ -23,6 +23,8 @@ public class DatabaseControllerTreasuresTest {
 		Logger globalLogger = Logger.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
 		globalLogger.setLevel(java.util.logging.Level.OFF);
 
+
+
 		// TODO add more test data
 		Quiz quiz1 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
 		Quiz quiz2 = new Quiz(10,"Wo ist der Rechnerraum 15?", "Uni Innsbruck", "dein zuhause", "Bank", "Konzerthaus", null, null);
@@ -59,6 +61,9 @@ public class DatabaseControllerTreasuresTest {
 	@After
 	public void finish() {
 		// clean the database
+		for (Integer tmp : exampleTreasuresID) {
+			DatabaseController.getInstance().deactivateTreasure(tmp);
+		}
 		DatabaseController.getInstance().deleteAll();
 	}
 
