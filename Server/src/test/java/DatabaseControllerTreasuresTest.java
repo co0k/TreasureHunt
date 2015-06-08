@@ -33,7 +33,18 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz5 = new Quiz(25,"Wofür ist der Alpenzoo bekannt?", "höchstgelegener Zoo Europas", "artenreichster Zoo Europas", "sauberster Zoo Europas", "was ist ein Zoo?", null, null);
 		Quiz quiz6 = new Quiz(20,"Welches bekannte Snowboardevent findet alljährlich in Innsbruck statt?", "Air+Style", "PipetoPipe", "AlpinFreeze", "Rail Jam", null, null);
 		Quiz quiz7 = new Quiz(15,"Wie viele vergoldete Kupferschindeln wurden beim goldenen Dachl verlegt?", "2.657", "1.529", "403", "86", null, null);
-		Quiz quiz8 = new Quiz(30,"Wie viele Bäcker Ruetz gibt es in Innsbruck?", "16", "7", "pro Einwohner einen", "ist schon schlimmer als McDonalds", null, null);
+		Quiz quiz8 = new Quiz(30,"Wie viele Bäcker Ruetz gibt es in Innsbruck?", "16", "7", "pro Einwohner einen", "8", null, null);
+		Quiz quiz9 = new Quiz(30,"Wann fanden die ersten Youth Olympic Games in Innsbruck statt?", "2012", "2011", "2008", "2001", null, null);
+		Quiz quiz10 = new Quiz(30,"In welchem Jahr wurde Innsbruck Landeshaupt von Tirol?", "1849", "1912", "1731", "1818", null, null);
+		Quiz quiz11 = new Quiz(30,"Wie viele unterschiedliche Fakultäten besitzt die Universität Innsbruck?", "16", "8", "10", "78", null, null);
+		Quiz quiz12 = new Quiz(30,"Was ist das älteste bekannte Gemüse?", "Erbsen", "Karotten", "Birnen", "Äpfel", null, null);
+		Quiz quiz13 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
+		Quiz quiz14 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
+		Quiz quiz15 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
+		Quiz quiz16 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
+
+
+
 
 
 		exampleTreasuresID = new ArrayList<Integer>();
@@ -51,6 +62,16 @@ public class DatabaseControllerTreasuresTest {
 		exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2635802, 11.3945087), quiz8, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2654258,11.3936075), quiz8, new Treasure.Size(-1, 20, 1), null));
 
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.2634968,11.3996253), quiz9, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(15, 47.2617463,11.4057584), quiz10, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2639078,11.3858713), quiz11, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(20, 47.2675885,11.3916753), quiz12, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(25, 47.2687439,11.39429), quiz13, new Treasure.Size(-1, 20, 1), null));
+
+		exampleTreasures.add(new Treasure(new Treasure.Location(15, 47.2687439,11.39429), quiz14, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.2687439,11.39429), quiz15, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.2687439,11.39429), quiz16, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2687439,11.39429), quiz16, new Treasure.Size(-1, 20, 1), null));
 
 		Collections.sort(exampleTreasures);
 		// add all the treasures
