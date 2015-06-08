@@ -33,16 +33,16 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz5 = new Quiz(25,"Wofür ist der Alpenzoo bekannt?", "höchstgelegener Zoo Europas", "artenreichster Zoo Europas", "sauberster Zoo Europas", "was ist ein Zoo?", null, null);
 		Quiz quiz6 = new Quiz(20,"Welches bekannte Snowboardevent findet alljährlich in Innsbruck statt?", "Air+Style", "PipetoPipe", "AlpinFreeze", "Rail Jam", null, null);
 		Quiz quiz7 = new Quiz(15,"Wie viele vergoldete Kupferschindeln wurden beim goldenen Dachl verlegt?", "2.657", "1.529", "403", "86", null, null);
-		Quiz quiz8 = new Quiz(30,"Wie viele Bäcker Ruetz gibt es in Innsbruck?", "16", "7", "pro Einwohner einen", "8", null, null);
-		Quiz quiz9 = new Quiz(30,"Wann fanden die ersten Youth Olympic Games in Innsbruck statt?", "2012", "2011", "2008", "2001", null, null);
-		Quiz quiz10 = new Quiz(30,"In welchem Jahr wurde Innsbruck Landeshaupt von Tirol?", "1849", "1912", "1731", "1818", null, null);
+		Quiz quiz8 = new Quiz(20,"Wie viele Bäcker Ruetz gibt es in Innsbruck?", "16", "7", "pro Einwohner einen", "8", null, null);
+		Quiz quiz9 = new Quiz(10,"Wann fanden die ersten Youth Olympic Games in Innsbruck statt?", "2012", "2011", "2008", "2001", null, null);
+		Quiz quiz10 = new Quiz(20,"In welchem Jahr wurde Innsbruck Landeshaupt von Tirol?", "1849", "1912", "1731", "1818", null, null);
 		Quiz quiz11 = new Quiz(30,"Wie viele unterschiedliche Fakultäten besitzt die Universität Innsbruck?", "16", "8", "10", "78", null, null);
-		Quiz quiz12 = new Quiz(30,"Was ist das älteste bekannte Gemüse?", "Erbsen", "Karotten", "Birnen", "Äpfel", null, null);
-		Quiz quiz13 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
-		Quiz quiz14 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
-		Quiz quiz15 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
-		Quiz quiz16 = new Quiz(30,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
-
+		Quiz quiz12 = new Quiz(40,"Was ist das älteste bekannte Gemüse?", "Erbsen", "Karotten", "Birnen", "Äpfel", null, null);
+		Quiz quiz13 = new Quiz(20,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
+		Quiz quiz14 = new Quiz(30,"Wieviele verschiedene Tierarten leben im Alpenzoo Innsbruck?", "150", "80", "15", "34", null, null);
+		Quiz quiz15 = new Quiz(10,"Was ist auf den Wappen von Innsbruck zu sehen?", "Brücke", "Adler", "Krone", "Sichel", null, null);
+		Quiz quiz16 = new Quiz(15,"Wie hoch liegt die Seegrube?", "1905m", "2003m", "1530m", "960m", null, null);
+		Quiz quiz17 = new Quiz(35,"An wievielen Gemeinden grenzt Innsbruck?", "16", "5", "10", "1000", null, null);
 
 
 
@@ -70,8 +70,14 @@ public class DatabaseControllerTreasuresTest {
 
 		exampleTreasures.add(new Treasure(new Treasure.Location(15, 47.2687439,11.39429), quiz14, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.2687439,11.39429), quiz15, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.2687439,11.39429), quiz16, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.2687439,11.39429), quiz15, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2687439,11.39429), quiz16, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2687439,11.39429), quiz16, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2687439,11.39429), quiz17, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2687439,11.39429), quiz17, new Treasure.Size(-1, 20, 1), null));
+
+
+
 
 		Collections.sort(exampleTreasures);
 		// add all the treasures
