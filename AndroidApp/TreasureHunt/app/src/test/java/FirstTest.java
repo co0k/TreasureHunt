@@ -36,12 +36,12 @@ public class FirstTest extends TestCase {
         assertNotSame(testCase, HotColdManager.determineHotCold(800));
     }
 
-
     @Test
     public void testMapLocation(){
         MapLocationHelper testMapLocation = new MapLocationHelper();
         LatLng testLatLng = new LatLng(47.232164, 11.441617);
-        assertEquals(0, testMapLocation.isInRange(testLatLng, testLatLng, 0));
-        assertEquals(true, testMapLocation.distanceBetween(testLatLng, testLatLng));
+        assertEquals(true, testMapLocation.isInRange(testLatLng, testLatLng, 0));
+        assertEquals(0.0, testMapLocation.distanceBetween(testLatLng, testLatLng));
     }
+
 }

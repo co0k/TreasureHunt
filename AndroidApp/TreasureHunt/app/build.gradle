@@ -24,6 +24,9 @@ android {
         exclude 'META-INF/ASL2.0'
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 sourceSets {
