@@ -246,6 +246,30 @@ public interface DatabaseControllerDAO {
 	 * @param score points to add
 	 * @return
 	 */
-	boolean updateScore (int userId, int score);
+	boolean updateScore (int uId, int score);
+	
+	/**
+	 * adds a block for a user for a specific treasure
+	 * @param uID
+	 * @param treasureId
+	 * @return
+	 */
+	boolean addBlock (int uID, int treasureId);
+	/**
+	 * removes a block for a user for a specific treasure
+	 * @param uID
+	 * @param treasureId
+	 * @return
+	 */
+	boolean removeBlock (int uID, int treasureId);
+	
+	/**
+	 * returns the time when it was locked in milliseconds since January 1, 1970, 00:00:00 GMT 
+	 * or -1 if there is no lock
+	 * @param uID
+	 * @param treasureId
+	 * @return
+	 */
+	long getLockTime (int uID, int treasureId);
 	
 }

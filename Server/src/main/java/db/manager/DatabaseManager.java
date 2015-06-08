@@ -36,10 +36,15 @@ public class DatabaseManager {
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne();
 		conn.close();
-		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid))
+		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid) || isUserBlockForTreasure(uid, bid))
 			return false;
 		else
 			return true;
+	}
+
+	private static boolean isUserBlockForTreasure(int uid, int bid) throws SQLException{
+		// TODO decide how long a user is blocked
+		return false;
 	}
 
 	public static int saveTreasure(Treasure toSave) throws IllegalArgumentException, SQLException {
@@ -207,6 +212,17 @@ public class DatabaseManager {
 		else
 			return true;
 	}
+	
+	public static boolean insertBlock(int uid, int bid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int record = create.insertInto(BLOCK, BLOCK.UID, BLOCK.BID).values(uid, bid).execute();
+		conn.close();
+		if (record != 1)
+			return false;
+		else
+			return true;
+	}
 
 	public static boolean insertInInventory(int uid, int cid) throws SQLException {
 		Connection conn = getConnection();
@@ -313,11 +329,34 @@ public class DatabaseManager {
 		} else
 			return true;
 	}
+	
+	public static boolean deleteAllBlockForUser(int uid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(BLOCK).where(BLOCK.UID.equal(uid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public static boolean deleteBlock(int uid, int bid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int delete = create.delete(BLOCK).where(BLOCK.UID.equal(uid),BLOCK.BID.equal(bid)).execute();
+		conn.close();
+		if (delete != 0)
+			return true;
+		else
+			return false;
+	}
 
 	public static void deleteAll() throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		
+		create.deleteFrom(BLOCK).execute();
 		create.deleteFrom(HISTORY).execute();
 		create.deleteFrom(BOX).execute();
 		create.deleteFrom(QUIZ).execute();
@@ -654,17 +693,6 @@ public class DatabaseManager {
 			return new HighscoreList(fromRank, out);
 	}
 	
-	public static boolean updateScore (int uid, int score) throws SQLException {
-		Connection conn = getConnection();
-		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		int count = create.update(USER).set(USER.SCORE, getScoreFromId(uid) + score).where(USER.UID.equal(uid)).execute();
-		conn.close();
-		if (count != 1)
-			return false;
-		else
-			return true;
-	}
-	
 	public static Map<Treasure, Long> getHistory(int uid) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -681,19 +709,6 @@ public class DatabaseManager {
 			return null;
 	}
 	
-	public static boolean changePassword (int uid, String newPwdHash) throws SQLException, IllegalArgumentException {
-		if (newPwdHash == null || newPwdHash.length() > 1024)
-			throw new IllegalArgumentException("your hash is null or too long");
-		Connection conn = getConnection();
-		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		int count = create.update(USER).set(USER.PWDHASH, newPwdHash).where(USER.UID.equal(uid)).execute();
-		conn.close();
-		if (count != 1)
-			return false;
-		else
-			return true;		
-	}
-	
 	public static List<Integer> getAllBoxId () throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -708,6 +723,41 @@ public class DatabaseManager {
 		else
 			return out;
 	}
+	
+	public static long getLockTime (int uid, int bid) throws SQLException {
+		Connection conn = getConnection();		
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		Record result = create.select(BLOCK.TIME_STAMP).from(BLOCK).where(BLOCK.UID.equal(uid),BLOCK.BID.equal(bid)).fetchOne();
+		if (result == null)
+			return -1;
+		else
+			return result.getValue(BLOCK.TIME_STAMP).getTime();
+	}
+	
+	public static boolean changePassword (int uid, String newPwdHash) throws SQLException, IllegalArgumentException {
+		if (newPwdHash == null || newPwdHash.length() > 1024)
+			throw new IllegalArgumentException("your hash is null or too long");
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int count = create.update(USER).set(USER.PWDHASH, newPwdHash).where(USER.UID.equal(uid)).execute();
+		conn.close();
+		if (count != 1)
+			return false;
+		else
+			return true;		
+	}	
+	
+	public static boolean updateScore (int uid, int score) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int count = create.update(USER).set(USER.SCORE, getScoreFromId(uid) + score).where(USER.UID.equal(uid)).execute();
+		conn.close();
+		if (count != 1)
+			return false;
+		else
+			return true;
+	}
+	
 
 	private static class ContentHelperClass {
 		Treasure.Content content;

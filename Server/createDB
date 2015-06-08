@@ -1,4 +1,4 @@
- #!/bin/bash -x
+#!/bin/bash -x
 mysql -e 'create database IF NOT EXISTS library;' -uroot
 mysql -e "use library;
 create table if not exists location (
@@ -71,6 +71,14 @@ foreign key (last_userid) references user (Uid)
 );
 
 create table if not exists history (
+Uid int NOT NULL,
+Bid int NOT NULL,
+time_stamp timestamp default CURRENT_TIMESTAMP,
+foreign key (Uid) references user (Uid),
+foreign key (Bid) references box (Bid)
+);
+
+create table if not exists block (
 Uid int NOT NULL,
 Bid int NOT NULL,
 time_stamp timestamp default CURRENT_TIMESTAMP,
