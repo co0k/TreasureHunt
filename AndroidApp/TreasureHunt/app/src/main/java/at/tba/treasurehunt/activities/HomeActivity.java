@@ -71,9 +71,9 @@ public class HomeActivity extends Activity {
         startActivity(actSwitch);
     }
 
-    public void onButtonInventoryClick(View v){
-        Intent actSwitch = new Intent(this, InventoryActivity.class);
-        startActivity(actSwitch);
+    public void onButtonExitClick(View v){
+        finish();
+        System.exit(0);
     }
 
     public void onButtonPlayClick(View v){

@@ -45,15 +45,7 @@
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Loot"
-            android:id="@+id/loot_view"
-            android:clickable="true"
-            android:onClick="onButtonInventoryClick"
-            android:layout_gravity="center"
-            android:layout_weight="0.25" />
+
 
             <Button
             android:layout_width="fill_parent"
@@ -62,6 +54,16 @@
             android:id="@+id/score_view"
             android:clickable="true"
             android:onClick="onButtonHighscoresClick"
+            android:layout_gravity="center"
+            android:layout_weight="0.25" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Quit the Hunt"
+            android:id="@+id/btnExit"
+            android:clickable="true"
+            android:onClick="onButtonExitClick"
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 

@@ -78,6 +78,16 @@
             android:gravity="center"
             android:layout_weight="0.25" />
 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="MyLoot"
+            android:id="@+id/loot_view"
+            android:clickable="true"
+            android:onClick="onButtonInventoryClick"
+            android:layout_gravity="center"
+            android:layout_weight="0.25" />
+
     </LinearLayout>
 
 

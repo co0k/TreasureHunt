@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -129,6 +130,11 @@ public class UserProfileActivity extends Activity implements IUserLoadedCallback
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mUserLayout.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    public void onButtonInventoryClick(View v){
+        Intent actSwitch = new Intent(this, InventoryActivity.class);
+        startActivity(actSwitch);
     }
 
 

@@ -50,6 +50,7 @@ public class AlertHelper {
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
                 .show();
     }
 
