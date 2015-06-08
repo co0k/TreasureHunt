@@ -155,19 +155,22 @@ public class RequestHandlerTest {
         JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
         JSONRPC2Response responseL = handler.handleRequest(requestL);
         assertNotNull("response after login is null", responseL);
-        Integer token = jsonC.fromJson((String)responseL.getResult(), Integer.class);
+        Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
         assertNotNull("token null", token);
 
         params.put("token", jsonC.toJson(token));
-        JSONRPC2Request request = new JSONRPC2Request("getAllTreasures",params, "id-2-at");
+        JSONRPC2Request request = new JSONRPC2Request("getAllTreasures", params, "id-2-at");
         JSONRPC2Response response = handler.handleRequest(request);
-        //System.err.println(response.getResult());
+        System.err.println(response.getResult());
         // TODO: fix Json parsing
         Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
         List<Treasure> tList = new ArrayList<>(Arrays.asList(treasures));
-        //ArrayList<Treasure> treasureList = Arrays.asList(treasures);
-        //ArrayList<Treasure> treasures = gson.fromJson((String) response.getResult(), new TypeToken<ArrayList<Treasure>>(){}.getType());
-        assertNotNull("treasure null!",treasures);
+        assertNotNull("treasure null!", treasures);
+        Collections.sort(tList);
+        assertEquals(exampleTreasures.size(), tList.size());
+        Collections.sort(tList);
+        for(int i = 0; i < exampleTreasures.size(); i++)
+            assertTrue("the treasures aren't equal", exampleTreasures.get(i).equalsWithoutId(tList.get(i)));
     }
 
     @Test
