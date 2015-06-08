@@ -1,5 +1,6 @@
 package frontend.Requests;
 
+import com.google.gson.Gson;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
@@ -13,7 +14,6 @@ import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
 import data_structures.user.User;
 
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -26,6 +26,7 @@ public class RequestHandler implements RequestResolver {
 
     private String[] tokenFree = {"checklogin","registeruser","gettesttreasure"};
     private Integer token;
+    private Gson gson = new Gson();
     /**
      * this Method parses the request
      * @param request
@@ -194,14 +195,12 @@ public class RequestHandler implements RequestResolver {
         Integer result = 0;
         try {
             Future<Integer> future =  CoreModel.getInstance().addCommand(new CheckUserLoginCommand(new User(username,pwHash,null,0,0,null)));
-            //System.err.println("\nIn checkLogIn \n");
             result = future.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        //System.err.println("\n\n checkLogIn got a result \n\n");
         return result;
     }
 
@@ -215,7 +214,6 @@ public class RequestHandler implements RequestResolver {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        //System.err.println("\n\n registerUser got a result \n\n");
         return false;
     }
 

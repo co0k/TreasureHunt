@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import communication_controller.json.JsonConstructor;
@@ -8,6 +10,7 @@ import db.DatabaseController;
 import frontend.Requests.RequestHandler;
 import org.junit.*;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -139,6 +142,7 @@ public class RequestHandlerTest {
 
     @Test
     public void getAllTreasuresTest() {
+        Gson gson = new Gson();
         Map<String, Object> params = new HashMap<>();
         Map<String, Object> paramsL = new HashMap<>();
 
@@ -157,10 +161,13 @@ public class RequestHandlerTest {
         params.put("token", jsonC.toJson(token));
         JSONRPC2Request request = new JSONRPC2Request("getAllTreasures",params, "id-2-at");
         JSONRPC2Response response = handler.handleRequest(request);
+        //System.err.println(response.getResult());
         // TODO: fix Json parsing
-        //List<Treasure> treasures = jsonC.fromJson((String)response.getResult(),ArrayList<Treasure>.class);
-        //assertNotNull("response null",response.getResult());
-        //assertNotNull("treasure null!",treasures);
+        Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
+        List<Treasure> tList = new ArrayList<>(Arrays.asList(treasures));
+        //ArrayList<Treasure> treasureList = Arrays.asList(treasures);
+        //ArrayList<Treasure> treasures = gson.fromJson((String) response.getResult(), new TypeToken<ArrayList<Treasure>>(){}.getType());
+        assertNotNull("treasure null!",treasures);
     }
 
     @Test
