@@ -33,6 +33,7 @@ public class ShowMessageHelper {
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_info)
+                .setCancelable(false)
                 .show();
     }
 

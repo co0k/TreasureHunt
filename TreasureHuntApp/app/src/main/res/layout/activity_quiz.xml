@@ -23,7 +23,7 @@
         android:layout_weight="1.3"
         style="@style/Base.TextAppearance.AppCompat.Title"
         android:gravity="center"
-        android:textSize="50dp"
+        android:textSize="35dp"
         android:layout_gravity="center_horizontal|top"
         android:id="@+id/quizQuestionText" />
 

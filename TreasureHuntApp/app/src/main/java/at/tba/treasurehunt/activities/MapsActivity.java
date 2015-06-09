@@ -32,6 +32,7 @@ import at.tba.treasurehunt.utils.RectangleDrawView;
 import at.tba.treasurehunt.utils.GPSTracker;
 import at.tba.treasurehunt.utils.GPSUpdateHandler;
 import at.tba.treasurehunt.utils.HotColdManager;
+import at.tba.treasurehunt.utils.TreasureUpdateHandler;
 import data_structures.treasure.Treasure;
 
 
@@ -62,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityManager.setCurrentActivity(this);
-        loadTreasures();
+        //loadTreasures();
     }
 
     @Override
@@ -110,7 +111,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void setUpMap() {
        mMap.setMyLocationEnabled(true);
        GPSUpdateHandler gpsUpdate = new GPSUpdateHandler(this);
+       TreasureUpdateHandler treasureUpdate = new TreasureUpdateHandler(this);
        gpsUpdate.startHandler();
+       treasureUpdate.startHandler();
        initMapAndLocations();
     }
 
