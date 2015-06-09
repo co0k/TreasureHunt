@@ -1,16 +1,15 @@
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Coupon;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
+import data_structures.user.User;
 import db.DatabaseController;
 import frontend.Requests.RequestHandler;
 import org.junit.*;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -85,6 +84,10 @@ public class RequestHandlerTest {
         DatabaseController.getInstance().deleteAll();
     }
 
+    /**
+     * Checks if the login of an unregistered user fails
+     * tested method: checkLogIn()
+     */
     @Test
     public void checkLogInTest() {
         String method = "checkLogIn";
@@ -103,6 +106,10 @@ public class RequestHandlerTest {
         assertNull(result); // this user should not be in the database
     }
 
+    /**
+     * Checks if the login of a registered user succeeds
+     * tested method: checkLogIn()
+     */
     @Test
     public void checkLogInTest2() {
         Map<String, Object> params = new HashMap<>();
@@ -120,6 +127,10 @@ public class RequestHandlerTest {
         assertNotNull(result); // this user should be in the database;
     }
 
+    /**
+     * Checks if it is possible to register a new user
+     * tested method: registerUser()
+     */
     @Test
     public void registerUserTest() {
         String method = "registerUser";
@@ -140,9 +151,48 @@ public class RequestHandlerTest {
         assertTrue("registration failed", result);
     }
 
+    /**
+     *
+     */
+    @Test
+    public void getUserByNameTest() {
+        //Map<String, Object> paramsL = new HashMap<>();
+        //Map<String, Object> params = new HashMap<>();
+//
+        //String email = "junit@example.com";
+        //String username = "junit";
+        //String pwHash = "passwd";
+        //paramsL.put("email", email);
+        //paramsL.put("username", username);
+        //paramsL.put("pwHash", pwHash);
+        //JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
+        //System.err.println(requestL);
+        //JSONRPC2Response responseL = handler.handleRequest(requestL);
+        //System.err.println(responseL);
+        //assertNotNull("response after login is null", responseL);
+        //Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
+        //assertNotNull("token null", token);
+//
+        //params.put("token", token);
+        //params.put("username", username);
+        //JSONRPC2Request request = new JSONRPC2Request("getUserByName", params, "id-2-ubn");
+        //JSONRPC2Response response = handler.handleRequest(request);
+        //assertNotNull("response after login is null", responseL);
+//
+        //User user = jsonC.fromJson((String) response.getResult(), User.class);
+        //assertEquals("Server returned wrong user", username, user.getName());
+        //assertEquals("Server returned wrong user", email, user.getEmail());
+        //assertEquals("Server returned wrong user", pwHash, user.getPasswordHash());
+
+    }
+
+    /**
+     * Checks if the RequestHandler returns _atleast_ the treasures added
+     * by the @Before initialization method
+     * tested method: getAllTreasures()
+     */
     @Test
     public void getAllTreasuresTest() {
-        Gson gson = new Gson();
         Map<String, Object> params = new HashMap<>();
         Map<String, Object> paramsL = new HashMap<>();
 
@@ -161,8 +211,8 @@ public class RequestHandlerTest {
         params.put("token", jsonC.toJson(token));
         JSONRPC2Request request = new JSONRPC2Request("getAllTreasures", params, "id-2-at");
         JSONRPC2Response response = handler.handleRequest(request);
-        System.err.println(response.getResult());
-        // TODO: fix Json parsing
+        //System.err.println(response.getResult());
+
         Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
         List<Treasure> tList = new ArrayList<>(Arrays.asList(treasures));
         assertNotNull("treasure null!", treasures);
@@ -173,6 +223,108 @@ public class RequestHandlerTest {
             assertTrue("the treasures aren't equal", exampleTreasures.get(i).equalsWithoutId(tList.get(i)));
     }
 
+    /**
+     * Checks if the RequestHandler returns _atleast_ one close by treasure.
+     * This must be the case, as the treasures inserted by the init()
+     * and the GeoLeocation are chosen that way
+     * tested method: getNearTreasures()
+     */
+    @Test
+    public void getNearestTreasureTest() {
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> paramsL = new HashMap<>();
+
+        // user has to login first
+        String email = "junit@example.com";
+        String username = "junit";
+        String pwHash = "passwd";
+
+        paramsL.put("email", jsonC.toJson(email));
+        paramsL.put("username", jsonC.toJson(username));
+        paramsL.put("pwHash", jsonC.toJson(pwHash));
+
+        JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-3-chl");
+        JSONRPC2Response responseL = handler.handleRequest(requestL);
+        assertNotNull("response after login is null", responseL);
+
+        Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
+        assertNotNull("token null", token);
+
+        // 47.26952, 11.39570 coords of the first treasure
+        Double latitude = 47.26952;
+        Double longitude = 11.39570;
+        params.put("token", jsonC.toJson(token));
+        params.put("longitude", jsonC.toJson(longitude));
+        params.put("latitude", jsonC.toJson(latitude));
+        JSONRPC2Request request = new JSONRPC2Request("getNearTreasures", params, "id-3-at");
+        //System.err.println(request);
+
+        JSONRPC2Response response = handler.handleRequest(request);
+        assertNotNull(response);
+        //System.err.println(response);
+
+        Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
+        assertNotNull(treasures);
+
+        //List<Treasure> tList = new ArrayList<>(Arrays.asList(treasures));
+        //assertNotNull("treasure null!", treasures);
+    }
+
+    /**
+     * Checks if the RequestHandler returns _atleast_ one treasure inside a certain radius.
+     * This must be the case, as the treasures inserted by the init()
+     * and the GeoLeocation are chosen that way
+     * tested method: getNearTreasures()
+     */
+    @Test
+    public void getNearTreasureTestWithRadius() {
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> paramsL = new HashMap<>();
+
+        // user has to login first
+        String email = "junit@example.com";
+        String username = "junit";
+        String pwHash = "passwd";
+
+        paramsL.put("email", jsonC.toJson(email));
+        paramsL.put("username", jsonC.toJson(username));
+        paramsL.put("pwHash", jsonC.toJson(pwHash));
+
+        JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-3-chl");
+        JSONRPC2Response responseL = handler.handleRequest(requestL);
+        assertNotNull("response after login is null", responseL);
+
+        Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
+        assertNotNull("token null", token);
+
+        // 47.26952, 11.39570 coords of the first treasure
+        Double latitude = 47.26952;
+        Double longitude = 11.39570;
+        Double radius = 50d;
+        params.put("token", jsonC.toJson(token));
+        params.put("longitude", jsonC.toJson(longitude));
+        params.put("latitude", jsonC.toJson(latitude));
+        params.put("radius", jsonC.toJson(radius));
+        JSONRPC2Request request = new JSONRPC2Request("getNearTreasures", params, "id-3-at");
+        //System.err.println(request);
+
+        JSONRPC2Response response = handler.handleRequest(request);
+        assertNotNull(response);
+        //System.err.println(response);
+
+        Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
+        assertNotNull(treasures);
+    }
+
+    //@Test
+    //public void eventTreasureOpenTest() {
+        //
+    //}
+
+    /**
+     * Checks if the RequestHandler returns _exactly_ one specified test treasure
+     * tested method: getTestTreasure()
+     */
     @Test
     public void getTestTreasureTest() {
         Quiz quiz1 = new Quiz(10, "Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
