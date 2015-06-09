@@ -31,8 +31,10 @@ public class DatabaseSupervisor {
 		Location tmpLocation;
 		Treasure tmpTreasure;
 		try {
-			tmpLocation = DatabaseManager.getLocationFromBid(bid);
 			tmpTreasure = DatabaseManager.getTreasureFromId(bid);
+			if(tmpTreasure == null)
+				return false;
+			tmpLocation = tmpTreasure.getLocation();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;			
@@ -83,6 +85,7 @@ public class DatabaseSupervisor {
 	
 	public void resetActive () {
 		activeTreasuresID = new HashMap<Integer, Treasure.Location>();
+		activeTreasures = new HashMap <Integer, Treasure>();
 	}
 
 }

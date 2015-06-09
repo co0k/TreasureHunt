@@ -772,6 +772,18 @@ public class DatabaseManager {
 		else
 			return true;
 	}
+	
+	public static boolean updateLastUser(int uid, int bid) throws SQLException {
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int count = create.update(BOX).set(BOX.LAST_USERID, uid).where(BOX.BID.equal(bid)).execute();
+		conn.close();
+		if (count != 1)
+			return false;
+		else
+			return true;
+	}
+	 
 
 
 	private static class ContentHelperClass {

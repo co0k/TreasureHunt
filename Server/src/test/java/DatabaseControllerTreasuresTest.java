@@ -213,8 +213,45 @@ public class DatabaseControllerTreasuresTest {
 			assertTrue("the treasures aren't equal", exampleTreasures.get(i).equalsWithoutId(result.get(i)));
 		// test only treasures that are active
 		result = DatabaseController.getInstance().getAllTreasures(true);
-		List<Treasure> exampleTreasuresActive = new ArrayList<Treasure>();
 		for (Treasure t : result)
 			assertTrue("treasure is not active, although it should be", DatabaseController.getInstance().isTreasureActive(t.getId()));
+	}
+	
+	@Test
+	public void activeDeactivateIsActiveTreasureTest() {
+		for (int i : exampleTreasuresID) {
+			DatabaseController.getInstance().deactivateTreasure(i);
+		}
+		assertNull("There are active treasure, but there shouldn't be a single one",DatabaseController.getInstance().getAllTreasures(true));
+		for (int i = 0; i < exampleTreasuresID.size(); i++) {
+			DatabaseController.getInstance().activateTreasure(exampleTreasuresID.get(i));
+			if (i == 2) {
+				List<Treasure> tmp = DatabaseController.getInstance().getAllTreasures(true);
+				assertTrue("There should be 3 active treasure at this point",tmp.size() == 3);
+				Collections.sort(tmp);
+				for (int j = 0; j < tmp.size(); j++) {
+					assertTrue("the active treasures are not the same", tmp.get(j).equalsWithoutId(exampleTreasures.get(j)));
+					assertTrue("the treasure should be active",DatabaseController.getInstance().isTreasureActive(tmp.get(j).getId()));
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void getallTreasureIdTest() {
+		List<Integer> allTreasureID = DatabaseController.getInstance().getallTreasureID(false);
+		Collections.sort(allTreasureID);
+		assertTrue("the ids must be the same", allTreasureID.equals(exampleTreasuresID));
+		
+		DatabaseController.getInstance().deactivateTreasure(exampleTreasuresID.get(0));
+		DatabaseController.getInstance().deactivateTreasure(exampleTreasuresID.get(1));
+		
+		allTreasureID = DatabaseController.getInstance().getallTreasureID(true);
+		Collections.sort(allTreasureID);
+		assertFalse("the ids must not be the same", allTreasureID.equals(exampleTreasuresID));
+		assertTrue("the ids must be the same", allTreasureID.equals(exampleTreasuresID.subList(0, 2)));
+		
+		DatabaseController.getInstance().activateTreasure(exampleTreasuresID.get(0));
+		DatabaseController.getInstance().activateTreasure(exampleTreasuresID.get(1));
 	}
 }

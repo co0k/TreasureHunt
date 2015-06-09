@@ -126,11 +126,12 @@ public class DatabaseController implements DatabaseControllerDAO {
 		if (allowedToOpenTreasure(userId, treasureId)){
 			try {
 				DatabaseManager.insertHistory(userId, treasureId);
+				DatabaseManager.updateLastUser(userId, treasureId);
+				return deactivateTreasure(treasureId);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return false;
 			}
-			return deactivateTreasure(treasureId);
 		} else
 			return false;
 	}
@@ -149,7 +150,6 @@ public class DatabaseController implements DatabaseControllerDAO {
 	public int addUser(User user) {
 		try {
 			return DatabaseManager.insertUser(user);
-//			return DatabaseManager.insertUser(user.getName(), user.getPasswordHash(), user.getEmail());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
