@@ -44,6 +44,7 @@ import data_structures.treasure.Treasure;
  * The user has to answer the quiz in order to open the TreasureChest.
  *
  * The layout gets programmatically generated, dependent on the Quiz' structure.
+ * TODO: when in loading to check the data the "back" button is pressed, and then another treasure is opened instantly, the app crashes
  */
 public class QuizActivity extends Activity implements IOpenTreasureCallback {
 
@@ -219,9 +220,6 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
         }
 
         answerButton.setText(answerText);
-
-
-
         answerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
