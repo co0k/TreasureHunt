@@ -59,7 +59,7 @@ public class RequestHandler implements RequestResolver {
         // a token together with his/her request
         if( !isTokenFree(methodName) ) {
             try {
-                Integer token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
+                token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
                 if( !isTokenActive(token) ) {
                     return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS,id);
                 }
@@ -91,7 +91,7 @@ public class RequestHandler implements RequestResolver {
 
             case "getuserbyname":
                 String username = jsonC.fromJson((String) parameters.get("username"), String.class);
-                System.err.println("Case getuserbyname: " + username);
+                //System.err.println("Case getuserbyname: " + username);
                 response = getUserByName(username);
                 break;
 
@@ -115,7 +115,6 @@ public class RequestHandler implements RequestResolver {
                 break;
 
             case "eventtreasureopen":
-                token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
                     Integer treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
                     response = eventTreasureOpened(treasureID);
                 break;
@@ -213,7 +212,7 @@ public class RequestHandler implements RequestResolver {
     @Override
     public User getUserByName(String username) {
         try {
-            System.err.println("Method getuserbyname: " + username);
+            //System.err.println("Method getuserbyname: " + username);
             return CoreModel.getInstance().addCommand(new GetUserByNameCommand(username)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -225,11 +224,21 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public User getProfileData() {
+        try {
+            return CoreModel.getInstance().addCommand(new GetUserProfileCommand(token)).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return null;
-    }
+    }        //System.err.println(treasureID);
+        //System.err.println(token);
 
     @Override
     public Boolean eventTreasureOpened(Integer treasureID) {
+        //System.err.println(treasureID);
+        //System.err.println(token);
         Future<Boolean> future = CoreModel.getInstance().addCommand(new OpenTreasureCommand(treasureID, token));
         try {
             return future.get();

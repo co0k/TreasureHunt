@@ -1,4 +1,3 @@
-import com.google.gson.Gson;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import communication_controller.json.JsonConstructor;
@@ -23,10 +22,12 @@ public class RequestHandlerTest {
     List<Treasure> exampleTreasures;
     List<Integer> exampleTreasuresID;
 
+
     @Before
     public void init() {
         handler = new RequestHandler();
         jsonC = new JsonConstructor();
+
 
         String method = "registerUser";
         String reqID = "id-00-init";
@@ -34,11 +35,12 @@ public class RequestHandlerTest {
         String email = "junit@example.com";
         String username = "junit";
         String pwHash = "passwd";
-        params.put("email", jsonC.toJson(email));
-        params.put("username", jsonC.toJson(username));
-        params.put("pwHash", jsonC.toJson(pwHash));
+        params.put("email", (email));
+        params.put("username", (username));
+        params.put("pwHash", (pwHash));
         JSONRPC2Request request = new JSONRPC2Request(method, params, reqID);
         handler.handleRequest(request);
+
 
         Quiz quiz1 = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
         Quiz quiz2 = new Quiz(10,"Wo ist der Rechnerraum 15?", "Uni Innsbruck", "dein zuhause", "Bank", "Konzerthaus", null, null);
@@ -65,7 +67,6 @@ public class RequestHandlerTest {
         exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2635802, 11.3945087), quiz8, new Treasure.Size(-1, 20, 1), null));
         exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2654258,11.3936075), quiz8, new Treasure.Size(-1, 20, 1), null));
 
-
         Collections.sort(exampleTreasures);
         // add all the treasures
         for (Treasure t : exampleTreasures)
@@ -78,9 +79,6 @@ public class RequestHandlerTest {
     @After
     public void finish() {
         // clean the database
-        for (Integer tmp : exampleTreasuresID) {
-            DatabaseController.getInstance().deactivateTreasure(tmp);
-        }
         DatabaseController.getInstance().deleteAll();
     }
 
@@ -116,9 +114,9 @@ public class RequestHandlerTest {
         String email = "junit@example.com";
         String username = "junit";
         String pwHash = "passwd";
-        params.put("email", jsonC.toJson(email));
-        params.put("username", jsonC.toJson(username));
-        params.put("pwHash", jsonC.toJson(pwHash));
+        params.put("email", (email));
+        params.put("username", (username));
+        params.put("pwHash", (pwHash));
         String method = "checkLogIn";
         String reqID = "id-1-chl";
         JSONRPC2Request request = new JSONRPC2Request(method, params, reqID);
@@ -139,13 +137,12 @@ public class RequestHandlerTest {
         String email = "tester@example.com";
         String username = "tester";
         String pwHash = "unsavepassword";
-        params.put("email", jsonC.toJson(email));
-        params.put("username", jsonC.toJson(username));
-        params.put("pwHash", jsonC.toJson(pwHash));
+        params.put("email", (email));
+        params.put("username", (username));
+        params.put("pwHash", (pwHash));
         JSONRPC2Request request = new JSONRPC2Request(method, params, reqID);
         JSONRPC2Response response = handler.handleRequest(request);
         assertNotNull("response is null", response);
-        //System.err.println(response);
         Boolean result = jsonC.fromJson((String)response.getResult(),Boolean.class);
         assertNotNull("token is null", result);
         assertTrue("registration failed", result);
@@ -164,9 +161,9 @@ public class RequestHandlerTest {
         String email = "junit@example.com";
         String username = "junit";
         String pwHash = "passwd";
-        paramsL.put("email", jsonC.toJson(email));
-        paramsL.put("username", jsonC.toJson(username));
-        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        paramsL.put("email", (email));
+        paramsL.put("username", (username));
+        paramsL.put("pwHash", (pwHash));
         JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
         JSONRPC2Response responseL = handler.handleRequest(requestL);
         assertNotNull("response after login is null", responseL);
@@ -174,20 +171,16 @@ public class RequestHandlerTest {
         assertNotNull("token null", token);
 
         params.put("token", jsonC.toJson(token));
-        params.put("username", jsonC.toJson(username));
+        params.put("username", username);
         JSONRPC2Request request = new JSONRPC2Request("getUserByName", params, "id-2-ubn");
         JSONRPC2Response response = handler.handleRequest(request);
         assertNotNull("response after login is null", responseL);
 
-        System.err.println(request);
-        System.err.println(response);
 
         User user = jsonC.fromJson((String) response.getResult(), User.class);
         assertNotNull("no user returned", user);
         assertEquals("Server returned wrong user", username, user.getName());
         assertEquals("Server returned wrong user", email, user.getEmail());
-        assertEquals("Server returned wrong user", pwHash, user.getPasswordHash());
-
     }
 
     /**
@@ -202,9 +195,9 @@ public class RequestHandlerTest {
         String email = "junit@example.com";
         String username = "junit";
         String pwHash = "passwd";
-        paramsL.put("email", jsonC.toJson(email));
-        paramsL.put("username", jsonC.toJson(username));
-        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        paramsL.put("email", (email));
+        paramsL.put("username", (username));
+        paramsL.put("pwHash", (pwHash));
         JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
         JSONRPC2Response responseL = handler.handleRequest(requestL);
         assertNotNull("response after login is null", responseL);
@@ -216,15 +209,10 @@ public class RequestHandlerTest {
         JSONRPC2Response response = handler.handleRequest(request);
         assertNotNull("response after login is null", responseL);
 
-        System.err.println(request);
-        System.err.println(response);
-
         User user = jsonC.fromJson((String) response.getResult(), User.class);
         assertNotNull("no user returned", user);
         assertEquals("Server returned wrong user", username, user.getName());
         assertEquals("Server returned wrong user", email, user.getEmail());
-        assertEquals("Server returned wrong user", pwHash, user.getPasswordHash());
-
     }
 
     /**
@@ -240,9 +228,9 @@ public class RequestHandlerTest {
         String email = "junit@example.com";
         String username = "junit";
         String pwHash = "passwd";
-        paramsL.put("email", jsonC.toJson(email));
-        paramsL.put("username", jsonC.toJson(username));
-        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        paramsL.put("email", (email));
+        paramsL.put("username", (username));
+        paramsL.put("pwHash", (pwHash));
         JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
         JSONRPC2Response responseL = handler.handleRequest(requestL);
         assertNotNull("response after login is null", responseL);
@@ -252,7 +240,6 @@ public class RequestHandlerTest {
         params.put("token", jsonC.toJson(token));
         JSONRPC2Request request = new JSONRPC2Request("getAllTreasures", params, "id-2-at");
         JSONRPC2Response response = handler.handleRequest(request);
-        //System.err.println(response.getResult());
 
         Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
         List<Treasure> tList = new ArrayList<>(Arrays.asList(treasures));
@@ -275,14 +262,13 @@ public class RequestHandlerTest {
         Map<String, Object> params = new HashMap<>();
         Map<String, Object> paramsL = new HashMap<>();
 
-        // user has to login first
         String email = "junit@example.com";
         String username = "junit";
         String pwHash = "passwd";
 
-        paramsL.put("email", jsonC.toJson(email));
-        paramsL.put("username", jsonC.toJson(username));
-        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        paramsL.put("email", (email));
+        paramsL.put("username", (username));
+        paramsL.put("pwHash", (pwHash));
 
         JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-3-chl");
         JSONRPC2Response responseL = handler.handleRequest(requestL);
@@ -298,17 +284,12 @@ public class RequestHandlerTest {
         params.put("longitude", jsonC.toJson(longitude));
         params.put("latitude", jsonC.toJson(latitude));
         JSONRPC2Request request = new JSONRPC2Request("getNearTreasures", params, "id-3-at");
-        //System.err.println(request);
 
         JSONRPC2Response response = handler.handleRequest(request);
         assertNotNull(response);
-        //System.err.println(response);
 
         Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
         assertNotNull(treasures);
-
-        //List<Treasure> tList = new ArrayList<>(Arrays.asList(treasures));
-        //assertNotNull("treasure null!", treasures);
     }
 
     /**
@@ -327,9 +308,9 @@ public class RequestHandlerTest {
         String username = "junit";
         String pwHash = "passwd";
 
-        paramsL.put("email", jsonC.toJson(email));
-        paramsL.put("username", jsonC.toJson(username));
-        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        paramsL.put("email", (email));
+        paramsL.put("username", (username));
+        paramsL.put("pwHash", (pwHash));
 
         JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-3-chl");
         JSONRPC2Response responseL = handler.handleRequest(requestL);
@@ -347,20 +328,49 @@ public class RequestHandlerTest {
         params.put("latitude", jsonC.toJson(latitude));
         params.put("radius", jsonC.toJson(radius));
         JSONRPC2Request request = new JSONRPC2Request("getNearTreasures", params, "id-3-at");
-        //System.err.println(request);
 
         JSONRPC2Response response = handler.handleRequest(request);
         assertNotNull(response);
-        //System.err.println(response);
 
         Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
         assertNotNull(treasures);
     }
 
-    //@Test
-    //public void eventTreasureOpenTest() {
-        //
-    //}
+    @Test
+    public void eventTreasureOpenTest() {
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> paramsL = new HashMap<>();
+
+        // user has to login first
+        String email = "junit@example.com";
+        String username = "junit";
+        String pwHash = "passwd";
+
+        paramsL.put("email", (email));
+        paramsL.put("username", (username));
+        paramsL.put("pwHash", (pwHash));
+
+        JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-3-chl");
+        JSONRPC2Response responseL = handler.handleRequest(requestL);
+        assertNotNull("response after login is null", responseL);
+
+        Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
+        assertNotNull("token null", token);
+
+
+        params.put("token", jsonC.toJson(token));
+        assertNotNull(exampleTreasuresID);
+        assertNotNull(exampleTreasuresID.get(0));
+        params.put("treasureID", jsonC.toJson(exampleTreasuresID.get(0)));
+        JSONRPC2Request request = new JSONRPC2Request("eventTreasureOpen", params, "id-3-at");
+
+        JSONRPC2Response response = handler.handleRequest(request);
+        assertNotNull(response);
+
+        Boolean result = jsonC.fromJson((String) response.getResult(), Boolean.class);
+        assertNotNull(result);
+        assertTrue("open treasure failed", result);
+    }
 
     /**
      * Checks if the RequestHandler returns _exactly_ one specified test treasure

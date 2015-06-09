@@ -38,7 +38,10 @@ public class DatabaseManager {
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select(BOX.LAST_USERID).from(BOX).where(BOX.BID.equal(bid)).fetchOne();
 		conn.close();
-		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid) || isUserBlockedForTreasure(uid, bid))
+		if(result != null && result.getValue(BOX.LAST_USERID) == null)
+			return true;
+		if (result == null || result.getValue(BOX.LAST_USERID).equals(uid)
+				|| isUserBlockedForTreasure(uid, bid))
 			return false;
 		else
 			return true;
