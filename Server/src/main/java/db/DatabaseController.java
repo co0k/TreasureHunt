@@ -79,6 +79,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 	public boolean deleteAll() {
 		try {
 			DatabaseManager.deleteAll();
+			dataBaseSupervisor.resetActive();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
