@@ -31,15 +31,15 @@ public interface RequestResolver {
     Integer checkLogIn(String username, String pwHash);                     // tested
     Boolean registerUser(String email, String username, String pwHash);     // tested
     User getUserByName(String username);
-    User getProfileData(/*int token, int userID*/);
+    User getProfileData();
 
     List<Treasure> getAllTreasures();       // tested
-    List<Treasure> getNearTreasures(/*Integer token,*/ Double longitude, Double latitude);  // tested
-    List<Treasure> getNearTreasures(/*Integer token,*/ Double longitude, Double latitude, Double radius);   // test
-    Boolean eventTreasureOpened(/*Integer token,*/ Integer treasureID, Integer userID); //[a treasure is opened when the quiz is solved]
-    void eventTreasureWrongAnswer(/*Integer token,*/ Integer treasureID, Integer userID); //[serverside handling of wrong answer given, maybe reset treasure or whatever]
+    List<Treasure> getNearTreasures( Double longitude, Double latitude);  // tested
+    List<Treasure> getNearTreasures( Double longitude, Double latitude, Double radius);   // test
+    Boolean eventTreasureOpened( Integer treasureID ); //[a treasure is opened when the quiz is solved]
+    void eventTreasureWrongAnswer( Integer treasureID ); //[serverside handling of wrong answer given, maybe reset treasure or whatever]
     // HighscoreList getHighscoreListAll(int token);
-    HighscoreList getHighscoreList(/*Integer token,*/ Integer low, Integer high);
+    HighscoreList getHighscoreList( Integer low, Integer high);
     // HighscoreList getHighscoreListAroundMe(int token, int userID);, [range])
     // HighscoreList getHighscoreListAroundMe(int token, int userID, int range);
 

@@ -10,7 +10,7 @@ import db.DatabaseController;
 public class GetUserByNameCommand implements Command<User> {
 	private String name;
 
-	GetUserByNameCommand(String name) {
+	public GetUserByNameCommand(String name) {
 		this.name = name;
 	}
 

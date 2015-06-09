@@ -152,37 +152,78 @@ public class RequestHandlerTest {
     }
 
     /**
-     *
+     * Tries to find a user by his/her name
+     * in this test method it is the same user as the one logged in
+     * tested method: getUserByName()
      */
     @Test
     public void getUserByNameTest() {
-        //Map<String, Object> paramsL = new HashMap<>();
-        //Map<String, Object> params = new HashMap<>();
-//
-        //String email = "junit@example.com";
-        //String username = "junit";
-        //String pwHash = "passwd";
-        //paramsL.put("email", email);
-        //paramsL.put("username", username);
-        //paramsL.put("pwHash", pwHash);
-        //JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
-        //System.err.println(requestL);
-        //JSONRPC2Response responseL = handler.handleRequest(requestL);
-        //System.err.println(responseL);
-        //assertNotNull("response after login is null", responseL);
-        //Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
-        //assertNotNull("token null", token);
-//
-        //params.put("token", token);
-        //params.put("username", username);
-        //JSONRPC2Request request = new JSONRPC2Request("getUserByName", params, "id-2-ubn");
-        //JSONRPC2Response response = handler.handleRequest(request);
-        //assertNotNull("response after login is null", responseL);
-//
-        //User user = jsonC.fromJson((String) response.getResult(), User.class);
-        //assertEquals("Server returned wrong user", username, user.getName());
-        //assertEquals("Server returned wrong user", email, user.getEmail());
-        //assertEquals("Server returned wrong user", pwHash, user.getPasswordHash());
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> paramsL = new HashMap<>();
+
+        String email = "junit@example.com";
+        String username = "junit";
+        String pwHash = "passwd";
+        paramsL.put("email", jsonC.toJson(email));
+        paramsL.put("username", jsonC.toJson(username));
+        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
+        JSONRPC2Response responseL = handler.handleRequest(requestL);
+        assertNotNull("response after login is null", responseL);
+        Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
+        assertNotNull("token null", token);
+
+        params.put("token", jsonC.toJson(token));
+        params.put("username", jsonC.toJson(username));
+        JSONRPC2Request request = new JSONRPC2Request("getUserByName", params, "id-2-ubn");
+        JSONRPC2Response response = handler.handleRequest(request);
+        assertNotNull("response after login is null", responseL);
+
+        System.err.println(request);
+        System.err.println(response);
+
+        User user = jsonC.fromJson((String) response.getResult(), User.class);
+        assertNotNull("no user returned", user);
+        assertEquals("Server returned wrong user", username, user.getName());
+        assertEquals("Server returned wrong user", email, user.getEmail());
+        assertEquals("Server returned wrong user", pwHash, user.getPasswordHash());
+
+    }
+
+    /**
+     * Checks if it is possible to get the users profile by his/her uid
+     * method tested: getUserProfile()
+     */
+    @Test
+    public void getUserProfileTest() {
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> paramsL = new HashMap<>();
+
+        String email = "junit@example.com";
+        String username = "junit";
+        String pwHash = "passwd";
+        paramsL.put("email", jsonC.toJson(email));
+        paramsL.put("username", jsonC.toJson(username));
+        paramsL.put("pwHash", jsonC.toJson(pwHash));
+        JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
+        JSONRPC2Response responseL = handler.handleRequest(requestL);
+        assertNotNull("response after login is null", responseL);
+        Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
+        assertNotNull("token null", token);
+
+        params.put("token", jsonC.toJson(token));
+        JSONRPC2Request request = new JSONRPC2Request("getProfileData", params, "id-2-ubn");
+        JSONRPC2Response response = handler.handleRequest(request);
+        assertNotNull("response after login is null", responseL);
+
+        System.err.println(request);
+        System.err.println(response);
+
+        User user = jsonC.fromJson((String) response.getResult(), User.class);
+        assertNotNull("no user returned", user);
+        assertEquals("Server returned wrong user", username, user.getName());
+        assertEquals("Server returned wrong user", email, user.getEmail());
+        assertEquals("Server returned wrong user", pwHash, user.getPasswordHash());
 
     }
 
