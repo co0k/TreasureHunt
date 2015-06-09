@@ -12,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.tasks.IResponseCallback;
-import at.tba.treasurehunt.utils.DummyDataProvider;
 import communication_controller.json.JsonConstructor;
 
 /**
@@ -39,6 +38,11 @@ public class AuthenticationController implements IResponseCallback {
 		this.callback = callback;
 		password = generateHash(uName + password);
 		ServerCommunication.getInstance().logInToServer(uName, password, this);
+	}
+
+	public void authenticateUserHashed(String uName, String passwordHashed, IAuthenticationCallback callback) {
+		this.callback = callback;
+		ServerCommunication.getInstance().logInToServer(uName, passwordHashed, this);
 	}
 
 	public void registerNewUser(String uName, String email, String password, String passwordRetype, IAuthenticationCallback callback) {

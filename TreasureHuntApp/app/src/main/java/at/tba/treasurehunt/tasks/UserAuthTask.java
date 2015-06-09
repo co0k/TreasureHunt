@@ -17,12 +17,14 @@ public class UserAuthTask extends AsyncTask<Void, Void, Boolean> {
     private final String mPassword;
     private final IAuthenticationCallback callback;
     private final ITaskCallback taskCallback;
+    private boolean mHashedPassword;
 
-    public UserAuthTask(String email, String password, IAuthenticationCallback callback, ITaskCallback taskCallback) {
+    public UserAuthTask(String email, String password, IAuthenticationCallback callback, ITaskCallback taskCallback, boolean hashedPassword) {
         mEmail = email;
         mPassword = password;
         this.callback = callback;
         this.taskCallback = taskCallback;
+        this.mHashedPassword = hashedPassword;
     }
 
     @Override
@@ -32,7 +34,10 @@ public class UserAuthTask extends AsyncTask<Void, Void, Boolean> {
             return false;
         }
 
-        AuthenticationController.getInstance().authenticateUser(mEmail, mPassword, callback);
+        if (mHashedPassword)
+            AuthenticationController.getInstance().authenticateUserHashed(mEmail, mPassword, callback);
+        else
+            AuthenticationController.getInstance().authenticateUser(mEmail, mPassword, callback);
         return true;
     }
 

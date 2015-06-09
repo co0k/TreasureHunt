@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prefStayLoggedIn">prefStayLoggedIn</string>
+    <string name="prefDefaultLoginUserName">prefDefaultLoginUserName</string>
+    <string name="prefDefaultLoginUserPassword">prefDefaultLoginUserPassword</string>
+</resources>

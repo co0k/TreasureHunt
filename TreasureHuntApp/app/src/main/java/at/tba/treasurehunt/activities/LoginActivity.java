@@ -8,12 +8,13 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -23,6 +24,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,11 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.tba.treasurehunt.R;
-import at.tba.treasurehunt.controller.AuthenticationController;
 import at.tba.treasurehunt.controller.AuthenticationError;
 import at.tba.treasurehunt.controller.IAuthenticationCallback;
+import at.tba.treasurehunt.controller.UserLoginDataController;
 import at.tba.treasurehunt.servercomm.IServerConnectionCallback;
-import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.servercomm.ServerConnection;
 import at.tba.treasurehunt.tasks.ITaskCallback;
 import at.tba.treasurehunt.tasks.UserAuthTask;
@@ -55,9 +56,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserAuthTask mAuthTask = null;
+    private StayLoggedInHandler mStayLoggedInHandler;
+    private UserLoginDataController mUserLoginDataController;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mUserNameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -68,7 +71,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mUserNameView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -76,7 +79,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptLogin(mUserNameView.getText().toString(), mPasswordView.getText().toString(), false);
                     return true;
                 }
                 return false;
@@ -87,14 +90,28 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptLogin(mUserNameView.getText().toString(), mPasswordView.getText().toString(), false);
             }
         });
+
+        // setup the stay logged in button
+        final CheckedTextView mStayLogged = (CheckedTextView) findViewById(R.id.checkedTextView1);
+        mStayLoggedInHandler = new StayLoggedInHandler(mStayLogged);
+        mStayLogged.setOnClickListener(mStayLoggedInHandler);
+
+        mUserLoginDataController = new UserLoginDataController(this.getBaseContext());
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
         ActivityManager.setCurrentActivity(this);
+
+        if (mStayLoggedInHandler.getStayLoggedIn()) {
+            String defaultUsername = mUserLoginDataController.getDefaultUserName();
+            String defaultPasswordHash = mUserLoginDataController.getDefaultUserPasswordHash();
+            if (defaultPasswordHash != null && defaultUsername != null && defaultUsername != "" && defaultPasswordHash != "")
+                attemptLogin(defaultUsername, defaultPasswordHash, true);
+        }
     }
 
     @Override
@@ -113,18 +130,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    public void attemptLogin() {
+    public void attemptLogin(String name, String password, boolean hashedPassword) {
         if (mAuthTask != null) {
             return;
         }
 
         // Reset errors.
-        mEmailView.setError(null);
+        mUserNameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -137,14 +152,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+        // Check for a valid user name.
+        if (TextUtils.isEmpty(name)) {
+            mUserNameView.setError(getString(R.string.error_field_required));
+            focusView = mUserNameView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (!isUsernameValid(name)) {
+            mUserNameView.setError(getString(R.string.error_invalid_user_name));
+            focusView = mUserNameView;
             cancel = true;
         }
 
@@ -156,7 +171,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserAuthTask(email, password, this, this);
+            mAuthTask = new UserAuthTask(name, password, this, this, hashedPassword);
             connectServer();
             //mAuthTask.execute((Void) null);
         }
@@ -164,7 +179,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
     }
 
-    private boolean isEmailValid(String email) {
+    private boolean isUsernameValid(String email) {
         return true;
         //TODO: Replace this with your own logic
        // return email.contains("@");
@@ -274,7 +289,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
                 new ArrayAdapter<String>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        mUserNameView.setAdapter(adapter);
     }
 
     /**
@@ -287,9 +302,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         ServerConnection.getInstance().connectServer(this);
     }
 
-    private void loginSuccess(){
+    private void loginSuccess() {
         finish();
         Intent actSwitch = new Intent(this, HomeActivity.class);
+        // save the user default login data
+        String defaultUsername = mUserNameView.getText().toString();
+        String defaultPassword = mPasswordView.getText().toString();
+        if (mUserLoginDataController.getDefaultUserName() == "" && defaultUsername != "" && defaultPassword != "")
+            mUserLoginDataController.saveDefaultLoginData(defaultUsername, defaultPassword);
         startActivity(actSwitch);
     }
 
@@ -300,7 +320,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     public void onServerNotConnected(){
         mAuthTask = null;
         showProgress(false);
-        mEmailView.requestFocus();
+        mUserNameView.requestFocus();
 
     }
 
@@ -332,6 +352,46 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     @Override
     public void onRegistrationError(AuthenticationError err) {
 
+    }
+
+    /**
+     * handles and saves the state if the user wants to stay logged in
+     */
+    public static class StayLoggedInHandler implements OnClickListener {
+        final CheckedTextView mStayLogged;
+
+        public StayLoggedInHandler(final CheckedTextView mStayLogged) {
+            this.mStayLogged = mStayLogged;
+            // setup the currentState
+            mStayLogged.setChecked(PreferenceManager.getDefaultSharedPreferences(mStayLogged.getContext()).getBoolean(
+                    mStayLogged.getContext().getString(R.string.prefStayLoggedIn), false));
+        }
+
+        public boolean getStayLoggedIn() {
+            return PreferenceManager.getDefaultSharedPreferences(mStayLogged.getContext()).getBoolean(
+                    mStayLogged.getContext().getString(R.string.prefStayLoggedIn), false);
+        }
+
+        public void setStayLoggedin() {
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mStayLogged.getContext()).edit();
+            editor.putBoolean(mStayLogged.getContext().getString(R.string.prefStayLoggedIn), mStayLogged.isChecked());
+            editor.commit();
+        }
+
+        public void resetStayLoggedin() {
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mStayLogged.getContext()).edit();
+            editor.putBoolean(mStayLogged.getContext().getString(R.string.prefStayLoggedIn), false);
+            editor.commit();
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mStayLogged.isChecked())
+                mStayLogged.setChecked(false);
+            else
+                mStayLogged.setChecked(true);
+            setStayLoggedin();
+        }
     }
 
 }
