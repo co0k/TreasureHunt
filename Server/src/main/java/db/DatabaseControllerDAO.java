@@ -12,7 +12,7 @@ public interface DatabaseControllerDAO {
 	/**
 	 * return either all or only the active treasures
 	 * @param onlyActive
-	 * @return
+	 * @return null if there are no active treasures
 	 */
 	List<Treasure> getAllTreasures(boolean onlyActive);
 	

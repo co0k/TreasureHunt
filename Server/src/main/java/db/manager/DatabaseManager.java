@@ -437,6 +437,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select().from(SIZE).where(SIZE.SID.equal(sid)).fetchOne();
+		conn.close();
 		if (result == null)
 			return null;
 		Integer id = result.getValue(SIZE.SID);
@@ -722,6 +723,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Result<Record1<Integer>> result = create.select(BOX.BID).from(BOX).fetch();
+		conn.close();
 		ArrayList<Integer> out = new ArrayList<Integer>();
 
 		for (Record1<Integer> tmp : result) {
@@ -737,6 +739,7 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		Record result = create.select(BLOCK.TIME_STAMP).from(BLOCK).where(BLOCK.UID.equal(uid), BLOCK.BID.equal(bid)).fetchOne();
+		conn.close();
 		if (result == null)
 			return -1;
 		else

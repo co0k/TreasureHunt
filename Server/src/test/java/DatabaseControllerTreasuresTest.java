@@ -87,8 +87,11 @@ public class DatabaseControllerTreasuresTest {
 
 		Collections.sort(exampleTreasures);
 		// add all the treasures
-		for (Treasure t : exampleTreasures)
-			exampleTreasuresID.add(DatabaseController.getInstance().saveTreasure(t));
+		for (Treasure t : exampleTreasures) {
+			int tmp = DatabaseController.getInstance().saveTreasure(t);
+			exampleTreasuresID.add(tmp);
+			DatabaseController.getInstance().activateTreasure(tmp);
+		}
 	}
 
 	@After
@@ -153,9 +156,6 @@ public class DatabaseControllerTreasuresTest {
 	@Test
 	public void getTreasuresTest() {
 		GeoLocation loc = new GeoLocation(47.26952, 11.39570);
-		for (Integer tmp : exampleTreasuresID) {
-			DatabaseController.getInstance().activateTreasure(tmp);
-		}
 		List<Treasure> exampleTreasuresLoc = new ArrayList<Treasure>();
 		List<Treasure> result = DatabaseController.getInstance().getTreasures(loc, 2000);
 		for (Treasure t : exampleTreasures)

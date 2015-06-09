@@ -13,53 +13,53 @@ import data_structures.treasure.Treasure.Location;
 
 
 public class DatabaseSupervisor {
-	private HashMap <Integer, Location> activeTreasures = null;
+	private HashMap <Integer, Location> activeTreasuresID = null;
+	private HashMap <Integer, Treasure> activeTreasures = null;
 
 	public DatabaseSupervisor() {
 		setupSupervisor();
 	}
 	
 	private void setupSupervisor() {
+		if (activeTreasuresID == null)
+			activeTreasuresID = new HashMap <Integer, Location>();
 		if (activeTreasures == null)
-			activeTreasures = new HashMap <Integer, Location>();
+			activeTreasures = new HashMap <Integer, Treasure>();
 	}
 	
 	public boolean addTresure(int bid) {
-		Location tmp;
+		Location tmpLocation;
+		Treasure tmpTreasure;
 		try {
-			tmp = DatabaseManager.getLocationFromBid(bid);
+			tmpLocation = DatabaseManager.getLocationFromBid(bid);
+			tmpTreasure = DatabaseManager.getTreasureFromId(bid);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;			
 		}
-		activeTreasures.put(bid, tmp);
+		activeTreasuresID.put(bid, tmpLocation);
+		activeTreasures.put(bid, tmpTreasure);
 		return true;
 	}
 	
 	public boolean removeTreasure(int bid) {
-		if (activeTreasures.remove(bid) == null)
+		if (activeTreasuresID.remove(bid) == null || activeTreasures.remove(bid) == null)
 			return false;
 		else
 			return true;
 	}
 	
 	public boolean isActive(Integer bid) {
-		return activeTreasures.containsKey(bid);
+		return activeTreasuresID.containsKey(bid);
 	}
 	
 	public ArrayList<Treasure> getTreasuresNearLocation (double lon, double lat, double radius) {
 		GeoLocation userLocation = new GeoLocation (lat, lon);
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
-		for(Entry<Integer, Location> tmp : activeTreasures.entrySet()) {
+		for(Entry<Integer, Location> tmp : activeTreasuresID.entrySet()) {
 	        Location value = tmp.getValue();
 	        if ( value.getDistanceTo(userLocation) <= radius) {
-	        	try {
-					out.add(DatabaseManager.getTreasureFromId(tmp.getKey()));
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
-	        	
+					out.add(activeTreasures.get(tmp.getKey()));	        	
 	        }
 	    }
 		
@@ -67,27 +67,22 @@ public class DatabaseSupervisor {
 	}
 	
 	public ArrayList<Treasure> getAllActiveTresures () {
-		Set<Integer> tmp = activeTreasures.keySet();
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
-		for (Integer i : tmp ) {
-			try {
-				out.add(DatabaseManager.getTreasureFromId(i));
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-		return out;
+		out.addAll(activeTreasures.values());
+		if (out.isEmpty())
+			return null;
+		else
+			return out;
 	}
 	
 	public List<Integer> getAllActiveTresuresId () {
 		List<Integer> out = new ArrayList<Integer>();
-		out.addAll(activeTreasures.keySet());
+		out.addAll(activeTreasuresID.keySet());
 		return out;
 	}
 	
 	public void resetActive () {
-		activeTreasures = new HashMap<Integer, Treasure.Location>();
+		activeTreasuresID = new HashMap<Integer, Treasure.Location>();
 	}
 
 }
