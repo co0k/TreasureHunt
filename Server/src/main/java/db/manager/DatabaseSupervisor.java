@@ -85,5 +85,9 @@ public class DatabaseSupervisor {
 		out.addAll(activeTreasures.keySet());
 		return out;
 	}
+	
+	public void resetActive () {
+		activeTreasures = new HashMap<Integer, Treasure.Location>();
+	}
 
 }

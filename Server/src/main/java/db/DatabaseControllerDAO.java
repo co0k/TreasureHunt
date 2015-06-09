@@ -52,7 +52,7 @@ public interface DatabaseControllerDAO {
 	boolean deleteTreasure(int id);
 
 	/**
-	 * obviously deletes all treasures in the database, should only be used for
+	 * obviously deletes all data in the database and resets the active treasures, should only be used for
 	 * test cases
 	 * 
 	 * @return if everything succeeded, return true otherwise false

@@ -53,17 +53,4 @@ public class CoreModelCommandTest {
 		assertFalse("the user does not exist, so it can't login!", null != CoreModel.getInstance().addCommand(new CheckUserLoginCommand(wrongPasswdUser)).get(5, TimeUnit.SECONDS));
 
 	}
-
-	@Test
-	public void getUserByNameTest() {
-//		// some sample data
-//		List<User> exampleUsers = new ArrayList<>();
-//		exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 2, null));
-//		exampleUsers.add(new User("Jaqueline", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, null));
-//		exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 3, null));
-//		for( User u : exampleUsers) {
-//			User rU = DatabaseController.getInstance().getUser(DatabaseController.getInstance().addUser(u));
-//			assertTrue("the user returned was not equal to the given user!", u, rU);
-//		}
-	}
 }
