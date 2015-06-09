@@ -55,7 +55,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         Map<String, Object> params = new HashMap<>();
         params.put("token", token.toString());
         request.setNamedParams(params);
-        sendAndWait(request, callback);
+        sendAndRegisterCallback(request, callback);
         return null;
     }
 
@@ -67,7 +67,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         params.put("username", uName);
         params.put("pwHash", pwd);
         request.setNamedParams(params);
-        sendAndWait(request, callback);
+        sendAndRegisterCallback(request, callback);
         return true;
     }
 
@@ -80,7 +80,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         params.put("email", email);
         params.put("pwHash", pwd);
         request.setNamedParams(params);
-        sendAndWait(request, callback);
+        sendAndRegisterCallback(request, callback);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         params.put("token", token.toString());
         params.put("userid", new Integer(userId).toString());
         request.setNamedParams(params);
-        sendAndWait(request, callback);
+        sendAndRegisterCallback(request, callback);
         return;
     }
 
@@ -116,9 +116,8 @@ public class ServerCommunication implements IServerCommunicationDAO{
         Integer token = AuthenticationController.getInstance().getLoggedInUserID();
         params.put("token", token.toString());
         params.put("treasureid", new Integer(t.getId()).toString());
-        params.put("userid",token.toString());
         request.setNamedParams(params);
-        sendAndWait(request, callback);
+        sendAndRegisterCallback(request, callback);
         return;
     }
 
@@ -132,7 +131,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         params.put("treasureid", new Integer(t.getId()).toString());
         params.put("userid",token.toString());
         request.setNamedParams(params);
-        sendAndWait(request, callback);
+        sendAndRegisterCallback(request, callback);
         return;
     }
 
@@ -157,7 +156,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         }
     }
 
-    private void sendAndWait(JSONRPC2Request req, IResponseCallback callback){
+    private void sendAndRegisterCallback(JSONRPC2Request req, IResponseCallback callback){
         this.responseCallback = callback;
         Log.i(TAG, "Sending request. "+req.toJSONString());
         ServerConnection.getInstance().sendJSONRequest(req);

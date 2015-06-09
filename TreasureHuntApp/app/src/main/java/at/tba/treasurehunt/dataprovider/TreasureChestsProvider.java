@@ -70,6 +70,11 @@ public class TreasureChestsProvider implements IResponseCallback {
         return result;
     }
 
+
+    public void removeTreasureFromList(Treasure t){
+        this.treasures.remove(t);
+    }
+
     @Override
     public void onResponseReceived(JSONRPC2Response response) {
         JsonConstructor constr = new JsonConstructor();

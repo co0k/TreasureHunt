@@ -17,6 +17,7 @@ import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.tasks.IResponseCallback;
 import at.tba.treasurehunt.utils.MapLocationHelper;
+import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Treasure;
 
 /**
@@ -152,6 +153,12 @@ public class TreasureChestHolder implements IResponseCallback{
         ServerCommunication.getInstance().sendOpenTreasureRequest(t, this);
     }
 
+    public void blockTreasureForUser(Treasure t){
+        ServerCommunication.getInstance().sendOpenTreasureWrongAnswerEvent(t,this);
+        this.treasureList.remove(t);
+        TreasureChestsProvider.getInstance().removeTreasureFromList(t);
+    }
+
 
     /**
      * The current selected treasure chest will be set when the "Open Treasure" is pressed in MapsActivity
@@ -169,7 +176,12 @@ public class TreasureChestHolder implements IResponseCallback{
 
     @Override
     public void onResponseReceived(JSONRPC2Response response) {
-        openTreasureCallback.onOpenTreasureSuccess();
+        JsonConstructor constr = new JsonConstructor();
+        Boolean result = constr.fromJson((String) response.getResult(), Boolean.class);
+        if (result)
+            openTreasureCallback.onOpenTreasureSuccess();
+        else
+            openTreasureCallback.onOpenTreasureFailure();
     }
 
     @Override

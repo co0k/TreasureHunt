@@ -21,8 +21,7 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.apache.commons.logging.Log;
-
+import android.util.Log;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -151,10 +150,10 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
         TextView questionText = (TextView) findViewById(R.id.quizQuestionText);
         questionText.setText(q.getQuestion());
 
-        Button[] answerButtons = new Button[numAnswers + 1];
+        Button[] answerButtons = new Button[numAnswers];
 
-        for (int i = 1; i <= numAnswers; i++) {
-            answerButtons[i] = generateButton(this.quiz, i);
+        for (int i = 0; i < numAnswers; i++) {
+            answerButtons[i] = generateButton(this.quiz, i+1);
         }
 
         /*
@@ -164,8 +163,8 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
         Collections.shuffle(btnList);
         btnList.toArray(answerButtons);
 
-        for (int i = 1; i <= numAnswers; i++){
-            bindButton(answerButtons[i], i);
+        for (int i = 0; i < numAnswers; i++){
+            bindButton(answerButtons[i], i+1);
         }
     }
 
@@ -235,8 +234,19 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
         if (answerId == 1) { // correct answer is always id == 1
             openTreasure();
         } else {
-            ShowMessageHelper.showSimpleInfoMessagePopUp("Wrong answer bro. sry.", this);
+            wrongAnswerSelected();
         }
+    }
+
+    private void wrongAnswerSelected(){
+        TreasureChestHolder.getInstance().blockTreasureForUser(treasure);
+        ShowMessageHelper.showNewSimpleMessagePopUp(this, "Wrong answer.", "Sorry, but this was not the right answer.", "Okay!",
+                new Runnable(){
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
     }
 
 
