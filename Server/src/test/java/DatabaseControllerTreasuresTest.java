@@ -239,7 +239,10 @@ public class DatabaseControllerTreasuresTest {
 	
 	@Test
 	public void getallTreasureIdTest() {
-		List<Integer> allTreasureID = DatabaseController.getInstance().getallTreasureID(false);
+		List<Integer> allTreasureID = DatabaseController.getInstance().getallTreasureID(true);
+		assertTrue("Ther should be no inactive treasure in the db",allTreasureID.isEmpty());
+		
+		allTreasureID = DatabaseController.getInstance().getallTreasureID(false);
 		Collections.sort(allTreasureID);
 		assertTrue("the ids must be the same", allTreasureID.equals(exampleTreasuresID));
 		
