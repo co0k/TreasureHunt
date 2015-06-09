@@ -41,3 +41,4 @@ before_install:
     - chmod +x ./Server/createDB
     - ./Server/createDB
 script:
+    - ./gradlew build
