@@ -43,7 +43,6 @@
             android:layout_height="fill_parent"
             android:text="Answer1"
             android:id="@+id/quiz_answer1"
-            android:onClick="onButtonAnswer1Click"
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 
@@ -52,7 +51,6 @@
             android:layout_height="fill_parent"
             android:text="Answer2"
             android:id="@+id/quiz_answer2"
-            android:onClick="onButtonAnswer2Click"
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 
@@ -61,7 +59,6 @@
             android:layout_height="fill_parent"
             android:text="Answer3"
             android:id="@+id/quiz_answer3"
-            android:onClick="onButtonAnswer3Click"
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 
@@ -70,7 +67,6 @@
             android:layout_height="fill_parent"
             android:text="Answer4"
             android:id="@+id/quiz_answer4"
-            android:onClick="onButtonAnswer4Click"
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 

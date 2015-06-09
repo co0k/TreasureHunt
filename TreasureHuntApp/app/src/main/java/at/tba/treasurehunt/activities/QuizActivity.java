@@ -21,6 +21,13 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.apache.commons.logging.Log;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.dataprovider.IOpenTreasureCallback;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
@@ -138,16 +145,52 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
      */
     private void generateQuizLayout(Quiz q) {
 
-        int numQuestions = 4;
+        int numAnswers = 4;
 
         TextView questionText = (TextView) findViewById(R.id.quizQuestionText);
         questionText.setText(q.getQuestion());
 
-        Button[] answerButtons = new Button[numQuestions + 1];
+        Button[] answerButtons = new Button[numAnswers + 1];
 
-        for (int i = 1; i <= numQuestions; i++) {
+        for (int i = 1; i <= numAnswers; i++) {
             answerButtons[i] = generateButton(this.quiz, i);
         }
+
+        /*
+        Shuffle the answer list
+         */
+        List<Button> btnList = Arrays.asList(answerButtons);
+        Collections.shuffle(btnList);
+        btnList.toArray(answerButtons);
+
+        for (int i = 1; i <= numAnswers; i++){
+            bindButton(answerButtons[i], i);
+        }
+    }
+
+    private void bindButton(final Button b, int index){
+
+        Button tmpButton = new Button(this);
+
+        switch(index){
+            case 1:
+                tmpButton = (Button) findViewById(R.id.quiz_answer1);
+                break;
+            case 2: tmpButton = (Button) findViewById(R.id.quiz_answer2);
+                break;
+            case 3: tmpButton = (Button) findViewById(R.id.quiz_answer3);
+                break;
+            case 4: tmpButton = (Button) findViewById(R.id.quiz_answer4);
+                break;
+        }
+        tmpButton.setText(b.getText());
+        tmpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                b.performClick();
+            }
+        });
+
     }
 
     private Button generateButton(Quiz q, final int answerId) {
@@ -155,24 +198,21 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
 
         String answerText = "";
 
+
         switch (answerId) {
             case 1: {
-                answerButton = (Button) findViewById(R.id.quiz_answer1);
                 answerText = q.getAnswer1();
                 break;
             }
             case 2: {
-                answerButton = (Button) findViewById(R.id.quiz_answer2);
                 answerText = q.getAnswer2();
                 break;
             }
             case 3: {
-                answerButton = (Button) findViewById(R.id.quiz_answer3);
                 answerText = q.getAnswer3();
                 break;
             }
             case 4: {
-                answerButton = (Button) findViewById(R.id.quiz_answer4);
                 answerText = q.getAnswer4();
                 break;
             }
@@ -181,33 +221,24 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
         answerButton.setText(answerText);
 
 
+
+        answerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAnswerClick(answerId);
+            }
+        });
+
+
         return answerButton;
     }
 
     public void onAnswerClick(int answerId) {
         if (answerId == 1) { // correct answer is always id == 1
-
-            //ShowMessageHelper.showSimpleInfoMessagePopUp("Right Answer! Nice bro.", this);
             openTreasure();
         } else {
             ShowMessageHelper.showSimpleInfoMessagePopUp("Wrong answer bro. sry.", this);
         }
-    }
-
-    public void onButtonAnswer1Click(View v) {
-        onAnswerClick(1);
-    }
-
-    public void onButtonAnswer2Click(View v) {
-        onAnswerClick(2);
-    }
-
-    public void onButtonAnswer3Click(View v) {
-        onAnswerClick(3);
-    }
-
-    public void onButtonAnswer4Click(View v) {
-        onAnswerClick(4);
     }
 
 
