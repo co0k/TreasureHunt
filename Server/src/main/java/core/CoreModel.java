@@ -43,6 +43,21 @@ public class CoreModel implements CommunicationControllerDAO {
 		activeTokens.setActive(token);
 	}
 
+	public void reset() {
+		this.cQEThread.interrupt();
+		synchronized (commandQueue) {
+			this.commandQueue = new PriorityQueue<>(10, new Comparator<FutureCommand>() {
+				@Override
+				public int compare(FutureCommand fC1, FutureCommand fC2) {
+					return fC2.getPriority() - fC1.getPriority();
+				}
+			});
+		}
+		this.cQEThread = new Thread(new CommandQueueExecutioner());
+		this.cQEThread.start();
+		// token timeout set to 60 seconds
+		this.activeTokens = new ActiveTokens(60);
+	}
 	@Override
 	public <V> Future<V> addCommand(Command<V> command) {
 		if (command != null) {

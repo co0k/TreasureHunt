@@ -9,6 +9,10 @@ import java.util.concurrent.Future;
 
 public class CoreModelCommandQueueTest {
 
+	@After
+	public void deleteAllTraces() {
+		CoreModel.getInstance().reset();
+	}
 	@Test
 	public void priorityOrderTest() throws InterruptedException {
 		final List<Integer> resultList = new ArrayList<>();

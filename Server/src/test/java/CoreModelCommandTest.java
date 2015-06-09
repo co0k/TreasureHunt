@@ -19,6 +19,7 @@ public class CoreModelCommandTest {
 	@After
 	public void deleteAllTraces() {
 		DatabaseController.getInstance().deleteAll();
+		CoreModel.getInstance().reset();
 	}
 	@Test
 	public void activeTokenTest() throws ExecutionException, InterruptedException, TimeoutException {
