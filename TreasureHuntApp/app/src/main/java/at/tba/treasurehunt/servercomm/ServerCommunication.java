@@ -155,11 +155,15 @@ public class ServerCommunication implements IServerCommunicationDAO{
 
         Integer requestId = Integer.parseInt((String) response.toJSONObject().get("id"));
         lastResponseCallback = responseIdCallbackMap.get(requestId);
-        
-        Log.d(TAG, "Got message: " + payload);
-        Log.d(TAG, "Got JSON: "+response);
-        if (response.getError() == null) { // no error
 
+        Log.d(TAG, "Got JSON: "+response);
+
+        if (lastResponseCallback == null){
+            Log.d(TAG, "No response handler found in the <requestID/Callback>Map! Returning.. This JSON Response will not be handled!");
+            return;
+        }
+
+        if (response.getError() == null) { // no error
             lastResponseCallback.onResponseReceived(response);
         }else{ // JSON RPC error
             lastResponseCallback.onResponseReceiveError();
