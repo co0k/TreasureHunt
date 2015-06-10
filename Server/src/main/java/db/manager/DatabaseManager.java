@@ -761,12 +761,12 @@ public class DatabaseManager {
 			throw new IllegalArgumentException("the user data is incorrect");
 		User existingUser = getUserFromName(user.getName());
 
-		if(existingUser != null || existingUser.getId() != user.getId())
+		if(existingUser != null && existingUser.getId() != user.getId())
 			return false;
 
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		int count = create.update(USER).set(row(USER.NAME, USER.PWDHASH, USER.EMAIL), row(user.getName(),user.getPasswordHash(), user.getEmail())).where(USER.UID.equal(user.getId())).execute();
+		int count = create.update(USER).set(USER.NAME,user.getName()).set(USER.PWDHASH, user.getPasswordHash()).set(USER.EMAIL, user.getEmail()).where(USER.UID.equal(user.getId())).execute();
 		conn.close();
 		if (count != 1)
 			return false;

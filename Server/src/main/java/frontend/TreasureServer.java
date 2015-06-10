@@ -10,19 +10,15 @@ import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainer
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
-public class TreasureServer{
+public class TreasureServer {
     public static void main(String[] args) throws Exception {
 
         Server server = new Server(7666);
 
         ServletContextHandler servletContext = new ServletContextHandler();
         servletContext.setContextPath("/loot");
-        // servletContext.addServlet(TreasureServerEndpointServlet.class, "/loot");
 
         server.setHandler(servletContext);
-
-        //server.start();
-        //server.join();
 
         try {
             // Initialize javax.websocket layer
@@ -38,15 +34,4 @@ public class TreasureServer{
             t.printStackTrace(System.err);
         }
     }
-    /*
-    public static class TreasureServerEndpointServlet extends WebSocketServlet {
-
-        @Override
-        public void configure(WebSocketServletFactory factory) {
-            Logger  logger = Logger.getLogger("com.foo");
-            logger.setLevel(Level.INFO);
-            factory.register(TreasureServerEndpoint.class);
-        }
-    }
-    */
 }
