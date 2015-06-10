@@ -686,7 +686,7 @@ public class DatabaseManager {
 	public static HighscoreList getHighScoreFromTo(int fromRank, int numberOfEntries) throws SQLException {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-		Result<Record3<Integer, String, Integer>> result = create.select(USER.UID, USER.NAME, USER.SCORE).from(USER).orderBy(USER.SCORE.desc()).limit(fromRank, numberOfEntries).fetch();
+		Result<Record3<Integer, String, Integer>> result = create.select(USER.UID, USER.NAME, USER.SCORE).from(USER).orderBy(USER.SCORE.desc()).limit(fromRank - 1, numberOfEntries).fetch();
 		conn.close();
 
 		ArrayList<HighscoreList.Entry> out = new ArrayList<HighscoreList.Entry>();
