@@ -1,6 +1,7 @@
 package db.manager;
 
 import static db.generated.Tables.*;
+import static org.jooq.impl.DSL.row;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,14 +15,7 @@ import java.util.Map;
 import communication_controller.json.JsonConstructor;
 import data_structures.user.Inventory;
 
-import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.Record;
-import org.jooq.Record1;
-import org.jooq.Record2;
-import org.jooq.Record3;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 
 import data_structures.treasure.*;
@@ -755,6 +749,24 @@ public class DatabaseManager {
 		Connection conn = getConnection();
 		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 		int count = create.update(USER).set(USER.PWDHASH, newPwdHash).where(USER.UID.equal(uid)).execute();
+		conn.close();
+		if (count != 1)
+			return false;
+		else
+			return true;
+	}
+
+	public static boolean editUser(User user) throws SQLException, IllegalArgumentException {
+		if (user == null || user.getName() == null || user.getPasswordHash() == null || user.getPasswordHash().length() > 1024)
+			throw new IllegalArgumentException("the user data is incorrect");
+		User existingUser = getUserFromName(user.getName());
+
+		if(existingUser != null || existingUser.getId() != user.getId())
+			return false;
+
+		Connection conn = getConnection();
+		DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+		int count = create.update(USER).set(row(USER.NAME, USER.PWDHASH, USER.EMAIL), row(user.getName(),user.getPasswordHash(), user.getEmail())).where(USER.UID.equal(user.getId())).execute();
 		conn.close();
 		if (count != 1)
 			return false;

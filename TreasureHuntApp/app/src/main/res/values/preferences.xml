@@ -3,4 +3,6 @@
     <string name="prefStayLoggedIn">prefStayLoggedIn</string>
     <string name="prefDefaultLoginUserName">prefDefaultLoginUserName</string>
     <string name="prefDefaultLoginUserPassword">prefDefaultLoginUserPassword</string>
+    <string name="prefCurrentLoginUserName">prefCurrentLoginUserName</string>
+    <string name="prefCurrentLoginUserPassword">prefCurrentLoginUserPassword</string>
 </resources>
