@@ -269,6 +269,7 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
 
     @Override
     public void onOpenTreasureFailure() {
+        TreasureChestHolder.getInstance().blockTreasureForUser(treasure);
         AlertHelper.showNewAlertSingleButton(this, "Something went wrong.."
                 , "You are not allowed to open this treasure! Sorry.",
                 new Runnable() {

@@ -151,7 +151,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         Map<String, Object> params = new HashMap<>();
         Integer token = AuthenticationController.getInstance().getLoggedInUserID();
         params.put("token", token.toString());
-        params.put("treasureid", new Integer(t.getId()).toString());
+        params.put("treasureID", new Integer(t.getId()).toString());
         request.setNamedParams(params);
         sendAndRegisterCallback(request, callback, requestId);
         return;
