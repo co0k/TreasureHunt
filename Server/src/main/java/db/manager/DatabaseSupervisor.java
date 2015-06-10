@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import data_structures.treasure.GeoLocation;
 import data_structures.treasure.Treasure;
 import data_structures.treasure.Treasure.Location;
-import db.DatabaseController;
 
 
 public class DatabaseSupervisor {
