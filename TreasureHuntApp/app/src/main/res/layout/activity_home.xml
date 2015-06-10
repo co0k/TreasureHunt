@@ -36,26 +36,38 @@
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 
-        <Button
+
+
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Profile"
-            android:id="@+id/profile_view"
-            android:onClick="onButtonUserProfileClick"
+            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_weight="0.25" />
-
+            android:layout_weight="0.25"
+            android:weightSum="1">
 
 
             <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Score"
-            android:id="@+id/score_view"
-            android:clickable="true"
-            android:onClick="onButtonHighscoresClick"
-            android:layout_gravity="center"
-            android:layout_weight="0.25" />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Profile"
+                android:id="@+id/profile_view"
+                android:onClick="onButtonUserProfileClick"
+                android:layout_gravity="center"
+                android:layout_weight="0.5" />
+
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Score"
+                android:id="@+id/score_view"
+                android:clickable="true"
+                android:onClick="onButtonHighscoresClick"
+                android:layout_gravity="center"
+                android:layout_weight="0.5" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
