@@ -16,7 +16,7 @@ public class UserLoginDataController {
 		this.context = context;
 	}
 
-	public void deleteDefaultLoginData(String name, String password) {
+	public void deleteDefaultLoginData() {
 		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
 		editor.putString(context.getString(R.string.prefDefaultLoginUserName), "");
 		editor.putString(context.getString(R.string.prefDefaultLoginUserPassword), "");

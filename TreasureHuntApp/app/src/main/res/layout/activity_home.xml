@@ -57,15 +57,36 @@
             android:layout_gravity="center"
             android:layout_weight="0.25" />
 
-        <Button
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Quit the Hunt"
-            android:id="@+id/btnExit"
-            android:clickable="true"
-            android:onClick="onButtonExitClick"
+            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_weight="0.25" />
+            android:layout_weight="0.25"
+            android:weightSum="1">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Quit the Hunt"
+                android:id="@+id/btnExit"
+                android:clickable="true"
+                android:onClick="onButtonExitClick"
+                android:layout_gravity="center"
+                android:layout_weight="0.5" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Logout"
+                android:id="@+id/btnLogout"
+                android:clickable="true"
+                android:onClick="onButtonLogoutClick"
+                android:layout_gravity="center"
+                android:layout_weight="0.5" />
+            </LinearLayout>
+
+
 
     </LinearLayout>
 
