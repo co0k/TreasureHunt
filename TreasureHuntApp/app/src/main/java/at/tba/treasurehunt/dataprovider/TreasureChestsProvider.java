@@ -6,6 +6,7 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import android.util.Log;
 
 import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
@@ -89,6 +90,7 @@ public class TreasureChestsProvider implements IResponseCallback {
         JsonConstructor constr = new JsonConstructor();
         Treasure[] ts = constr.fromJson((String)response.getResult(), Treasure[].class);
         if (ts == null){
+            Log.d("TreasureProvider", "Treasure Array is null!");
             return;
         }
         List<Treasure> list = new ArrayList<Treasure>(Arrays.asList(ts));

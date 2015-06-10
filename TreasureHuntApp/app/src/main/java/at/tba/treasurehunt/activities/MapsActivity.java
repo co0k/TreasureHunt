@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.LocationController;
+import at.tba.treasurehunt.dataprovider.IOpenTreasureCallback;
 import at.tba.treasurehunt.dataprovider.ITreasureLoadedCallback;
 import at.tba.treasurehunt.dataprovider.TreasureChestsProvider;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
@@ -39,7 +40,7 @@ import data_structures.treasure.Treasure;
 /**
  * MAP Activity keeps screen alive! Set in onCreate.
  */
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ITreasureLoadedCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ITreasureLoadedCallback, IOpenTreasureCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GPSTracker gpsTracker;
@@ -153,14 +154,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         b.clearAnimation();
     }
 
-    public void onButtonOpenTreasureClick(View v){
-        //ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
-        if (isQuiz(TreasureChestHolder.getInstance().getNearestTreasure().getType())) {
-            TreasureChestHolder.getInstance().setCurrentSelectedTreasure(TreasureChestHolder.getInstance().getNearestTreasure());
-            Intent actSwitch = new Intent(this, QuizActivity.class);
-            startActivity(actSwitch);
-        }
-    }
 
     /**
      * Only helper function here. Should be placed somewhere else, as soon as data structure is fixed
@@ -246,6 +239,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+
+    public void onButtonOpenTreasureClick(View v){
+        //ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
+        TreasureChestHolder.getInstance().openTreasure(TreasureChestHolder.getInstance().getNearestTreasure(),this);
+    }
+
     @Override
     public void onTreasuresLoadedSuccess() {
         //setUpMapIfNeeded();
@@ -263,5 +262,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onOpenTreasureSuccess() {
+        if (isQuiz(TreasureChestHolder.getInstance().getNearestTreasure().getType())) {
+            TreasureChestHolder.getInstance().setCurrentSelectedTreasure(TreasureChestHolder.getInstance().getNearestTreasure());
+            Intent actSwitch = new Intent(this, QuizActivity.class);
+            startActivity(actSwitch);
+        }
+    }
+
+    @Override
+    public void onOpenTreasureFailure() {
+        TreasureChestsProvider.getInstance().removeTreasureFromList(TreasureChestHolder.getInstance().getNearestTreasure());
+        AlertHelper.showNewAlertSingleButton(this, "Something went wrong.."
+                , "You are not allowed to open this treasure at the moment! Maybe another Player is trying to open it. Sorry.",
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshMap();
+                    }
+                });
     }
 }

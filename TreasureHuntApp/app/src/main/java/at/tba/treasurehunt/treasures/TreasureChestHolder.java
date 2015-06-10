@@ -159,6 +159,12 @@ public class TreasureChestHolder implements IResponseCallback{
         TreasureChestsProvider.getInstance().removeTreasureFromList(t);
     }
 
+    public void treasureRightAnswer(Treasure t){
+        ServerCommunication.getInstance().sendOpenTreasureRightAnswerEvent(t, this);
+        this.treasureList.remove(t);
+        TreasureChestsProvider.getInstance().removeTreasureFromList(t);
+    }
+
 
     /**
      * The current selected treasure chest will be set when the "Open Treasure" is pressed in MapsActivity

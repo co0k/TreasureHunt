@@ -31,6 +31,8 @@ public interface IServerCommunicationDAO {
 
     public void sendOpenTreasureWrongAnswerEvent(Treasure t, IResponseCallback callback);
 
+    public void sendOpenTreasureRightAnswerEvent(Treasure t, IResponseCallback callback);
+
     public void messageReceived(String payload);
 
 }

@@ -45,21 +45,16 @@ import data_structures.treasure.Treasure;
  * The layout gets programmatically generated, dependent on the Quiz' structure.
  * TODO: when in loading to check the data the "back" button is pressed, and then another treasure is opened instantly, the app crashes
  */
-public class QuizActivity extends Activity implements IOpenTreasureCallback {
+public class QuizActivity extends Activity {
 
     private Quiz quiz;
     private Treasure treasure;
-
-    private View mLayoutView;
-    private View mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         ActivityManager.setCurrentActivity(this);
-        mProgressView = findViewById(R.id.open_treasure_progress);
-        mLayoutView = findViewById(R.id.quizLayout);
 
         /**
          * Get the quiz of the opened Treasure.
@@ -99,42 +94,6 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLayoutView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLayoutView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLayoutView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLayoutView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
     }
 
 
@@ -251,34 +210,15 @@ public class QuizActivity extends Activity implements IOpenTreasureCallback {
 
 
     private void treasureOpenedSuccessfully(){
+        TreasureChestHolder.getInstance().treasureRightAnswer(treasure);
         this.finish();
         Intent actSwitch = new Intent(this, TreasureOpenActivity.class);
         startActivity(actSwitch);
     }
 
     private void openTreasure(){
-        showProgress(true);
-        TreasureChestHolder.getInstance().openTreasure(this.treasure, this);
-    }
-
-    @Override
-    public void onOpenTreasureSuccess() {
-        showProgress(false);
         treasureOpenedSuccessfully();
     }
 
-    @Override
-    public void onOpenTreasureFailure() {
-        TreasureChestHolder.getInstance().blockTreasureForUser(treasure);
-        AlertHelper.showNewAlertSingleButton(this, "Something went wrong.."
-                , "You are not allowed to open this treasure! Sorry.",
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                });
-        showProgress(false);
-    }
 
 }
