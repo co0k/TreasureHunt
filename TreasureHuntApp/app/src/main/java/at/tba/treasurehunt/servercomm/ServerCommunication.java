@@ -25,7 +25,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
 
     private static ServerCommunication instance = null;
 
-    private ServerConnection serverConn;
+    private IServerConnection serverConn;
     private JSONRPC2Parser parser;
 
     private HashMap<Integer, IResponseCallback> responseIdCallbackMap;
@@ -34,15 +34,13 @@ public class ServerCommunication implements IServerCommunicationDAO{
 
     private Integer requestID = 1;
 
-    private boolean newMessage = false;
-
     public static ServerCommunication getInstance(){
-        if (instance == null) instance = new ServerCommunication();
+        if (instance == null) instance = new ServerCommunication(ServerConnection.getInstance());
         return instance;
     }
 
-    private ServerCommunication(){
-        this.serverConn = ServerConnection.getInstance();
+    private ServerCommunication(IServerConnection connection){
+        this.serverConn = connection;
         this.parser = new JSONRPC2Parser();
         this.responseIdCallbackMap = new HashMap<>();
     }
@@ -183,7 +181,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         this.lastResponseCallback = callback;
         this.responseIdCallbackMap.put(requestId, callback);
         Log.i(TAG, "Sending request. "+req.toJSONString());
-        ServerConnection.getInstance().sendJSONRequest(req);
+        this.serverConn.sendJSONRequest(req);
     }
 
 }
