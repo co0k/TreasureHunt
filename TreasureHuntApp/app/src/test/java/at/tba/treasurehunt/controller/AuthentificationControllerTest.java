@@ -78,17 +78,196 @@ public class AuthentificationControllerTest {
         serverCommunication.logInToServer("user", "asdfwefavw", callback);
 
         waitUntilFinished(isFinished);
-
     }
 
+    @Test
+    public void registerUserTest() {
+        serverConnectionMockUp = new ServerConnectionMockUp(null, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "-1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
 
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        serverCommunication.registerUserOnServer("user", "email", "pwdHash", callback);
 
+        waitUntilFinished(isFinished);
+    }
 
+    @Test
+    public void getNearestTreasureTest(){
+        serverConnectionMockUp = new ServerConnectionMockUp(null, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
 
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        serverCommunication.getNearTreasuresFromServer(callback, 47.26952, 11.39570);
+        waitUntilFinished(isFinished);
+    }
 
+    @Test
+    public void getAllTreasuresTest(){
+        serverConnectionMockUp = new ServerConnectionMockUp(null, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
 
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        serverCommunication.getAllTreasuresFromServer(callback);
+        waitUntilFinished(isFinished);
+    }
 
+    @Test
+    public void getUserByIdTest(){
+        serverConnectionMockUp = new ServerConnectionMockUp(null, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
 
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        serverCommunication.getUserById(1, callback);
+        waitUntilFinished(isFinished);
+    }
+
+    @Test
+    public void getHighscoreFromServerTest() {
+        serverConnectionMockUp = new ServerConnectionMockUp(null, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
+
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        serverCommunication.getHighscoreListFromServer(callback);
+        waitUntilFinished(isFinished);
+    }
+
+    @Test
+    public void sendOpenTreasureRequestTest() {
+        serverConnectionMockUp = new ServerConnectionMockUp(exampleTreasures, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
+
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        Quiz testQuiz = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+        Treasure t = new Treasure(new Treasure.Location(10, 47.26952, 11.39570), testQuiz, new Treasure.Size(-1, 20, 1), new Coupon(10, "SuperDuperMarket", 10.50));
+        serverCommunication.sendOpenTreasureRequest(t, callback);
+        waitUntilFinished(isFinished);
+    }
+
+    @Test
+    public void getHighscoreListInRangeFromServerTest() {
+        serverConnectionMockUp = new ServerConnectionMockUp(exampleTreasures, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
+
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        serverCommunication.getHighscoreListFromServer(callback);
+        waitUntilFinished(isFinished);
+    }
+
+    @Test
+    public void sendOpenTreasureWrongAnswerEventTest() {
+        serverConnectionMockUp = new ServerConnectionMockUp(exampleTreasures, null, null, 95);
+        serverCommunication = new ServerCommunication(serverConnectionMockUp);
+        serverConnectionMockUp.setServerCommunication(serverCommunication);
+        final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
+        IResponseCallback callback = new IResponseCallback() {
+            @Override
+            public void onResponseReceived(JSONRPC2Response response) {
+                assertEquals("id is not equal to the registerUser id", response.getID(), "1");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                isFinished.setObject(true);
+            }
+
+            @Override
+            public void onResponseReceiveError() {
+                fail("error");
+            }
+        };
+        Quiz testQuiz = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+        Treasure t = new Treasure(new Treasure.Location(10, 47.26952, 11.39570), testQuiz, new Treasure.Size(-1, 20, 1), new Coupon(10, "SuperDuperMarket", 10.50));
+        serverCommunication.sendOpenTreasureWrongAnswerEvent(t, callback);
+        waitUntilFinished(isFinished);
+    }
 
 private class ObjectWrapper<T> {
     private T object;

@@ -80,26 +80,152 @@ public class ServerConnectionMockUp implements IServerConnection{
                 String username = (String) paramMap.get("username");
                 assertNotNull("username is null", username);
                 assertTrue("username is empty", username.length() != 0);
+
                 String pwHash = (String) paramMap.get("pwHash");
-                assertNotNull("username is null", pwHash);
-                assertTrue("username is empty", pwHash.length() != 0);
+                assertNotNull("passwordhash is null", pwHash);
+                assertTrue("passwordhash is empty", pwHash.length() != 0);
 
                 JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
                 serverCommunication.messageReceived(response.toJSONString());
+
                 break;
             }
-            case "registeruser":
+            case "registeruser": {
                 assertEquals("number params is wrong", paramMap.size(), 3);
+
+                String username = (String) paramMap.get("username");
+                assertNotNull("username is null", username);
+                assertTrue("username is empty", username.length() != 0);
+
+                String email = (String) paramMap.get("email");
+                assertNotNull("email is null", email);
+                assertTrue("email is empty", email.length() != 0);
+
+                String pwHash = (String) paramMap.get("pwHash");
+                assertNotNull("passwordhash is null", pwHash);
+                assertTrue("passwordhash is empty", pwHash.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
                 break;
-            case "getneartreasures":
+            }
+            case "getneartreasures": {
                 assertEquals("number of params is wrong", paramMap.size(), 3);
+
+                String toke = (String) paramMap.get("token");
+                assertNotNull("token is null", toke);
+                assertTrue("token is empty", toke.length() != 0);
+
+                String latitude = (String) paramMap.get("latitude");
+                assertNotNull("latitude is null", latitude);
+                assertTrue("latitude is empty", latitude.length() != 0);
+
+                String longitude = (String) paramMap.get("longitude");
+                assertNotNull("longitude is null", longitude);
+                assertTrue("longitude is empty", longitude.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
                 break;
-            case "getalltreasures":
+            }
+            case "getalltreasures": {
                 assertEquals("number of params is wrong", paramMap.size(), 1);
+
+                String toke = (String) paramMap.get("token");
+                assertNotNull("token is null", toke);
+                assertTrue("token is empty", toke.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
                 break;
-            case "getprofiledata":
+            }
+            case "getprofiledata": {
                 assertEquals("number of params is wrong", paramMap.size(), 2);
+
+                String toke = (String) paramMap.get("token");
+                assertNotNull("token is null", toke);
+                assertTrue("token is empty", toke.length() != 0);
+
+                String userid = (String) paramMap.get("userid");
+                assertNotNull("userid is null", userid);
+                assertTrue("userid is empty", userid.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
                 break;
+            }
+            case "gethighscorelistall": {
+                assertEquals("number of params is wrong", paramMap.size(), 1);
+
+                String toke = (String) paramMap.get("token");
+                assertNotNull("token is null", toke);
+                assertTrue("token is empty", toke.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
+                break;
+            }
+            case "gethighscorelist": {
+                assertEquals("number of params is wrong", paramMap.size(), 3);
+
+                String toke = (String) paramMap.get("token");
+                assertNotNull("token is null", toke);
+                assertTrue("token is empty", toke.length() != 0);
+
+                String low = (String) paramMap.get("low");
+                assertNotNull("low is null", low);
+                assertTrue("low is empty", low.length() != 0);
+
+                String high = (String) paramMap.get("high");
+                assertNotNull("high is null", high);
+                assertTrue("high is empty", high.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
+                break;
+            }
+            case "eventtreasureopen": {
+                assertEquals("number of params is wrong", paramMap.size(), 2);
+
+                String toke = (String) paramMap.get("token");
+                assertNotNull("token is null", toke);
+                assertTrue("token is empty", toke.length() != 0);
+
+                String treasureId = (String) paramMap.get("treasureID");
+                assertNotNull("treasureID is null", treasureId);
+                assertTrue("treasureID is empty", treasureId.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
+                break;
+            }
+            case "eventtreasurewronganswer": {
+                assertEquals("number of params is wrong", paramMap.size(), 3);
+
+                String toke = (String) paramMap.get("token");
+                assertNotNull("token is null", toke);
+                assertTrue("token is empty", toke.length() != 0);
+
+                String userid = (String) paramMap.get("userid");
+                assertNotNull("userid is null", userid);
+                assertTrue("userid is empty", userid.length() != 0);
+
+                String treasureId = (String) paramMap.get("treasureid");
+                assertNotNull("treasureID is null", treasureId);
+                assertTrue("treasureID is empty", treasureId.length() != 0);
+
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                serverCommunication.messageReceived(response.toJSONString());
+
+                break;
+            }
             default:
                 JSONRPC2Response response = new JSONRPC2Response(new JSONRPC2Error(123,"illegal method"), req.getID());
                 serverCommunication.messageReceived(response.toJSONString());
