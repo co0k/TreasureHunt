@@ -29,9 +29,20 @@ public interface DatabaseControllerDAO {
 	 * @param location
 	 *            the center of the circle that holds the treasures
 	 * @param radius in meters
-	 * @return the list of treasures
+	 * @return the list of treasures or null if there are none
 	 */
 	List<Treasure> getTreasures(GeoLocation location, double radius);
+
+	/**
+	 * returns a list of all treasures within the given radius,
+	 * without the treasures inaccessible to the user
+	 * @param userId
+	 * @param location
+	 *            the center of the circle that holds the treasures
+	 * @param radius in meters
+	 * @return the list of treasures or null if there are none or the user is invalid
+	 */
+	List<Treasure> getTreasures(int userId, GeoLocation location, double radius);
 
 	/**
 	 * returns id of saved treasure
