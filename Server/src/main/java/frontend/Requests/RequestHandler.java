@@ -89,10 +89,14 @@ public class RequestHandler implements RequestResolver {
                             (String) parameters.get("pwHash"));
                 break;
 
-            case "getuserbyname":
-                String username = jsonC.fromJson((String) parameters.get("username"), String.class);
-                //System.err.println("Case getuserbyname: " + username);
-                response = getUserByName(username);
+            case "edituser":
+                response = editUser((String) parameters.get("email"),
+                            (String) parameters.get("username"),
+                            (String) parameters.get("pwHash"));
+                break;
+
+            case "deleteuser":
+                response = deleteUser();
                 break;
 
             case "getprofiledata":
@@ -210,19 +214,6 @@ public class RequestHandler implements RequestResolver {
     }
 
     @Override
-    public User getUserByName(String username) {
-        try {
-            //System.err.println("Method getuserbyname: " + username);
-            return CoreModel.getInstance().addCommand(new GetUserByNameCommand(username)).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public User getProfileData() {
         try {
             return CoreModel.getInstance().addCommand(new GetUserProfileCommand(token)).get();
@@ -232,8 +223,25 @@ public class RequestHandler implements RequestResolver {
             e.printStackTrace();
         }
         return null;
-    }        //System.err.println(treasureID);
-        //System.err.println(token);
+    }
+
+    @Override
+    public User editUser(String email, String username, String pwHash) {
+//        return CoreModel.getInstance().addCommand(new )
+        return null;
+    }
+
+    @Override
+    public Boolean deleteUser() {
+        try {
+            return CoreModel.getInstance().addCommand(new DeleteUserCommand(token)).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public Boolean eventTreasureOpened(Integer treasureID) {

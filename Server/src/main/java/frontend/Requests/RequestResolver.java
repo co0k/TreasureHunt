@@ -30,8 +30,9 @@ public interface RequestResolver {
 
     Integer checkLogIn(String username, String pwHash);                     // tested
     Boolean registerUser(String email, String username, String pwHash);     // tested
-    User getUserByName(String username);
-    User getProfileData();
+    User getProfileData();                                                  // tested
+    User editUser(String email, String username, String pwHash);
+    Boolean deleteUser();                                                   // tested
 
     List<Treasure> getAllTreasures();       // tested
     List<Treasure> getNearTreasures( Double longitude, Double latitude);  // tested

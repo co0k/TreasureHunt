@@ -223,6 +223,16 @@ public class DatabaseController implements DatabaseControllerDAO {
 	}
 
 	@Override
+	public boolean editUser(User user) {
+		try {
+			return DatabaseManager.editUser(user);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
 	public Inventory getUserInventory(int uId) {
 		try {
 			return DatabaseManager.getUserInventory(uId);

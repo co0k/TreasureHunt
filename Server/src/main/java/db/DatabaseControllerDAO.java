@@ -180,6 +180,13 @@ public interface DatabaseControllerDAO {
 	User getUserProfile(String name);
 
 	/**
+	 *
+	 * @param user
+	 * @return
+	 */
+	boolean editUser(User user);
+
+	/**
 	 * returns the complete user inventory by reference of the user id
 	 * 
 	 * @param uId

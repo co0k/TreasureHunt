@@ -39,5 +39,29 @@ public class UserLoginDataController {
 		editor.putString(context.getString(R.string.prefDefaultLoginUserPassword), AuthenticationController.generateHash(name + password));
 		editor.commit();
 	}
+
+//	public void deleteCurrentLoginData(String name, String password) {
+//		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+//		editor.putString(context.getString(R.string.prefCurrentLoginUserName), "");
+//		editor.putString(context.getString(R.string.prefCurrentLoginUserPassword), "");
+//		editor.commit();
+//	}
+//
+//	public String getCurrentUserName() {
+//		return PreferenceManager.getDefaultSharedPreferences(context).getString(
+//				context.getString(R.string.prefCurrentLoginUserName), "");
+//	}
+//
+//	public String getCurrentUserPasswordHash() {
+//		return PreferenceManager.getDefaultSharedPreferences(context).getString(
+//				context.getString(R.string.prefDefaultLoginUserPassword), "");
+//	}
+//
+//	public void saveDefaultLoginData(String name, String password) {
+//		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+//		editor.putString(context.getString(R.string.prefDefaultLoginUserName), name);
+//		editor.putString(context.getString(R.string.prefDefaultLoginUserPassword), AuthenticationController.generateHash(name + password));
+//		editor.commit();
+//	}
 }
 
