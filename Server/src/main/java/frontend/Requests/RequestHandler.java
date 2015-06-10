@@ -281,7 +281,6 @@ public class RequestHandler implements RequestResolver {
     @Override
     public HighscoreList getHighscoreList(Integer low, Integer high) {
         try {
-            System.err.println("inside getHighscore with params: (" + token + "," + low + "," + high + ")");
             return CoreModel.getInstance().addCommand(new GetHighscoresAroundCommand(token, low, high)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
