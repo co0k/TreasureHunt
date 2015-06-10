@@ -39,7 +39,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return instance;
     }
 
-    private ServerCommunication(IServerConnection connection){
+    public ServerCommunication(IServerConnection connection){
         this.serverConn = connection;
         this.parser = new JSONRPC2Parser();
         this.responseIdCallbackMap = new HashMap<>();
@@ -184,7 +184,7 @@ public class ServerCommunication implements IServerCommunicationDAO{
             return;
         }
 
-        Integer requestId = Integer.parseInt((String) response.toJSONObject().get("id"));
+        Integer requestId = Integer.parseInt((String) response.getID());
         lastResponseCallback = responseIdCallbackMap.get(requestId);
 
         Log.d(TAG, "Got JSON: "+response);
