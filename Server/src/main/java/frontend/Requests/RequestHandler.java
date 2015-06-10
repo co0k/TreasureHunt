@@ -24,14 +24,15 @@ import java.util.concurrent.Future;
  */
 public class RequestHandler implements RequestResolver {
 
-    private String[] tokenFree = {"checklogin","registeruser","gettesttreasure"};
+    private String[] tokenFree = {"checklogin", "registeruser", "gettesttreasure"};
     private Integer token;
     private Gson gson = new Gson();
+
     /**
      * this Method parses the request
+     *
      * @param request
      * @return
-     *
      */
     @Override
     public JSONRPC2Response handleRequest(JSONRPC2Request request) {
@@ -49,7 +50,7 @@ public class RequestHandler implements RequestResolver {
         id = (String) request.getID();
 
         JSONRPC2ParamsType type = request.getParamsType();
-        if (type == JSONRPC2ParamsType.OBJECT ) {
+        if (type == JSONRPC2ParamsType.OBJECT) {
             parameters = request.getNamedParams();
             argc = parameters.size();
         }
@@ -57,42 +58,42 @@ public class RequestHandler implements RequestResolver {
         // checks if the requested method is token free
         // i.e it is not required that the Client sends
         // a token together with his/her request
-        if( !isTokenFree(methodName) ) {
+        if (!isTokenFree(methodName)) {
             try {
-                token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
-                if( !isTokenActive(token) ) {
-                    return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS,id);
+                token = jsonC.fromJson((String) parameters.get("token"), Integer.class);
+                if (!isTokenActive(token)) {
+                    return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS, id);
                 }
-            } catch( IllegalArgumentException e) {
-                return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS,id);
+            } catch (IllegalArgumentException e) {
+                return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS, id);
             }
         }
 
         // every other method than getTestTreasure requires parameters
         // so a we test this right here
-        if( !methodName.equals("gettesttreasure") && parameters == null ) {
+        if (!methodName.equals("gettesttreasure") && parameters == null) {
             return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS, id);
         }
 
         /*
         checks which method the client wants to invoke
          */
-        switch(methodName) {
-             case "checklogin":
-                    response = checkLogIn((String) parameters.get("username"),
-                            (String) parameters.get("pwHash"));
+        switch (methodName) {
+            case "checklogin":
+                response = checkLogIn((String) parameters.get("username"),
+                        (String) parameters.get("pwHash"));
                 break;
 
             case "registeruser":
-                    response = registerUser((String) parameters.get("email"),
-                            (String) parameters.get("username"),
-                            (String) parameters.get("pwHash"));
+                response = registerUser((String) parameters.get("email"),
+                        (String) parameters.get("username"),
+                        (String) parameters.get("pwHash"));
                 break;
 
             case "edituser":
                 response = editUser((String) parameters.get("email"),
-                            (String) parameters.get("username"),
-                            (String) parameters.get("pwHash"));
+                        (String) parameters.get("username"),
+                        (String) parameters.get("pwHash"));
                 break;
 
             case "deleteuser":
@@ -108,34 +109,37 @@ public class RequestHandler implements RequestResolver {
                 break;
 
             case "getneartreasures":
-                token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
-                    Double lat = jsonC.fromJson((String)parameters.get("latitude"), Double.class);
-                    Double longitude = jsonC.fromJson((String)parameters.get("longitude"), Double.class);
-                    switch(argc) {
-                        case 3: response = getNearTreasures( longitude, lat); break;
-                        case 4: response = getNearTreasures( longitude, lat, jsonC.fromJson((String)parameters.get("radius"),Double.class)); break;
-                        default: return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS,id); //response = "illegal arguments";
-                    }
+                token = jsonC.fromJson((String) parameters.get("token"), Integer.class);
+                Double lat = jsonC.fromJson((String) parameters.get("latitude"), Double.class);
+                Double longitude = jsonC.fromJson((String) parameters.get("longitude"), Double.class);
+                switch (argc) {
+                    case 3:
+                        response = getNearTreasures(longitude, lat);
+                        break;
+                    case 4:
+                        response = getNearTreasures(longitude, lat, jsonC.fromJson((String) parameters.get("radius"), Double.class));
+                        break;
+                    default:
+                        return new JSONRPC2Response(JSONRPC2Error.INVALID_PARAMS, id); //response = "illegal arguments";
+                }
                 break;
 
             case "eventtreasureopen":
-                    Integer treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
-                    response = eventTreasureOpened(treasureID);
+                Integer treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
+                response = eventTreasureOpened(treasureID);
                 break;
 
             case "eventtreasurewronganswer":
                 treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
-                    eventTreasureWrongAnswer(treasureID);
+                eventTreasureWrongAnswer(treasureID);
                 break;
 
             case "gethighscorelist":
-                token = jsonC.fromJson((String)parameters.get("token"), Integer.class);
-                Integer low = jsonC.fromJson((String)parameters.get("low"), Integer.class);
-                Integer high = jsonC.fromJson((String)parameters.get("high"), Integer.class);
-                    response = getHighscoreList(low, high);
+                token = jsonC.fromJson((String) parameters.get("token"), Integer.class);
+                Integer low = jsonC.fromJson((String) parameters.get("low"), Integer.class);
+                Integer high = jsonC.fromJson((String) parameters.get("high"), Integer.class);
+                response = getHighscoreList(low, high);
                 break;
-
-
 
             case "gettesttreasure":
                 response = getTestTreasure();
@@ -154,7 +158,7 @@ public class RequestHandler implements RequestResolver {
     public Integer checkLogIn(String username, String pwHash) {
         Integer result = 0;
         try {
-            Future<Integer> future =  CoreModel.getInstance().addCommand(new CheckUserLoginCommand(new User(username,pwHash,null,0,0,null)));
+            Future<Integer> future = CoreModel.getInstance().addCommand(new CheckUserLoginCommand(new User(username, pwHash, null, 0, 0, null)));
             result = future.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -195,12 +199,12 @@ public class RequestHandler implements RequestResolver {
     }
 
     @Override
-    public List<Treasure> getNearTreasures( Double longitude, Double latitude) {
-        return getNearTreasures( longitude, latitude, 1000d);
+    public List<Treasure> getNearTreasures(Double longitude, Double latitude) {
+        return getNearTreasures(longitude, latitude, 1000d);
     }
 
     @Override
-    public List<Treasure> getNearTreasures( Double longitude, Double latitude, Double radius) {
+    public List<Treasure> getNearTreasures(Double longitude, Double latitude, Double radius) {
         GeoLocation location = new GeoLocation(latitude, longitude);
         Future<List<Treasure>> future = CoreModel.getInstance().addCommand(new GetTreasuresAroundCommand(location, radius));
         try {
@@ -226,8 +230,15 @@ public class RequestHandler implements RequestResolver {
     }
 
     @Override
-    public User editUser(String email, String username, String pwHash) {
-//        return CoreModel.getInstance().addCommand(new )
+    public Boolean editUser(String email, String username, String pwHash) {
+        User newProfile = new User(token, username, pwHash, email, 0, 0, null);
+        try {
+            return CoreModel.getInstance().addCommand(new EditUserCommand(newProfile)).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -245,8 +256,6 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public Boolean eventTreasureOpened(Integer treasureID) {
-        //System.err.println(treasureID);
-        //System.err.println(token);
         Future<Boolean> future = CoreModel.getInstance().addCommand(new OpenTreasureCommand(treasureID, token));
         try {
             return future.get();
@@ -255,13 +264,13 @@ public class RequestHandler implements RequestResolver {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     @Override
     public void eventTreasureWrongAnswer(Integer treasureID) {
         try {
-            CoreModel.getInstance().addCommand( new WrongQuizAnswerCommand(treasureID, token)).get();
+            CoreModel.getInstance().addCommand(new WrongQuizAnswerCommand(treasureID, token)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -283,23 +292,23 @@ public class RequestHandler implements RequestResolver {
 
     public Treasure getTestTreasure() {
         Quiz quiz1 = new Quiz(10, "Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
-        Treasure.Location testLocation = new Treasure.Location(1, 10, 47.2641234, 11.3451889 );
+        Treasure.Location testLocation = new Treasure.Location(1, 10, 47.2641234, 11.3451889);
         Treasure t = new Treasure(1, testLocation, quiz1, new Treasure.Size(-1, 20, 1), null);
         return t;
     }
 
-    private Boolean isTokenFree (String methodName ) {
-        for( String tokenFreeMethod : tokenFree ) {
-            if( tokenFreeMethod.equalsIgnoreCase(methodName) )
-                    return true;
+    private Boolean isTokenFree(String methodName) {
+        for (String tokenFreeMethod : tokenFree) {
+            if (tokenFreeMethod.equalsIgnoreCase(methodName))
+                return true;
         }
         return false;
     }
 
     private Boolean isTokenActive(Integer token) throws IllegalArgumentException {
-        if ( token == null ) throw new IllegalArgumentException();
+        if (token == null) throw new IllegalArgumentException();
         try {
-            return ( CoreModel.getInstance().addCommand(new IsActiveTokenCommand(token)).get() );
+            return (CoreModel.getInstance().addCommand(new IsActiveTokenCommand(token)).get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

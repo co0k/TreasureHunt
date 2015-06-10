@@ -394,5 +394,31 @@ public class DatabaseController implements DatabaseControllerDAO {
 		}
 	}
 
+	@Override
+	public int activateRandomTreasure (int n) {
+		List<Integer> inactiveIDs = getallTreasureID(true);
+		if (inactiveIDs.isEmpty())
+			return 0;
+
+		int countError = 0;
+		if (inactiveIDs.size() < n)
+			n = inactiveIDs.size();
+		if (n == inactiveIDs.size()) {
+			for (Integer i : inactiveIDs) {
+				if (!activateTreasure(i))
+					countError++;
+			}
+			return n - countError;
+		}
+
+		for (int i = 0; i < n; i++) {
+			int rand = 0 + (int)(Math.random()*inactiveIDs.size());
+			if (!activateTreasure(inactiveIDs.get(rand)))
+				countError++;
+			inactiveIDs.remove(rand);
+		}
+		return n - countError;
+	}
+
 
 }

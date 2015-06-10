@@ -119,6 +119,13 @@ public interface DatabaseControllerDAO {
 	 */
 	Treasure.Content getContent(int id);
 
+	/**
+	 * activates a random treasure from the in actives one
+	 * @param n number of treasures to activate
+	 * @return the number of activated treasures
+	 */
+	int activateRandomTreasure (int n);
+
 
 	/*********************** User ***********************/
 	/**
@@ -164,7 +171,7 @@ public interface DatabaseControllerDAO {
 	User getUser(String name);
 
 	/**
-	 * returns only the basic information(name, email, rank, email)
+	 * returns only the basic information(id, name, score, rank, email)
 	 * 
 	 * @param id
 	 * @return the user or null if not found
@@ -172,7 +179,7 @@ public interface DatabaseControllerDAO {
 	User getUserProfile(int id);
 
 	/**
-	 * returns only the basic information(id, email, rank, email)
+	 * returns only the basic information(id, name, score, rank, email)
 	 * 
 	 * @param name
 	 * @return the user or null if not found
