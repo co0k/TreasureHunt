@@ -148,39 +148,35 @@ public class RequestHandlerTest {
         assertTrue("registration failed", result);
     }
 
-    /**
-     * Tries to find a user by his/her name
-     * in this test method it is the same user as the one logged in
-     * tested method: getUserByName()
-     */
     @Test
-    public void getUserByNameTest() {
+    public void deleteUserTest() {
         Map<String, Object> params = new HashMap<>();
-        Map<String, Object> paramsL = new HashMap<>();
-
         String email = "junit@example.com";
         String username = "junit";
         String pwHash = "passwd";
-        paramsL.put("email", (email));
-        paramsL.put("username", (username));
-        paramsL.put("pwHash", (pwHash));
-        JSONRPC2Request requestL = new JSONRPC2Request("checkLogIn", paramsL, "id-2-chl");
-        JSONRPC2Response responseL = handler.handleRequest(requestL);
-        assertNotNull("response after login is null", responseL);
-        Integer token = jsonC.fromJson((String) responseL.getResult(), Integer.class);
-        assertNotNull("token null", token);
-
-        params.put("token", jsonC.toJson(token));
-        params.put("username", username);
-        JSONRPC2Request request = new JSONRPC2Request("getUserByName", params, "id-2-ubn");
+        params.put("email", (email));
+        params.put("username", (username));
+        params.put("pwHash", (pwHash));
+        String method = "checkLogIn";
+        String reqID = "id-1-chl";
+        JSONRPC2Request request = new JSONRPC2Request(method, params, reqID);
         JSONRPC2Response response = handler.handleRequest(request);
-        assertNotNull("response after login is null", responseL);
+        Integer token = jsonC.fromJson((String)response.getResult(), Integer.class);
+        assertNotNull(token);
 
+        Map<String, Object> paramDel = new HashMap<>();
+        paramDel.put("token",jsonC.toJson(token));
+        JSONRPC2Request requestDel = new JSONRPC2Request("deleteUser", paramDel, "id-2-du");
+        JSONRPC2Response responseDel = handler.handleRequest(requestDel);
+        assertNotNull("response after Delete is null", responseDel);
+        Boolean success = jsonC.fromJson((String) responseDel.getResult(), Boolean.class);
+        assertNotNull(success);
+        assertTrue("Deletion did not succeed", success);
 
-        User user = jsonC.fromJson((String) response.getResult(), User.class);
-        assertNotNull("no user returned", user);
-        assertEquals("Server returned wrong user", username, user.getName());
-        assertEquals("Server returned wrong user", email, user.getEmail());
+        response = handler.handleRequest(request);
+        assertNotNull("Response after 2nd login null",response);
+        token = jsonC.fromJson((String)response.getResult(), Integer.class);
+        assertNull("Deleted user was able to login",token);
     }
 
     /**
