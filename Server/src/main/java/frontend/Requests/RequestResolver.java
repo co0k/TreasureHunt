@@ -39,6 +39,7 @@ public interface RequestResolver {
     List<Treasure> getNearTreasures( Double longitude, Double latitude, Double radius);   // test
     Boolean eventTreasureOpened( Integer treasureID ); //[a treasure is opened when the quiz is solved] // tested
     void eventTreasureWrongAnswer( Integer treasureID ); //[serverside handling of wrong answer given, maybe reset treasure or whatever]
+    Boolean eventTreasureRightAnswer(Integer treasureID);
     // HighscoreList getHighscoreListAll(int token);
     HighscoreList getHighscoreList( Integer low, Integer high);             // tested
     // HighscoreList getHighscoreListAroundMe(int token, int userID);, [range])

@@ -26,7 +26,6 @@ public class RequestHandler implements RequestResolver {
 
     private String[] tokenFree = {"checklogin", "registeruser", "gettesttreasure"};
     private Integer token;
-    private Gson gson = new Gson();
 
     /**
      * this Method parses the request
@@ -129,6 +128,11 @@ public class RequestHandler implements RequestResolver {
                 response = eventTreasureOpened(treasureID);
                 break;
 
+            case "eventtreasurerightanswer":
+                treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
+                eventTreasureRightAnswer(treasureID);
+                break;
+
             case "eventtreasurewronganswer":
                 treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
                 eventTreasureWrongAnswer(treasureID);
@@ -146,9 +150,10 @@ public class RequestHandler implements RequestResolver {
                 break;
 
             default:
-                String errorMsg = "Could not parse your request";
+//                String errorMsg = "Could not parse your request";
                 JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
-                return new JSONRPC2Response(error, errorMsg);
+//                return new JSONRPC2Response(error, errorMsg);
+                return new JSONRPC2Response(error, id);
         }
 
         return new JSONRPC2Response(jsonC.toJson(response), request.getID());
@@ -190,10 +195,8 @@ public class RequestHandler implements RequestResolver {
             return future.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            System.err.println(e);
         } catch (ExecutionException e) {
             e.printStackTrace();
-            System.err.println(e);
         }
         return null;
     }
@@ -206,7 +209,7 @@ public class RequestHandler implements RequestResolver {
     @Override
     public List<Treasure> getNearTreasures(Double longitude, Double latitude, Double radius) {
         GeoLocation location = new GeoLocation(latitude, longitude);
-        Future<List<Treasure>> future = CoreModel.getInstance().addCommand(new GetTreasuresAroundCommand(location, radius));
+        Future<List<Treasure>> future = CoreModel.getInstance().addCommand(new GetFilteredTreasuresAroundCommand(token, location, radius));
         try {
             return future.get();
         } catch (InterruptedException e) {
@@ -256,9 +259,17 @@ public class RequestHandler implements RequestResolver {
 
     @Override
     public Boolean eventTreasureOpened(Integer treasureID) {
-        Future<Boolean> future = CoreModel.getInstance().addCommand(new OpenTreasureCommand(treasureID, token));
+//        Future<Boolean> future = CoreModel.getInstance().addCommand(new OpenTreasureCommand(treasureID, token));
+//        try {
+//            return future.get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
         try {
-            return future.get();
+            return CoreModel.getInstance().addCommand(new ReserveTreasureCommand(treasureID, token)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -271,11 +282,32 @@ public class RequestHandler implements RequestResolver {
     public void eventTreasureWrongAnswer(Integer treasureID) {
         try {
             CoreModel.getInstance().addCommand(new WrongQuizAnswerCommand(treasureID, token)).get();
+            CoreModel.getInstance().addCommand(new DeleteTreasureReservationCommand(treasureID, token)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Boolean eventTreasureRightAnswer(Integer treasureID) {
+//        try {
+//            return CoreModel.getInstance().addCommand(new OpenTreasureCommand(treasureID, token)).get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+        try {
+            return CoreModel.getInstance().addCommand(new DeleteTreasureReservationCommand(treasureID, token)).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

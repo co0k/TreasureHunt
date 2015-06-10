@@ -28,20 +28,11 @@ public class TreasureServerSocket {
         System.out.println("Client connected: " + session.toString() + "\n\n");
     }
 
-
     @OnClose
     public void handleClose(Session session, CloseReason reason) {
         System.out.println("Connection closed! - Reason: " + reason);
 
     }
-
-    /*
-    @OnClose
-    public void handleClose(int statusCode, String reason) {
-        System.out.println("Connection closed with satusCode="
-                + statusCode + ", reason=" + reason);
-    }
-    */
 
     @OnMessage
     public void handleMessage( Session session, JSONRPC2Request request) {

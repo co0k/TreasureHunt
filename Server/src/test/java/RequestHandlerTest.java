@@ -468,7 +468,7 @@ public class RequestHandlerTest {
         assertNotNull(response);
         Boolean result = jsonC.fromJson((String) response.getResult(), Boolean.class);
         assertNotNull(result);
-        assertTrue("open treasure failed", result);
+        assertTrue("treasure reservation failed", result);
     }
 
     @Test
@@ -495,9 +495,9 @@ public class RequestHandlerTest {
         JSONRPC2Request request = new JSONRPC2Request("getHighscoreList", params, "id-3-ghl");
         JSONRPC2Response response = handler.handleRequest(request);
         // check the response
-        assertNotNull("Response after getHighscore is null",response);
+        assertNotNull("Response after getHighscore is null", response);
         HighscoreList result = jsonC.fromJson((String) response.getResult(), HighscoreList.class);
-        assertNotNull("HighscoreList is null",result);
+        assertNotNull("HighscoreList is null", result);
 
     }
 
