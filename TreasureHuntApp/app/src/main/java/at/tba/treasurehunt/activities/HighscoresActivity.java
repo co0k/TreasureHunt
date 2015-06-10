@@ -4,17 +4,22 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import android.util.Log;
 import java.util.ArrayList;
 
 import at.tba.treasurehunt.R;
@@ -26,11 +31,13 @@ import at.tba.treasurehunt.utils.DummyDataProvider;
 import data_structures.user.HighscoreList;
 
 
-public class HighscoresActivity extends Activity implements IHighscoresLoadedCallback {
+public class HighscoresActivity extends Activity implements IHighscoresLoadedCallback, UserProfileDialogFragment.OnFragmentInteractionListener {
 
     private ListView listView;
     private ArrayList<String> listItems;
     private ArrayAdapter<String> arrayAdapter;
+
+    private HighscoreList currentHighscoreList;
 
     private View mLayoutView;
     private View mProgressView;
@@ -46,8 +53,19 @@ public class HighscoresActivity extends Activity implements IHighscoresLoadedCal
         listView.setAdapter(arrayAdapter);
         this.mLayoutView = (LinearLayout) findViewById(R.id.highscoreLayout);
         this.mProgressView = findViewById(R.id.load_highscore_progress);
+        //setClickHandler();
         startLoadingHighscores();
+
         //setList(DummyDataProvider.getDummyHighscoreList());
+    }
+
+    private void setClickHandler(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showSelectedUserProfile(position);
+            }
+        });
     }
 
     @Override
@@ -136,6 +154,7 @@ public class HighscoresActivity extends Activity implements IHighscoresLoadedCal
             i++;
         }
         arrayAdapter.notifyDataSetChanged();
+        this.currentHighscoreList = list;
     }
 
     private void highlightEntryAtPosition(int pos){
@@ -159,5 +178,20 @@ public class HighscoresActivity extends Activity implements IHighscoresLoadedCal
                         finish();
                     }
                 });
+    }
+
+    private void showSelectedUserProfile(int position){
+
+        HighscoreList.Entry entry = currentHighscoreList.getList().get(position);
+        String uname = entry.getName();
+        String rank = new Integer(entry.getRank()).toString();
+        String xp = new Integer(entry.getXP()).toString();
+        DialogFragment dialog = UserProfileDialogFragment.newInstance(uname, rank, xp);
+        dialog.show(getFragmentManager(),"dialog");
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

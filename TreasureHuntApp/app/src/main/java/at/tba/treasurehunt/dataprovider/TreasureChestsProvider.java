@@ -23,7 +23,7 @@ public class TreasureChestsProvider implements IResponseCallback {
     private ITreasureLoadedCallback treasureLoadedCallback;
 
     private static boolean DEBUG_DATA = false;
-    private static boolean DEBUG_ALL_TREASURES = true;
+    private static boolean DEBUG_ALL_TREASURES = false;
 
     public static TreasureChestsProvider getInstance(){
         if (instance == null) instance = new TreasureChestsProvider();
@@ -88,6 +88,9 @@ public class TreasureChestsProvider implements IResponseCallback {
     public void onResponseReceived(JSONRPC2Response response) {
         JsonConstructor constr = new JsonConstructor();
         Treasure[] ts = constr.fromJson((String)response.getResult(), Treasure[].class);
+        if (ts == null){
+            return;
+        }
         List<Treasure> list = new ArrayList<Treasure>(Arrays.asList(ts));
         treasures.clear();
         treasures.addAll(list);
