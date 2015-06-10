@@ -81,7 +81,7 @@ public class UserProfileActivity extends Activity implements IUserLoadedCallback
         User userData = u;
         f_userName.setText("Username: "+userData.getName());
         f_email.setText("Email: "+userData.getEmail());
-        f_level.setText("Level: "+userData.getRank());
+        f_level.setText("Rank: "+userData.getRank());
         f_experience.setText("Experience: "+userData.getXP());
     }
 

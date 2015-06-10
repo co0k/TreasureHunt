@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import at.tba.treasurehunt.R;
+import at.tba.treasurehunt.controller.UserLoginDataController;
 import at.tba.treasurehunt.servercomm.ServerConnection;
 import at.tba.treasurehunt.utils.AlertHelper;
 
@@ -74,6 +75,13 @@ public class HomeActivity extends Activity {
     public void onButtonExitClick(View v){
         finish();
         System.exit(0);
+    }
+
+    public void onButtonLogoutClick(View v){
+        new UserLoginDataController(this).deleteDefaultLoginData();
+        finish();
+        Intent actSwitch = new Intent(this, LoginActivity.class);
+        startActivity(actSwitch);
     }
 
     public void onButtonPlayClick(View v){

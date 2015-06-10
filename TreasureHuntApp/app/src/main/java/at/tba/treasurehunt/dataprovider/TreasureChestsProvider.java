@@ -1,14 +1,15 @@
 package at.tba.treasurehunt.dataprovider;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.tasks.IResponseCallback;
-import at.tba.treasurehunt.utils.AlertHelper;
 import at.tba.treasurehunt.utils.DummyDataProvider;
 import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Treasure;
@@ -22,6 +23,7 @@ public class TreasureChestsProvider implements IResponseCallback {
     private ITreasureLoadedCallback treasureLoadedCallback;
 
     private static boolean DEBUG_DATA = false;
+    private static boolean DEBUG_ALL_TREASURES = true;
 
     public static TreasureChestsProvider getInstance(){
         if (instance == null) instance = new TreasureChestsProvider();
@@ -38,13 +40,20 @@ public class TreasureChestsProvider implements IResponseCallback {
             treasures.add(DummyDataProvider.getDummyTreasureData(3));
             treasures.add(DummyDataProvider.getDummyTreasureData(4));
         }
-        //ServerCommunication.getInstance().getTreasuresFromServer(this);
     }
 
     public void loadTreasures(ITreasureLoadedCallback callback){
         this.treasureLoadedCallback = callback;
         if (!DEBUG_DATA) {
-            ServerCommunication.getInstance().getTreasuresFromServer(this);
+
+            if (DEBUG_ALL_TREASURES) {
+                ServerCommunication.getInstance().getAllTreasuresFromServer(this);
+            }else{
+                LatLng myPos = LocationController.getInstance().getMyPosition();
+                Double lat = myPos.latitude;
+                Double lng = myPos.longitude;
+                ServerCommunication.getInstance().getNearTreasuresFromServer(this, lat, lng);
+            }
         }else{
             treasureLoadedCallback.onTreasuresLoadedSuccess();
         }

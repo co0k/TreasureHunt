@@ -34,17 +34,17 @@ public class GetHighscoresAroundCommand implements Command<HighscoreList> {
 
 	@Override
 	public HighscoreList execute() throws InterruptedException {
-		int rank = DatabaseController.getInstance().getRank(uid) - 1;
+		int rank = DatabaseController.getInstance().getRank(uid);
 		// user does not exist
-		if(rank == -2)
+		if(rank < 1 )
 			return null;
 		// illegal
 		if (upperLimit < 0 || lowerLimit < 0)
 			return null;
-		if (rank - upperLimit >= 0)
+		if (rank - upperLimit >= 1)
 			return DatabaseController.getInstance().getHighscoreList(rank - upperLimit, upperLimit + lowerLimit + 1);
-		else if (rank - upperLimit < 0)
-			return DatabaseController.getInstance().getHighscoreList(0, lowerLimit + rank + 1);
+		else if (rank - upperLimit < 1)
+			return DatabaseController.getInstance().getHighscoreList(1, lowerLimit + rank + 1);
 		return null;
 	}
 }
