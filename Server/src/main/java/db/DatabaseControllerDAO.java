@@ -119,6 +119,13 @@ public interface DatabaseControllerDAO {
 	 */
 	Treasure.Content getContent(int id);
 
+	/**
+	 * activates a random treasure from the in actives one
+	 * @param n number of treasures to activate
+	 * @return the number of activated treasures
+	 */
+	int activateRandomTreasure (int n);
+
 
 	/*********************** User ***********************/
 	/**
