@@ -46,13 +46,28 @@ public class ServerCommunication implements IServerCommunicationDAO{
     }
 
     @Override
-    public ArrayList<Treasure> getTreasuresFromServer(IResponseCallback callback) {
+    public ArrayList<Treasure> getAllTreasuresFromServer(IResponseCallback callback) {
         JSONRPC2Request request;
         Integer requestId = requestID++;
         request = new JSONRPC2Request("getalltreasures", requestId.toString());
         Integer token = AuthenticationController.getInstance().getLoggedInUserID();
         Map<String, Object> params = new HashMap<>();
         params.put("token", token.toString());
+        request.setNamedParams(params);
+        sendAndRegisterCallback(request, callback, requestId);
+        return null;
+    }
+
+    @Override
+    public ArrayList<Treasure> getNearTreasuresFromServer(IResponseCallback callback, Double lat, Double lng) {
+        JSONRPC2Request request;
+        Integer requestId = requestID++;
+        request = new JSONRPC2Request("getneartreasures", requestId.toString());
+        Integer token = AuthenticationController.getInstance().getLoggedInUserID();
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", token.toString());
+        params.put("latitude", lat.toString());
+        params.put("longitude", lng.toString());
         request.setNamedParams(params);
         sendAndRegisterCallback(request, callback, requestId);
         return null;

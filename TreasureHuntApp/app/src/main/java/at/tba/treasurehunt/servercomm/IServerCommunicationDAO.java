@@ -13,7 +13,9 @@ import data_structures.user.User;
  */
 public interface IServerCommunicationDAO {
 
-    public ArrayList<Treasure> getTreasuresFromServer(IResponseCallback responseCallback);
+    public ArrayList<Treasure> getAllTreasuresFromServer(IResponseCallback responseCallback);
+
+    public ArrayList<Treasure> getNearTreasuresFromServer(IResponseCallback responseCallback, Double lat, Double lng);
 
     public boolean logInToServer(String uName, String pwd, IResponseCallback responseCallback);
 
