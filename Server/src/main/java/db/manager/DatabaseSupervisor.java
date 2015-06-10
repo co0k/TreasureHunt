@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import data_structures.treasure.GeoLocation;
 import data_structures.treasure.Treasure;
@@ -67,7 +66,25 @@ public class DatabaseSupervisor {
 		
 		return (!out.isEmpty() ? out : null);
 	}
-	
+
+	public ArrayList<Treasure> getTreasuresNearLocation (int uid, double lon, double lat, double radius) {
+		GeoLocation userLocation = new GeoLocation (lat, lon);
+		ArrayList<Treasure> out = new ArrayList<Treasure>();
+		for(Entry<Integer, Location> tmp : activeTreasuresID.entrySet()) {
+			Location value = tmp.getValue();
+			try {
+				if ( value.getDistanceTo(userLocation) <= radius && DatabaseManager.userAllowedToOpenTreasure(uid, tmp.getKey())) {
+					out.add(activeTreasures.get(tmp.getKey()));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		return (!out.isEmpty() ? out : null);
+	}
+
 	public ArrayList<Treasure> getAllActiveTresures () {
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
 		out.addAll(activeTreasures.values());

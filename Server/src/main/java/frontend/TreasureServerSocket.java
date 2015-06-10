@@ -1,13 +1,9 @@
 package frontend;
 
-import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
-import com.thetransactioncompany.jsonrpc2.JSONRPC2ParseException;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
-import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import frontend.Requests.RequestDecoder;
 import frontend.Requests.RequestHandler;
 import frontend.Requests.RequestResolver;
-import frontend.Requests.ResponsEncoder;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -19,7 +15,7 @@ import java.io.IOException;
  */
 @ServerEndpoint(value="/ServerSocket",
         decoders = { RequestDecoder.class }/*,
-        encoders = { ResponsEncoder.class }*/
+        encoders = { ResponseEncoder.class }*/
 )
 public class TreasureServerSocket {
     private Session session;

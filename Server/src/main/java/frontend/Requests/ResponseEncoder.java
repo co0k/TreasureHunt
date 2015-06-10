@@ -9,7 +9,7 @@ import javax.websocket.EndpointConfig;
 /**
  * Created by nebios on 28.05.15.
  */
-public class ResponsEncoder implements Encoder.Text<JSONRPC2Response> {
+public class ResponseEncoder implements Encoder.Text<JSONRPC2Response> {
     @Override
     public String encode(JSONRPC2Response object) throws EncodeException {
         return object.toString();

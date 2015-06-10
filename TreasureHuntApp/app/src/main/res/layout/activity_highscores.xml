@@ -30,7 +30,8 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_weight="0.7" />
+        android:layout_weight="0.7"
+        />
 
 </LinearLayout>
     </LinearLayout>

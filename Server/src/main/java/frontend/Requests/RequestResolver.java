@@ -31,16 +31,16 @@ public interface RequestResolver {
     Integer checkLogIn(String username, String pwHash);                     // tested
     Boolean registerUser(String email, String username, String pwHash);     // tested
     User getProfileData();                                                  // tested
-    User editUser(String email, String username, String pwHash);
+    Boolean editUser(String email, String username, String pwHash);         // tested
     Boolean deleteUser();                                                   // tested
 
-    List<Treasure> getAllTreasures();       // tested
-    List<Treasure> getNearTreasures( Double longitude, Double latitude);  // tested
+    List<Treasure> getAllTreasures();                                       // tested
+    List<Treasure> getNearTreasures( Double longitude, Double latitude);    // tested
     List<Treasure> getNearTreasures( Double longitude, Double latitude, Double radius);   // test
-    Boolean eventTreasureOpened( Integer treasureID ); //[a treasure is opened when the quiz is solved]
+    Boolean eventTreasureOpened( Integer treasureID ); //[a treasure is opened when the quiz is solved] // tested
     void eventTreasureWrongAnswer( Integer treasureID ); //[serverside handling of wrong answer given, maybe reset treasure or whatever]
     // HighscoreList getHighscoreListAll(int token);
-    HighscoreList getHighscoreList( Integer low, Integer high);
+    HighscoreList getHighscoreList( Integer low, Integer high);             // tested
     // HighscoreList getHighscoreListAroundMe(int token, int userID);, [range])
     // HighscoreList getHighscoreListAroundMe(int token, int userID, int range);
 

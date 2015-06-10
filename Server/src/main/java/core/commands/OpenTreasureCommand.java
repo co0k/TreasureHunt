@@ -26,6 +26,7 @@ public class OpenTreasureCommand implements Command<Boolean> {
 
 		if(DatabaseController.getInstance().openTreasure(uid, tid)) {
 			DatabaseController.getInstance().updateScore(uid, DatabaseController.getInstance().getTreasure(tid).getXP());
+			DatabaseController.getInstance().activateRandomTreasure(1);
 			return true;
 		}
 		return false;
