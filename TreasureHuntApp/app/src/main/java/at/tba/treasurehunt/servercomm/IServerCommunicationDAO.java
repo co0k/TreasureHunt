@@ -23,7 +23,7 @@ public interface IServerCommunicationDAO {
 
     public void getHighscoreListFromServer(IResponseCallback responseCallback);
 
-    public void getHighscoreListInRangeFromServer(int from, int to, IResponseCallback responseCallback);
+    public void getHighscoreListInRangeFromServer(IResponseCallback responseCallback,Integer low, Integer hi);
 
     public void sendOpenTreasureRequest(Treasure t, IResponseCallback callback);
 

@@ -100,12 +100,30 @@ public class ServerCommunication implements IServerCommunicationDAO{
 
     @Override
     public void getHighscoreListFromServer(IResponseCallback callback) {
-        return ;
+        JSONRPC2Request request;
+        Integer requestId = requestID++;
+        request = new JSONRPC2Request("gethighscorelistall", requestId.toString());
+        Map<String, Object> params = new HashMap<>();
+        Integer token = AuthenticationController.getInstance().getLoggedInUserID();
+        params.put("token", token.toString());
+        request.setNamedParams(params);
+        sendAndRegisterCallback(request, callback, requestId);
+        return;
     }
 
     @Override
-    public void getHighscoreListInRangeFromServer(int from, int to, IResponseCallback callback) {
-        return ;
+    public void getHighscoreListInRangeFromServer(IResponseCallback callback, Integer low, Integer hi) {
+        JSONRPC2Request request;
+        Integer requestId = requestID++;
+        request = new JSONRPC2Request("gethighscorelist", requestId.toString());
+        Map<String, Object> params = new HashMap<>();
+        Integer token = AuthenticationController.getInstance().getLoggedInUserID();
+        params.put("token", token.toString());
+        params.put("low", low.toString());
+        params.put("high", hi.toString());
+        request.setNamedParams(params);
+        sendAndRegisterCallback(request, callback, requestId);
+        return;
     }
 
 
