@@ -140,9 +140,6 @@ public class DatabaseControllerTreasuresTest {
 	@After
 	public void finish() {
 		// clean the database
-		for (Integer tmp : exampleTreasuresID) {
-			DatabaseController.getInstance().deactivateTreasure(tmp);
-		}
 		DatabaseController.getInstance().deleteAll();
 	}
 

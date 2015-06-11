@@ -100,12 +100,13 @@ public class DatabaseControllerUserTest {
 	public void HighscoreListTest() { 
 		List<HighscoreList.Entry> hList = dC.getHighscoreList(1, 8).getList();
 		
+		assertTrue("the highscore list must have the same size as the number of user (if < 9) or 9", hList.size() == exampleUsersId.size() || hList.size() == 8);
 		for (int i = 0; i < hList.size(); i++) {
 			Entry entry = hList.get(i);
 			int id = entry.getId();
-			assertTrue("the highscorelist is not equal to the expected values",dC.getRank(entry.getId()) == entry.getRank());
-			assertTrue("the highscorelist is not equal to the expected values",dC.getUser(entry.getId()).getName().equals(entry.getName()));
-			assertTrue("the highscorelist is not equal to the expected values",dC.getUser(entry.getId()).getXP() == (entry.getXP()));
+			assertTrue("the highscorelist is not equal to the expected values",dC.getRank(id) == entry.getRank());
+			assertTrue("the highscorelist is not equal to the expected values",dC.getUser(id).getName().equals(entry.getName()));
+			assertTrue("the highscorelist is not equal to the expected values",dC.getUser(id).getXP() == (entry.getXP()));
 		}
 
 	}

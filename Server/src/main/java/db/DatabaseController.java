@@ -90,7 +90,7 @@ public class DatabaseController implements DatabaseControllerDAO {
 
 	@Override
 	public List<Treasure> getTreasures(int userId, GeoLocation location, double radius) {
-		return dataBaseSupervisor.getTreasuresNearLocation(location.getLon(), location.getLat(), radius);
+		return dataBaseSupervisor.getTreasuresNearLocation(userId, location.getLon(), location.getLat(), radius);
 	}
 
 	@Override

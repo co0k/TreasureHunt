@@ -59,7 +59,7 @@ public class DatabaseSupervisor {
 		ArrayList<Treasure> out = new ArrayList<Treasure>();
 		for(Entry<Integer, Location> tmp : activeTreasuresID.entrySet()) {
 	        Location value = tmp.getValue();
-	        if ( value.getDistanceTo(userLocation) <= radius) {
+	        if (value.getDistanceTo(userLocation) <= radius) {
 					out.add(activeTreasures.get(tmp.getKey()));	        	
 	        }
 	    }
@@ -73,7 +73,7 @@ public class DatabaseSupervisor {
 		for(Entry<Integer, Location> tmp : activeTreasuresID.entrySet()) {
 			Location value = tmp.getValue();
 			try {
-				if ( value.getDistanceTo(userLocation) <= radius && DatabaseManager.userAllowedToOpenTreasure(uid, tmp.getKey())) {
+				if (value.getDistanceTo(userLocation) <= radius && DatabaseManager.userAllowedToOpenTreasure(tmp.getKey(),uid)) {
 					out.add(activeTreasures.get(tmp.getKey()));
 				}
 			} catch (SQLException e) {
