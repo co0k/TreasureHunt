@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -47,8 +48,15 @@ import data_structures.treasure.Treasure;
  */
 public class QuizActivity extends Activity {
 
+    /*
+    in seconds
+     */
+    private static final long COUNTDOWN_TIME = 1 * 60;
+
     private Quiz quiz;
     private Treasure treasure;
+
+    private TextView remainingTimeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +73,9 @@ public class QuizActivity extends Activity {
          */
         this.treasure = TreasureChestHolder.getInstance().getNearestTreasure();
         this.quiz = (Quiz) this.treasure.getType();
+        remainingTimeText = (TextView) findViewById(R.id.quizQuestionCountdown);
         generateQuizLayout(this.quiz);
+        startCountdown();
     }
 
     @Override
@@ -220,5 +230,29 @@ public class QuizActivity extends Activity {
         treasureOpenedSuccessfully();
     }
 
+    private void onTimeOut(){
+        TreasureChestHolder.getInstance().blockTreasureForUser(treasure);
+        ShowMessageHelper.showNewSimpleMessagePopUp(this, "Out of time!", "Sorry, your time is up!", "Okay!",
+                new Runnable(){
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
+    }
+
+    private void startCountdown(){
+        new CountDownTimer(COUNTDOWN_TIME * 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                remainingTimeText.setText("Time: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                onTimeOut();
+            }
+        }.start();
+
+    }
 
 }

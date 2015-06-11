@@ -14,18 +14,38 @@
     android:weightSum="2"
     android:id="@+id/quizLayout">
 
-
-
-    <TextView
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="Question"
         android:layout_weight="1.3"
-        style="@style/Base.TextAppearance.AppCompat.Title"
         android:gravity="center"
-        android:textSize="35dp"
-        android:layout_gravity="center_horizontal|top"
-        android:id="@+id/quizQuestionText" />
+        android:weightSum="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Time remaining:"
+            android:gravity="center"
+            android:layout_weight="0.8"
+            android:layout_gravity="center_horizontal|top"
+            android:id="@+id/quizQuestionCountdown" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Question"
+            android:layout_weight="0.2"
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:gravity="center"
+            android:textSize="35dp"
+            android:layout_gravity="center_horizontal|top"
+            android:id="@+id/quizQuestionText" />
+
+
+    </LinearLayout>
+
+
 
 
     <LinearLayout
