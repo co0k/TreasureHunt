@@ -25,6 +25,7 @@ import java.util.concurrent.Future;
 public class RequestHandler implements RequestResolver {
 
     private String[] tokenFree = {"checklogin", "registeruser", "gettesttreasure"};
+    private ArrayList<String> neededParams;
     private Integer token;
 
     /**
@@ -39,6 +40,8 @@ public class RequestHandler implements RequestResolver {
         Map<String, Object> parameters = null;
         String id;
         int argc = 0;
+
+        neededParams = new ArrayList<String>();
 
         JsonConstructor jsonC = new JsonConstructor();
 
@@ -79,17 +82,37 @@ public class RequestHandler implements RequestResolver {
          */
         switch (methodName) {
             case "checklogin":
+                neededParams.add("username");
+                neededParams.add("pwHash");
+                if (!containsAllNeededParams(neededParams, parameters)) {
+                    JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                    return new JSONRPC2Response(error, id);
+                }
                 response = checkLogIn((String) parameters.get("username"),
                         (String) parameters.get("pwHash"));
                 break;
 
             case "registeruser":
+                neededParams.add("username");
+                neededParams.add("email");
+                neededParams.add("pwHash");
+                if (!containsAllNeededParams(neededParams, parameters)) {
+                    JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                    return new JSONRPC2Response(error, id);
+                }
                 response = registerUser((String) parameters.get("email"),
                         (String) parameters.get("username"),
                         (String) parameters.get("pwHash"));
                 break;
 
             case "edituser":
+                neededParams.add("username");
+                neededParams.add("email");
+                neededParams.add("pwHash");
+                if (!containsAllNeededParams(neededParams, parameters)) {
+                    JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                    return new JSONRPC2Response(error, id);
+                }
                 response = editUser((String) parameters.get("email"),
                         (String) parameters.get("username"),
                         (String) parameters.get("pwHash"));
@@ -108,6 +131,12 @@ public class RequestHandler implements RequestResolver {
                 break;
 
             case "getneartreasures":
+                neededParams.add("latitude");
+                neededParams.add("longitude");
+                if (!containsAllNeededParams(neededParams, parameters)) {
+                    JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                    return new JSONRPC2Response(error, id);
+                }
                 token = jsonC.fromJson((String) parameters.get("token"), Integer.class);
                 Double lat = jsonC.fromJson((String) parameters.get("latitude"), Double.class);
                 Double longitude = jsonC.fromJson((String) parameters.get("longitude"), Double.class);
@@ -124,16 +153,31 @@ public class RequestHandler implements RequestResolver {
                 break;
 
             case "eventtreasureopen":
+                neededParams.add("treasureID");
+                if (!containsAllNeededParams(neededParams, parameters)) {
+                    JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                    return new JSONRPC2Response(error, id);
+                }
                 Integer treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
                 response = eventTreasureOpened(treasureID);
                 break;
 
             case "eventtreasurerightanswer":
+                neededParams.add("treasureID");
+                if (!containsAllNeededParams(neededParams, parameters)) {
+                    JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                    return new JSONRPC2Response(error, id);
+                }
                 treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
                 eventTreasureRightAnswer(treasureID);
                 break;
 
             case "eventtreasurewronganswer":
+                neededParams.add("treasureID");
+                if (!containsAllNeededParams(neededParams, parameters)) {
+                    JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
+                    return new JSONRPC2Response(error, id);
+                }
                 treasureID = jsonC.fromJson((String) parameters.get("treasureID"), Integer.class);
                 eventTreasureWrongAnswer(treasureID);
                 break;
@@ -301,7 +345,8 @@ public class RequestHandler implements RequestResolver {
 //        }
 //        return null;
         try {
-            return CoreModel.getInstance().addCommand(new DeleteTreasureReservationCommand(treasureID, token)).get();
+            CoreModel.getInstance().addCommand(new DeleteTreasureReservationCommand(treasureID, token)).get();
+            return CoreModel.getInstance().addCommand(new OpenTreasureCommand(treasureID, token)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -349,5 +394,13 @@ public class RequestHandler implements RequestResolver {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private Boolean containsAllNeededParams(List<String> needed, Map<String, Object> params) {
+        for (String n : needed) {
+            if (!params.containsKey(n))
+                return false;
+        }
+        return true;
     }
 }

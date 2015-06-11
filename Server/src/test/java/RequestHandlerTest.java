@@ -389,10 +389,8 @@ public class RequestHandlerTest {
         params.put("longitude", jsonC.toJson(longitude));
         params.put("latitude", jsonC.toJson(latitude));
         JSONRPC2Request request = new JSONRPC2Request("getNearTreasures", params, "id-3-at");
-
         JSONRPC2Response response = handler.handleRequest(request);
         assertNotNull(response);
-
         Treasure[] treasures = jsonC.fromJson((String) response.getResult(), Treasure[].class);
         assertNotNull(treasures);
     }

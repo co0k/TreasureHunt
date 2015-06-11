@@ -24,7 +24,7 @@ public class CoreModel implements CommunicationControllerDAO {
         this.cQEThread.start();
         // token timeout set to 60 seconds
         this.activeTokens = new ActiveTokens(60);
-        this.reservedTreasures = new ReservedTreasures(300);
+        this.reservedTreasures = new ReservedTreasures(60);
     }
 
     // Singleton
