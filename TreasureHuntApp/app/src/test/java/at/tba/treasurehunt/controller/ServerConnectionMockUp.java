@@ -125,7 +125,7 @@ public class ServerConnectionMockUp implements IServerConnection{
                 assertNotNull("longitude is null", longitude);
                 assertTrue("longitude is empty", longitude.length() != 0);
 
-                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(exampleTreasures), req.getID().toString());
                 serverCommunication.messageReceived(response.toJSONString());
 
                 break;
@@ -137,7 +137,7 @@ public class ServerConnectionMockUp implements IServerConnection{
                 assertNotNull("token is null", toke);
                 assertTrue("token is empty", toke.length() != 0);
 
-                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(exampleTreasures), req.getID().toString());
                 serverCommunication.messageReceived(response.toJSONString());
 
                 break;
@@ -201,7 +201,7 @@ public class ServerConnectionMockUp implements IServerConnection{
                 assertNotNull("treasureID is null", treasureId);
                 assertTrue("treasureID is empty", treasureId.length() != 0);
 
-                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(token), req.getID().toString());
+                JSONRPC2Response response = new JSONRPC2Response(jsonC.toJson(exampleTreasures), req.getID().toString());
                 serverCommunication.messageReceived(response.toJSONString());
 
                 break;

@@ -22,18 +22,19 @@ public class TreasureChestsProvider implements IResponseCallback {
 
     private static TreasureChestsProvider instance = null;
     private ITreasureLoadedCallback treasureLoadedCallback;
+    private ServerCommunication communication;
 
     private static boolean DEBUG_DATA = false;
     private static boolean DEBUG_ALL_TREASURES = false;
 
     public static TreasureChestsProvider getInstance(){
-        if (instance == null) instance = new TreasureChestsProvider();
+        if (instance == null) instance = new TreasureChestsProvider(ServerCommunication.getInstance());
         return instance;
     }
 
     private ArrayList<Treasure> treasures = new ArrayList<Treasure>();
 
-    private TreasureChestsProvider(){
+    private TreasureChestsProvider(ServerCommunication communication){
         if (DEBUG_DATA) {
             treasures.add(DummyDataProvider.getDummyTreasureData(0));
             treasures.add(DummyDataProvider.getDummyTreasureData(1));
@@ -41,6 +42,7 @@ public class TreasureChestsProvider implements IResponseCallback {
             treasures.add(DummyDataProvider.getDummyTreasureData(3));
             treasures.add(DummyDataProvider.getDummyTreasureData(4));
         }
+        this.communication = communication;
     }
 
     public void loadTreasures(ITreasureLoadedCallback callback){
@@ -48,12 +50,12 @@ public class TreasureChestsProvider implements IResponseCallback {
         if (!DEBUG_DATA) {
 
             if (DEBUG_ALL_TREASURES) {
-                ServerCommunication.getInstance().getAllTreasuresFromServer(this);
+                communication.getAllTreasuresFromServer(this);
             }else{
                 LatLng myPos = LocationController.getInstance().getMyPosition();
                 Double lat = myPos.latitude;
                 Double lng = myPos.longitude;
-                ServerCommunication.getInstance().getNearTreasuresFromServer(this, lat, lng);
+                communication.getNearTreasuresFromServer(this, lat, lng);
             }
         }else{
             treasureLoadedCallback.onTreasuresLoadedSuccess();

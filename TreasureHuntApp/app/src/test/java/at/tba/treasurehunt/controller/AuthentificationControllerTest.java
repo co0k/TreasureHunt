@@ -9,6 +9,7 @@ import at.tba.treasurehunt.servercomm.ServerConnection;
 import at.tba.treasurehunt.tasks.IResponseCallback;
 import at.tba.treasurehunt.utils.HotColdManager;
 import at.tba.treasurehunt.utils.MapLocationHelper;
+import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Coupon;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
@@ -106,15 +107,16 @@ public class AuthentificationControllerTest {
 
     @Test
     public void getNearestTreasureTest(){
-        serverConnectionMockUp = new ServerConnectionMockUp(null, null, null, 95);
+        serverConnectionMockUp = new ServerConnectionMockUp(exampleTreasures, null, null, 95);
         serverCommunication = new ServerCommunication(serverConnectionMockUp);
         serverConnectionMockUp.setServerCommunication(serverCommunication);
         final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
         IResponseCallback callback = new IResponseCallback() {
             @Override
             public void onResponseReceived(JSONRPC2Response response) {
+                JsonConstructor jsonC = new JsonConstructor();
                 assertEquals("id is not equal to the registerUser id", response.getID(), "1");
-                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), jsonC.toJson(exampleTreasures));
                 isFinished.setObject(true);
             }
 
@@ -129,15 +131,16 @@ public class AuthentificationControllerTest {
 
     @Test
     public void getAllTreasuresTest(){
-        serverConnectionMockUp = new ServerConnectionMockUp(null, null, null, 95);
+        serverConnectionMockUp = new ServerConnectionMockUp(exampleTreasures, null, null, 95);
         serverCommunication = new ServerCommunication(serverConnectionMockUp);
         serverConnectionMockUp.setServerCommunication(serverCommunication);
         final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
         IResponseCallback callback = new IResponseCallback() {
             @Override
             public void onResponseReceived(JSONRPC2Response response) {
+                JsonConstructor jsonC = new JsonConstructor();
                 assertEquals("id is not equal to the registerUser id", response.getID(), "1");
-                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), jsonC.toJson(exampleTreasures));
                 isFinished.setObject(true);
             }
 
@@ -198,15 +201,20 @@ public class AuthentificationControllerTest {
 
     @Test
     public void sendOpenTreasureRequestTest() {
-        serverConnectionMockUp = new ServerConnectionMockUp(exampleTreasures, null, null, 95);
+        Quiz testQuiz = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
+        Treasure t = new Treasure(new Treasure.Location(10, 47.26952, 11.39570), testQuiz, new Treasure.Size(-1, 20, 1), new Coupon(10, "SuperDuperMarket", 10.50));
+        final List<Treasure> openTest = new ArrayList<Treasure>();
+        openTest.add(t);
+        serverConnectionMockUp = new ServerConnectionMockUp(openTest, null, null, 95);
         serverCommunication = new ServerCommunication(serverConnectionMockUp);
         serverConnectionMockUp.setServerCommunication(serverCommunication);
         final ObjectWrapper<Boolean> isFinished = new ObjectWrapper<Boolean>(false);
         IResponseCallback callback = new IResponseCallback() {
             @Override
             public void onResponseReceived(JSONRPC2Response response) {
+                JsonConstructor jsonC = new JsonConstructor();
                 assertEquals("id is not equal to the registerUser id", response.getID(), "1");
-                assertEquals("token is not equal to the registerUser token", response.getResult(), "95");
+                assertEquals("token is not equal to the registerUser token", response.getResult(), jsonC.toJson(openTest));
                 isFinished.setObject(true);
             }
 
@@ -215,8 +223,6 @@ public class AuthentificationControllerTest {
                 fail("error");
             }
         };
-        Quiz testQuiz = new Quiz(10,"Aus was für einem Gebäude entstand das Landestheater?", "Ballspielhaus", "Rathaus", "Bank", "Konzerthaus", null, null);
-        Treasure t = new Treasure(new Treasure.Location(10, 47.26952, 11.39570), testQuiz, new Treasure.Size(-1, 20, 1), new Coupon(10, "SuperDuperMarket", 10.50));
         serverCommunication.sendOpenTreasureRequest(t, callback);
         waitUntilFinished(isFinished);
     }
