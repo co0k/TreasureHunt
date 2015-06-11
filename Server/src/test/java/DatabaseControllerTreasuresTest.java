@@ -35,17 +35,36 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz7 = new Quiz(15,"Wie viele vergoldete Kupferschindeln wurden beim goldenen Dachl verlegt?", "2.657", "1.529", "403", "86", null, null);
 		Quiz quiz8 = new Quiz(20,"Wie viele Bäcker Ruetz gibt es in Innsbruck?", "16", "7", "pro Einwohner einen", "8", null, null);
 		Quiz quiz9 = new Quiz(10,"Wann fanden die ersten Youth Olympic Games in Innsbruck statt?", "2012", "2011", "2008", "2001", null, null);
-		Quiz quiz10 = new Quiz(20,"In welchem Jahr wurde Innsbruck Landeshaupt von Tirol?", "1849", "1912", "1731", "1818", null, null);
+		Quiz quiz10 = new Quiz(20,"In welchem Jahr wurde Innsbruck Landeshauptstadt von Tirol?", "1849", "1912", "1731", "1818", null, null);
 		Quiz quiz11 = new Quiz(30,"Wie viele unterschiedliche Fakultäten besitzt die Universität Innsbruck?", "16", "8", "10", "78", null, null);
 		Quiz quiz12 = new Quiz(40,"Was ist das älteste bekannte Gemüse?", "Erbsen", "Karotten", "Birnen", "Äpfel", null, null);
 		Quiz quiz13 = new Quiz(20,"Welche Gebirgskette war Schauplatz weltbekannter Filme, wie 'Geiger Wally' oder 'Sissi die Kaiserin'?", "Nordkette", "Silvretta", "Verwall", "Kaisergebirge", null, null);
 		Quiz quiz14 = new Quiz(30,"Wieviele verschiedene Tierarten leben im Alpenzoo Innsbruck?", "150", "80", "15", "34", null, null);
 		Quiz quiz15 = new Quiz(10,"Was ist auf den Wappen von Innsbruck zu sehen?", "Brücke", "Adler", "Krone", "Sichel", null, null);
 		Quiz quiz16 = new Quiz(15,"Wie hoch liegt die Seegrube?", "1905m", "2003m", "1530m", "960m", null, null);
-		Quiz quiz17 = new Quiz(35,"Wieviele Passagiere werden durchschnittlich pro Jahr am Innsbrucker Flughafen transportiert?", "16", "5", "10", "1000", null, null);
+		Quiz quiz17 = new Quiz(35,"Wieviele Passagiere werden durchschnittlich pro Jahr am Innsbrucker Flughafen transportiert?","991.356", "421.758", "125.091", "12.000", null, null);
 		Quiz quiz18 = new Quiz(35,"Wieviele Gemeinden grenzen an Innsbruck?", "16", "5", "10", "1000", null, null);
-		Quiz quiz19 = new Quiz(35,"Auf welcher bekannten Münze wurde Schloss Ambras verewigt?", "silberne Euro-Gedenkmünze", "goldene Euro-Gedenkmünze", "Wiener Philharmoniker", "American Eagle", null, null);
-		Quiz quiz20 = new Quiz(35,"Aus welchen Anlass wurde die Triumphpforte erbaut?", "Hochzeit von Erzherzog Leopold", "Hochzeit von Kaiserin Maria Theresia", "weil es gut aussieht", "Befehl von  Kaiser Franz Joseph", null, null);
+		Quiz quiz19 = new Quiz(25,"Auf welcher bekannten Münze wurde Schloss Ambras verewigt?", "silberne Euro-Gedenkmünze", "goldene Euro-Gedenkmünze", "Wiener Philharmoniker", "American Eagle", null, null);
+		Quiz quiz20 = new Quiz(45,"Aus welchen Anlass wurde die Triumphpforte erbaut?", "Hochzeit von Erzherzog Leopold", "Hochzeit von Kaiserin Maria Theresia", "weil es gut aussieht", "Befehl von  Kaiser Franz Joseph", null, null);
+
+		Quiz quiz21 = new Quiz(30,"Wieviele Brunnen stehen in der Innsbrucker Altstadt?", "12", "10", "6", "2", null, null);
+		Quiz quiz22 = new Quiz(5,"Wie wurde der Inn früher genannt?", "Innanna", "Innanam", "Rudolf", "Innum", null, null);
+		Quiz quiz23 = new Quiz(10,"Die wievielten Olympischen Winterspiele fanden im Jahre 1964 in Innsbruck statt?", "9", "7", "15", "4", null, null);
+		Quiz quiz24 = new Quiz(15,"Wieviele Heilige schmücken den Podest der Annasäule?", "4", "5", "2", "3", null, null);
+		Quiz quiz25 = new Quiz(25,"Wie wird das Tiroler Landesmuseum sonst noch genannt?", "Ferdinandeum", "Humboldtianum", "Mumok", "Albertina", null, null);
+		Quiz quiz26 = new Quiz(20,"Wieviele Stufen musst du gehen um die oberste Plattform des Stadtturms zu erreichen", "148", "2503", "257", "1102", null, null);
+		Quiz quiz27 = new Quiz(30,"Was versteht man O-Dorf?", "Olypisches Dorf", "Ossiacher Dorf", "Ober-Dorf", "Ochsen-Dorf", null, null);
+		Quiz quiz28 = new Quiz(35,"Wieviele Bezirke besitzt Tirol?", "8", "7", "3","9", null, null);
+		Quiz quiz29 = new Quiz(40,"Wann wurde Stift Wilten gegründet?", "880", "1012", "1203", "1621", null, null);
+		Quiz quiz30 = new Quiz(45,"Wann wurde die Leopold-Franzens-Universität gegründet?", "1669", "1578", "1861", "1747", null, null);
+		Quiz quiz31 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
+		Quiz quiz32 = new Quiz(20,"Wieviele Fakultäten befinden sich auf den Technik Campus?", "4", "5", "7", "2", null, null);
+		Quiz quiz33 = new Quiz(20,"Wieviele Fakultäten befinden sich auf den Innrain Campus?", "8", "10", "7", "4", null, null);
+		Quiz quiz34 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
+		Quiz quiz35 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
+		Quiz quiz36 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
+		Quiz quiz37 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
+		Quiz quiz38 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
 
 
 
@@ -80,6 +99,18 @@ public class DatabaseControllerTreasuresTest {
 		exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2635993,11.3457473), quiz18, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.256583,11.433619), quiz19, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz20, new Treasure.Size(-1, 20, 1), null));
+
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz21, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz22, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz23, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz24, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz25, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz26, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz27, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz28, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz29, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz30, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz31, new Treasure.Size(-1, 20, 1), null));
 
 
 
