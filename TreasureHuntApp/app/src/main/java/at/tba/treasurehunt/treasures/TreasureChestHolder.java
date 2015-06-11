@@ -27,6 +27,9 @@ public class TreasureChestHolder implements IResponseCallback{
 
     private static TreasureChestHolder instance = null;
 
+    private static final int TREASURE_OPEN_RADIUS = 30;
+    private static final boolean DEBUG_DRAW_CHESTS = false;
+
     public static TreasureChestHolder getInstance(){
         if (instance == null) instance = new TreasureChestHolder();
         return instance;
@@ -55,7 +58,7 @@ public class TreasureChestHolder implements IResponseCallback{
     private Treasure treasureChestInRange(LatLng userPos){
         if (nearestTreasure == null) return null;
         LatLng treasurePos = new LatLng(nearestTreasure.getLocation().getLat(), nearestTreasure.getLocation().getLon());
-        if (MapLocationHelper.isInRange(userPos,treasurePos, 100)){
+        if (MapLocationHelper.isInRange(userPos,treasurePos, TREASURE_OPEN_RADIUS)){
             return nearestTreasure;
         }
         return null;
@@ -133,6 +136,8 @@ public class TreasureChestHolder implements IResponseCallback{
      * @param mMap GoogleMap to draw on
      */
     public void drawChestsOnMap(GoogleMap mMap){
+        if(!DEBUG_DRAW_CHESTS) return;
+        
         if (mMap == null){
             Log.d("drawChests", "Map is null!");
             return;
