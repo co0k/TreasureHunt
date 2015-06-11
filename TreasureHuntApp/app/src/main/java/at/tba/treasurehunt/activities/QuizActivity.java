@@ -51,7 +51,7 @@ public class QuizActivity extends Activity {
     /*
     in seconds
      */
-    private static final long COUNTDOWN_TIME = 1 * 60;
+    private static final long COUNTDOWN_TIME = 1 * 30;
 
     private Quiz quiz;
     private Treasure treasure;
