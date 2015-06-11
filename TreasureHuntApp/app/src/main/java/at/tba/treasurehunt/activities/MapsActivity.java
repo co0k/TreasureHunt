@@ -16,9 +16,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import at.tba.treasurehunt.R;
@@ -53,6 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private View mProgressView;
     private View mMapsFrameLayout;
 
+    private Button openTreasureButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawRectView.setBackgroundColor(Color.TRANSPARENT);
         //mProgressView = findViewById(R.id.load_treasure_progress);
        // mMapsFrameLayout = findViewById(R.id.mapsContent);
+        openTreasureButton = (Button) findViewById(R.id.btnOpenTreasure);
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityManager.setCurrentActivity(this);
@@ -172,6 +177,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int green = 0;
         int blue = 255;
 
+
+
         switch(distState){
             case VERY_COLD: red = 0; green = 0; blue = 255; break;
             case COLD: red = 55; green = 0; blue = 200; break;
@@ -180,6 +187,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case VERY_HOT: red = 255; green = 0; blue = 0; break;
             default: red = 0; green = 0; blue = 0;break;
         }
+
+        // Testing interpolation algorithm
+        if (distance > 800) {
+            red = 0;
+            blue = 255;
+            green = 0;
+        }else{
+            red = (int) (255 - ((distance / 80) * (255/10)));
+            blue = (int) (0 + ((distance / 80) * 255/10));
+            green = 0;
+        }
+
+
         drawRectView.setRectangleColor(red, green, blue);
         drawRectView.invalidate();
     }
@@ -195,6 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }else{
             onNoTreasureInRange();
         }
+
     }
 
     /**
@@ -243,6 +264,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onButtonOpenTreasureClick(View v){
         //ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
         TreasureChestHolder.getInstance().openTreasure(TreasureChestHolder.getInstance().getNearestTreasure(),this);
+        openTreasureButton.setClickable(false);
     }
 
     @Override
@@ -266,6 +288,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onOpenTreasureSuccess() {
+        openTreasureButton.setClickable(true);
         if (isQuiz(TreasureChestHolder.getInstance().getNearestTreasure().getType())) {
             TreasureChestHolder.getInstance().setCurrentSelectedTreasure(TreasureChestHolder.getInstance().getNearestTreasure());
             Intent actSwitch = new Intent(this, QuizActivity.class);
@@ -275,6 +298,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onOpenTreasureFailure() {
+        openTreasureButton.setClickable(true);
         TreasureChestsProvider.getInstance().removeTreasureFromList(TreasureChestHolder.getInstance().getNearestTreasure());
         AlertHelper.showNewAlertSingleButton(this, "Something went wrong.."
                 , "You are not allowed to open this treasure at the moment! Maybe another Player is trying to open it. Sorry.",
@@ -284,5 +308,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         refreshMap();
                     }
                 });
+    }
+
+    public GoogleMap getMap(){
+        return mMap;
     }
 }

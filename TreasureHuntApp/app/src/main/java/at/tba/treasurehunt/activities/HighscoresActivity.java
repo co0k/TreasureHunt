@@ -39,6 +39,8 @@ public class HighscoresActivity extends Activity implements IHighscoresLoadedCal
 
     private HighscoreList currentHighscoreList;
 
+    private static final boolean DEBUG_ACTIVATE_CLICK_PROFILE = false;
+
     private View mLayoutView;
     private View mProgressView;
 
@@ -53,7 +55,11 @@ public class HighscoresActivity extends Activity implements IHighscoresLoadedCal
         listView.setAdapter(arrayAdapter);
         this.mLayoutView = (LinearLayout) findViewById(R.id.highscoreLayout);
         this.mProgressView = findViewById(R.id.load_highscore_progress);
-        //setClickHandler();
+        if (DEBUG_ACTIVATE_CLICK_PROFILE) {
+            setClickHandler();
+        }else {
+            listView.setClickable(false);
+        }
         startLoadingHighscores();
 
         //setList(DummyDataProvider.getDummyHighscoreList());
