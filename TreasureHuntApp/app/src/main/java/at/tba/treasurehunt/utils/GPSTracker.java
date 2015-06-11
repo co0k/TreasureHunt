@@ -139,21 +139,24 @@ public class GPSTracker implements LocationListener, GoogleMap.OnMyLocationChang
     }
     @Override
     public void onLocationChanged(Location location) {
+        // not used
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+        // not used
     }
     @Override
     public void onProviderEnabled(String provider) {
+        // not used
     }
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+        // not used
     }
 
     @Override
     public void onMyLocationChange(Location location) {
-        Log.i("GPSTRCK", "Location changed to "+location.getLatitude()+"/"+location.getLongitude());
         this.location = location;
         latitude = location.getLatitude();
         longitude = location.getLongitude();

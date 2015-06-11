@@ -57,6 +57,7 @@ public class QuizActivity extends Activity {
     private Treasure treasure;
 
     private TextView remainingTimeText;
+    private CountDownTimer countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,6 +214,7 @@ public class QuizActivity extends Activity {
                 new Runnable(){
                     @Override
                     public void run() {
+                        countdownTimer.cancel();
                         finish();
                     }
                 });
@@ -221,6 +223,7 @@ public class QuizActivity extends Activity {
 
     private void treasureOpenedSuccessfully(){
         TreasureChestHolder.getInstance().treasureRightAnswer(treasure);
+        countdownTimer.cancel();
         this.finish();
         Intent actSwitch = new Intent(this, TreasureOpenActivity.class);
         startActivity(actSwitch);
@@ -236,13 +239,14 @@ public class QuizActivity extends Activity {
                 new Runnable(){
                     @Override
                     public void run() {
+                        countdownTimer.cancel();
                         finish();
                     }
                 });
     }
 
     private void startCountdown(){
-        new CountDownTimer(COUNTDOWN_TIME * 1000, 1000) {
+        countdownTimer = new CountDownTimer(COUNTDOWN_TIME * 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 remainingTimeText.setText("Time: " + millisUntilFinished / 1000);
