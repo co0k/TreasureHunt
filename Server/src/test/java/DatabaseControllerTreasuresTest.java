@@ -46,7 +46,6 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz18 = new Quiz(35,"Wieviele Gemeinden grenzen an Innsbruck?", "16", "5", "10", "1000", null, null);
 		Quiz quiz19 = new Quiz(25,"Auf welcher bekannten Münze wurde Schloss Ambras verewigt?", "silberne Euro-Gedenkmünze", "goldene Euro-Gedenkmünze", "Wiener Philharmoniker", "American Eagle", null, null);
 		Quiz quiz20 = new Quiz(45,"Aus welchen Anlass wurde die Triumphpforte erbaut?", "Hochzeit von Erzherzog Leopold", "Hochzeit von Kaiserin Maria Theresia", "weil es gut aussieht", "Befehl von  Kaiser Franz Joseph", null, null);
-
 		Quiz quiz21 = new Quiz(30,"Wieviele Brunnen stehen in der Innsbrucker Altstadt?", "12", "10", "6", "2", null, null);
 		Quiz quiz22 = new Quiz(5,"Wie wurde der Inn früher genannt?", "Innanna", "Innanam", "Rudolf", "Innum", null, null);
 		Quiz quiz23 = new Quiz(10,"Die wievielten Olympischen Winterspiele fanden im Jahre 1964 in Innsbruck statt?", "9", "7", "15", "4", null, null);
@@ -57,14 +56,14 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz28 = new Quiz(35,"Wieviele Bezirke besitzt Tirol?", "8", "7", "3","9", null, null);
 		Quiz quiz29 = new Quiz(40,"Wann wurde Stift Wilten gegründet?", "880", "1012", "1203", "1621", null, null);
 		Quiz quiz30 = new Quiz(45,"Wann wurde die Leopold-Franzens-Universität gegründet?", "1669", "1578", "1861", "1747", null, null);
-		Quiz quiz31 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
-		Quiz quiz32 = new Quiz(20,"Wieviele Fakultäten befinden sich auf den Technik Campus?", "4", "5", "7", "2", null, null);
-		Quiz quiz33 = new Quiz(20,"Wieviele Fakultäten befinden sich auf den Innrain Campus?", "8", "10", "7", "4", null, null);
-		Quiz quiz34 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
-		Quiz quiz35 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
-		Quiz quiz36 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
-		Quiz quiz37 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
-		Quiz quiz38 = new Quiz(20,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
+		Quiz quiz31 = new Quiz(10,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
+		Quiz quiz32 = new Quiz(25,"Wieviele Fakultäten befinden sich auf den Technik Campus?", "4", "5", "7", "2", null, null);
+		Quiz quiz33 = new Quiz(10,"Wieviele Fakultäten befinden sich auf den Innrain Campus?", "8", "10", "7", "4", null, null);
+		Quiz quiz34 = new Quiz(25,"Wieviele Sitzplätze fasst das Tiroler Landestheater?", "1050", "700", "259", "150", null, null);
+		Quiz quiz35 = new Quiz(5,"Wie hieß der Architekt des Tiroler Landestheaters?", "Christoph Gumpp", "Josef Weichenberger", "Dietmar Feichtinger", "Heinz Tesar", null, null);
+		Quiz quiz36 = new Quiz(30,"Wo befindet sich das Grabmal von Kaiser Maximilians I.?", "Hofkirche", "Stift Wilten", "Friedhof Maria-Hilf", "Hofgarten", null, null);
+		Quiz quiz37 = new Quiz(35,"Wie wird die Hofkirche sonst noch genannt?", "Schwarzmander-Kirche", "Abteikirche", "Westminster Abbey", "Marienkirche", null, null);
+		Quiz quiz38 = new Quiz(40,"Aus welchen Material bestehen die Schindeln des goldenen Dachl?", "Kupfer", "Eisen", "Magnesium", "Ton", null, null);
 
 
 
@@ -98,19 +97,32 @@ public class DatabaseControllerTreasuresTest {
 		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2578809,11.3538982), quiz18, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2635993,11.3457473), quiz18, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.256583,11.433619), quiz19, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz20, new Treasure.Size(-1, 20, 1), null));
-
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz21, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz22, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz23, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz24, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz25, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz26, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz27, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz28, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz29, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz30, new Treasure.Size(-1, 20, 1), null));
-		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2657582,11.3991417), quiz31, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2657582,11.3991417), quiz20, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(20, 47.2683515,11.393286), quiz21, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(25, 47.2681768,11.3932941), quiz21, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(15, 47.2684325,11.3921717), quiz21, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.2685103,11.3911598), quiz22, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(15, 47.2688161,11.3906951), quiz22, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(20, 47.265382,11.3862387), quiz22, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2579115,11.4013664), quiz23, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(40, 47.2658625,11.396989), quiz24, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(45, 47.2658625,11.400272), quiz25, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(50, 47.2679908,11.3942032), quiz26, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(20, 47.2676414,11.3914834), quiz27, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(15, 47.2662797,11.3902968), quiz28, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.2626123,11.3886235), quiz28, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2642062,11.3446889), quiz28, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(40, 47.253718,11.400588), quiz29, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(45, 47.2622315,11.3843836), quiz30, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(50, 47.2622315,11.3843836), quiz31, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(55, 47.2648144,11.34629), quiz32, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(30, 47.2632581,11.3857194), quiz33, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.2645359,11.3859286), quiz33, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(20, 47.269503,11.396033), quiz34, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.269503,11.396033), quiz35, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.268511,11.39544), quiz36, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.268511,11.39544), quiz37, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.268511,11.39544), quiz38, new Treasure.Size(-1, 20, 1), null));
 
 
 
