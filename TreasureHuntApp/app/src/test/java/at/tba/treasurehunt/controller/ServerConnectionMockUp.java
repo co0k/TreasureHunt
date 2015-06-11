@@ -217,7 +217,7 @@ public class ServerConnectionMockUp implements IServerConnection{
                 assertNotNull("userid is null", userid);
                 assertTrue("userid is empty", userid.length() != 0);
 
-                String treasureId = (String) paramMap.get("treasureid");
+                String treasureId = (String) paramMap.get("treasureID");
                 assertNotNull("treasureID is null", treasureId);
                 assertTrue("treasureID is empty", treasureId.length() != 0);
 
