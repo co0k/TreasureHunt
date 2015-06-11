@@ -184,6 +184,7 @@ public class TreasureChestHolder implements IResponseCallback{
     public void onResponseReceived(JSONRPC2Response response) {
         JsonConstructor constr = new JsonConstructor();
         Boolean result = constr.fromJson((String) response.getResult(), Boolean.class);
+        if (result == null) return;
         if (result)
             openTreasureCallback.onOpenTreasureSuccess();
         else
