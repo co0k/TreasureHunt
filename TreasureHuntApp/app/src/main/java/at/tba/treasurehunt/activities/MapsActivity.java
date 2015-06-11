@@ -138,7 +138,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onTreasureInRange(){
-        Log.i("TRSR", "FOUND A TREASURE!!");
         Button b = (Button) findViewById(R.id.btnOpenTreasure);
         b.setVisibility(View.VISIBLE);
         b.setBackgroundColor(Color.RED);
