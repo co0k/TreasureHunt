@@ -32,6 +32,7 @@ public class RectangleDrawView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         //super.onDraw(canvas);
+        /*
         paint.setColor(currentColor);
         paint.setStrokeWidth(3);
         int rectangleWidth = (int) (canvas.getWidth() * 0.5);
@@ -40,6 +41,20 @@ public class RectangleDrawView extends View {
         int toplefty = 0 + 30;
         int bottomrightx = canvas.getWidth()/2 + rectangleWidth /2;
         int bottomrighty = toplefty + rectangleHeight;
+        */
+
+        /*
+        Test fullscreen color overlay with alpha
+         */
+        paint.setColor(currentColor);
+        paint.setAlpha(20);
+        paint.setStrokeWidth(3);
+
+        int topleftx = 0;
+        int toplefty = 0;
+        int bottomrightx = canvas.getWidth();
+        int bottomrighty = canvas.getHeight();
+
         canvas.drawRect(topleftx, toplefty, bottomrightx, bottomrighty, paint);
     }
 
