@@ -20,7 +20,7 @@ public class GPSUpdateHandler {
 
 
     // 10 seconds per update
-    private final static int DELAY_TIME = 1000 * 10;
+    private final static int DELAY_TIME = 1000 * 1;
 
 
     private Handler handler;
