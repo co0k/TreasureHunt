@@ -32,6 +32,7 @@
             android:layout_height="fill_parent"
             android:text="Hunt!"
             android:id="@+id/quiz_answer1"
+            android:background="@drawable/image"
             android:onClick="onButtonPlayClick"
             android:layout_gravity="center"
             android:layout_weight="0.25" />
@@ -53,6 +54,7 @@
                 android:layout_height="fill_parent"
                 android:text="Profile"
                 android:id="@+id/profile_view"
+                android:background="@drawable/image"
                 android:onClick="onButtonUserProfileClick"
                 android:layout_gravity="center"
                 android:layout_weight="0.5" />
@@ -63,6 +65,7 @@
                 android:layout_height="fill_parent"
                 android:text="Score"
                 android:id="@+id/score_view"
+                android:background="@drawable/image"
                 android:clickable="true"
                 android:onClick="onButtonHighscoresClick"
                 android:layout_gravity="center"
@@ -83,6 +86,7 @@
                 android:text="Quit the Hunt"
                 android:id="@+id/btnExit"
                 android:clickable="true"
+                android:background="@drawable/image"
                 android:onClick="onButtonExitClick"
                 android:layout_gravity="center"
                 android:layout_weight="0.5" />
@@ -93,6 +97,7 @@
                 android:text="Logout"
                 android:id="@+id/btnLogout"
                 android:clickable="true"
+                android:background="@drawable/image"
                 android:onClick="onButtonLogoutClick"
                 android:layout_gravity="center"
                 android:layout_weight="0.5" />
