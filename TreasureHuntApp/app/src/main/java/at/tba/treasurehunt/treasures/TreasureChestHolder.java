@@ -137,7 +137,7 @@ public class TreasureChestHolder implements IResponseCallback{
      */
     public void drawChestsOnMap(GoogleMap mMap){
         if(!DEBUG_DRAW_CHESTS) return;
-        
+
         if (mMap == null){
             Log.d("drawChests", "Map is null!");
             return;
