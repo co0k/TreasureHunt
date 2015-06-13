@@ -53,7 +53,7 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz25 = new Quiz(25,"Wie wird das Tiroler Landesmuseum sonst noch genannt?", "Ferdinandeum", "Humboldtianum", "Mumok", "Albertina", null, null);
 		Quiz quiz26 = new Quiz(20,"Wieviele Stufen musst du gehen um die oberste Plattform des Stadtturms zu erreichen", "148", "2503", "257", "1102", null, null);
 		Quiz quiz27 = new Quiz(30,"Was versteht man O-Dorf?", "Olypisches Dorf", "Ossiacher Dorf", "Ober-Dorf", "Ochsen-Dorf", null, null);
-		Quiz quiz28 = new Quiz(35,"Wieviele Bezirke besitzt Tirol?", "8", "7", "3","9", null, null);
+		Quiz quiz28 = new Quiz(35,"Wieviele Bezirkshauptmänner besitzt Tirol?", "8", "7", "3","9", null, null);
 		Quiz quiz29 = new Quiz(40,"Wann wurde Stift Wilten gegründet?", "880", "1012", "1203", "1621", null, null);
 		Quiz quiz30 = new Quiz(45,"Wann wurde die Leopold-Franzens-Universität gegründet?", "1669", "1578", "1861", "1747", null, null);
 		Quiz quiz31 = new Quiz(10,"Mit wievielen Fakultäten wurde die Leopold-Franzens-Universität gegründet?", "4", "10", "7", "17", null, null);
@@ -64,6 +64,8 @@ public class DatabaseControllerTreasuresTest {
 		Quiz quiz36 = new Quiz(30,"Wo befindet sich das Grabmal von Kaiser Maximilians I.?", "Hofkirche", "Stift Wilten", "Friedhof Maria-Hilf", "Hofgarten", null, null);
 		Quiz quiz37 = new Quiz(35,"Wie wird die Hofkirche sonst noch genannt?", "Schwarzmander-Kirche", "Abteikirche", "Westminster Abbey", "Marienkirche", null, null);
 		Quiz quiz38 = new Quiz(40,"Aus welchen Material bestehen die Schindeln des goldenen Dachl?", "Kupfer", "Eisen", "Magnesium", "Ton", null, null);
+		Quiz quiz39 = new Quiz(35,"Wieviele Bezirke hat Tirol?", "9", "7", "3","9", null, null);
+		Quiz quiz40 = new Quiz(35,"Wer entwarf das Design der neuen Hungerburgbahn/Bergiselschanze?", "Zaha Hadid", "Le Corbusier", "Friedensreich Hundertwasser","Tom Walek", null, null);
 
 
 
@@ -123,6 +125,8 @@ public class DatabaseControllerTreasuresTest {
 		exampleTreasures.add(new Treasure(new Treasure.Location(35, 47.268511,11.39544), quiz36, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(10, 47.268511,11.39544), quiz37, new Treasure.Size(-1, 20, 1), null));
 		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.268511,11.39544), quiz38, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.2733084,11.3977661), quiz39, new Treasure.Size(-1, 20, 1), null));
+		exampleTreasures.add(new Treasure(new Treasure.Location(5, 47.2693877,11.4025977), quiz40, new Treasure.Size(-1, 20, 1), null));
 
 
 
