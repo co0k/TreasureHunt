@@ -8,6 +8,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
+              android:background="@drawable/papyrus_background"
               tools:context="at.tba.treasurehunt.activities.LoginActivity">
 
     <!-- Login progress -->
@@ -60,26 +61,33 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"/>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
+    <Button
+        android:id="@+id/email_sign_in_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:background="@drawable/papyrus_button"
+        android:layout_marginTop="16dp"
+        android:text="@string/action_sign_in_short"
+        android:textStyle="bold"
+        android:layout_marginRight="10dp"/>
 
-            <Button
-                android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in_short"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/button_register"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:onClick="onButtonRegister"
-                android:text="@string/action_register"
-                android:textStyle="bold"/>
+    <Button
+        android:id="@+id/button_register"
+        style="?android:textAppearanceSmall"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:background="@drawable/papyrus_button"
+        android:layout_marginTop="16dp"
+        android:onClick="onButtonRegister"
+        android:text="@string/action_register"
+        android:textStyle="bold"
+        android:layout_marginRight="10dp"/>
+</LinearLayout>
 
             <CheckedTextView
                 android:id="@+id/checkedTextView1"

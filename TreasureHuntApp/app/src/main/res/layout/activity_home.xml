@@ -1,113 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="2">
-
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:weightSum="2"
+              android:background="@drawable/papyrus_background">
 
 
     <TextView
+        style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="Welcome to TreasureHunt"
+        android:layout_gravity="center_horizontal|top"
         android:layout_weight="1.3"
-        style="@style/Base.TextAppearance.AppCompat.Title"
 
         android:gravity="center"
-        android:textSize="50dp"
-        android:layout_gravity="center_horizontal|top" />
+        android:text="Welcome to TreasureHunt"
+        android:textSize="50dp"/>
 
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:gravity="bottom"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_weight="0.7"
+        android:gravity="bottom"
+        android:orientation="vertical"
 
         >
 
         <Button
+            android:id="@+id/quiz_answer1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Hunt!"
-            android:id="@+id/quiz_answer1"
-            android:background="@drawable/image"
-            android:onClick="onButtonPlayClick"
             android:layout_gravity="center"
-            android:layout_weight="0.25" />
-
-
+            android:layout_weight="0.25"
+            android:background="@drawable/papyrus_button"
+            android:onClick="onButtonPlayClick"
+            android:text="Hunt!"/>
 
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_weight="0.25"
+            android:orientation="horizontal"
             android:weightSum="1">
 
 
             <Button
+                android:id="@+id/profile_view"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="Profile"
-                android:id="@+id/profile_view"
-                android:background="@drawable/image"
-                android:onClick="onButtonUserProfileClick"
                 android:layout_gravity="center"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:background="@drawable/papyrus_button"
+                android:onClick="onButtonUserProfileClick"
+                android:text="Profile"/>
 
 
             <Button
+                android:id="@+id/score_view"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="Score"
-                android:id="@+id/score_view"
-                android:background="@drawable/image"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@drawable/papyrus_button"
                 android:clickable="true"
                 android:onClick="onButtonHighscoresClick"
-                android:layout_gravity="center"
-                android:layout_weight="0.5" />
+                android:text="Score"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_weight="0.25"
+            android:orientation="horizontal"
             android:weightSum="1">
 
             <Button
+                android:id="@+id/btnExit"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="Quit the Hunt"
-                android:id="@+id/btnExit"
-                android:clickable="true"
-                android:background="@drawable/image"
-                android:onClick="onButtonExitClick"
                 android:layout_gravity="center"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:background="@drawable/papyrus_button"
+                android:clickable="true"
+                android:onClick="onButtonExitClick"
+                android:text="Quit the Hunt"/>
 
             <Button
+                android:id="@+id/btnLogout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="Logout"
-                android:id="@+id/btnLogout"
-                android:clickable="true"
-                android:background="@drawable/image"
-                android:onClick="onButtonLogoutClick"
                 android:layout_gravity="center"
-                android:layout_weight="0.5" />
-            </LinearLayout>
-
+                android:layout_weight="0.5"
+                android:background="@drawable/papyrus_button"
+                android:clickable="true"
+                android:onClick="onButtonLogoutClick"
+                android:text="Logout"/>
+        </LinearLayout>
 
 
     </LinearLayout>
-
 
 
 </LinearLayout>

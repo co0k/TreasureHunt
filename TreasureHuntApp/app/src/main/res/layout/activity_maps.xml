@@ -27,8 +27,9 @@
         class="com.google.android.gms.maps.SupportMapFragment"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="117dp"
+        android:background="@drawable/papyrus_button"
         android:text="Open Treasure Chest!"
         android:id="@+id/btnOpenTreasure"
         android:layout_gravity="center"

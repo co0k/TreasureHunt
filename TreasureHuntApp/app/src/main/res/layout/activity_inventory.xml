@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
-    android:weightSum="2">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/papyrus_background"
+              android:orientation="vertical"
+              android:weightSum="2">
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="Loot"
-        android:layout_weight="1.3"
         android:id="@+id/loot_list_header"
         style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_weight="1.3"
         android:gravity="center"
-        android:textSize="50dp"
-        android:layout_gravity="center_horizontal|top" />
+        android:text="Loot"
+        android:textSize="50dp"/>
 
 
     <ListView
+        android:id="@+id/inventoryListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/inventoryListView"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight="0.7"/>
+        android:layout_weight="0.7"
+        android:gravity="center"/>
 
 </LinearLayout>
