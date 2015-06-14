@@ -15,7 +15,6 @@ public class ReserveTreasureCommand implements Command<Boolean> {
         this.token = token;
     }
 
-    // this Command is quiet expensive but also important
     @Override
     public int getPriority() {
         return 75;

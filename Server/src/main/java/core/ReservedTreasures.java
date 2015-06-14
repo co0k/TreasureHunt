@@ -26,16 +26,16 @@ public class ReservedTreasures {
     }
 
     /**
-     * checks if the treasure chest is reserved for the user, whos id equals token
+     * checks if the treasure chest is reserved for the user, whos id equals userId
      *
      * @param tid   id of the treasure chest
-     * @param token the users id
+     * @param userId the users id
      * @return true if the chest is reserved <br />
      * false otherwise
      */
-    public boolean isReservedfor(int tid, int token) {
+    public boolean isReservedfor(int tid, int userId) {
         synchronized (chestTimeoutMap) {
-            return chestTimeoutMap.containsKey(new AbstractMap.SimpleEntry<>(token, tid));
+            return chestTimeoutMap.containsKey(new AbstractMap.SimpleEntry<>(userId, tid));
         }
     }
 
@@ -58,26 +58,26 @@ public class ReservedTreasures {
 
     /**
      * Checks if the treasure is not reserved already
-     * and adds a reservation for the user with the uid token if so
+     * and adds a reservation for the user with the uid userId if so
      *
-     * @param token the users id
+     * @param userId the users id
      * @param tid   the treasures id
      */
-    public void reserveTreasure(int token, int tid) {
+    public void reserveTreasure(int userId, int tid) {
         synchronized (chestTimeoutMap) {
             if (!isReserved(tid))
-                chestTimeoutMap.put(new AbstractMap.SimpleEntry<>(token, tid), timeout);
+                chestTimeoutMap.put(new AbstractMap.SimpleEntry<>(userId, tid), timeout);
         }
     }
 
     /**
      * If the user finishes the quiz the reservation is not needed anymore
      *
-     * @param token the users id
+     * @param userId the users id
      * @param tid   the treasures id
      */
-    public void deleteReservationFor(int token, int tid) {
-        AbstractMap.SimpleEntry<Integer, Integer> pairToDelete = new AbstractMap.SimpleEntry<>(token, tid);
+    public void deleteReservationFor(int userId, int tid) {
+        AbstractMap.SimpleEntry<Integer, Integer> pairToDelete = new AbstractMap.SimpleEntry<>(userId, tid);
         synchronized (chestTimeoutMap) {
             if (chestTimeoutMap.containsKey(pairToDelete))
                 chestTimeoutMap.remove(pairToDelete);

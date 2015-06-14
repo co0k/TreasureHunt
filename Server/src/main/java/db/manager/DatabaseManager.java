@@ -25,7 +25,7 @@ import data_structures.user.User;
 
 public class DatabaseManager {
 
-	private static long treasureBlockTime;
+	private static final long treasureBlockTime = 604800000; // seven days = 7 * 24 * 60 * 60 * 1000
 
 	public static boolean userAllowedToOpenTreasure(int bid, int uid) throws SQLException {
 		Connection conn = getConnection();
