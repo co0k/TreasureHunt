@@ -27,7 +27,7 @@ public class TreasureChestHolder implements IResponseCallback{
 
     private static TreasureChestHolder instance = null;
 
-    private static final int TREASURE_OPEN_RADIUS = 30;
+    private static final int TREASURE_OPEN_RADIUS = 50;
     private static final boolean DEBUG_DRAW_CHESTS = false;
 
     public static TreasureChestHolder getInstance(){
