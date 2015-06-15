@@ -362,6 +362,8 @@ public class DatabaseController implements DatabaseControllerDAO {
 	@Override
 	public boolean addBlock (int uID, int treasureId) {
 		try {
+			if(DatabaseManager.isUserBlockedForTreasure(uID, treasureId))
+				return true;
 			return DatabaseManager.insertBlock(uID, treasureId);
 		} catch (SQLException e) {
 			e.printStackTrace();
