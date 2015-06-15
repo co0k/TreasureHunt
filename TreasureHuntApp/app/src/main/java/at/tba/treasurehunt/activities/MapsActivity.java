@@ -3,16 +3,21 @@ package at.tba.treasurehunt.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,6 +27,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.LocationController;
@@ -65,6 +72,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawRectView.setBackgroundColor(Color.TRANSPARENT);
         mProgressView = findViewById(R.id.open_progress);
        // mMapsFrameLayout = findViewById(R.id.mapsContent);
+        gpsTracker = GPSTracker.getInstance();
+        gpsTracker.init(this);
+        //mProgressView = findViewById(R.id.load_treasure_progress);
+        // mMapsFrameLayout = findViewById(R.id.mapsContent);
         openTreasureButton = (Button) findViewById(R.id.btnOpenTreasure);
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -78,6 +89,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setUpMapIfNeeded();
         refreshMap();
         ActivityManager.setCurrentActivity(this);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent startIntent = new Intent(this, TreasuresWatcherService.class);
+        startIntent.putExtra(TreasuresWatcherService.METHOD, "stop");
+        startService(startIntent);
+        Intent setIntent = new Intent(this, HomeActivity.class);
+        setIntent.addCategory(Intent.CATEGORY_HOME);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
     }
 
     /**
@@ -115,12 +139,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-       mMap.setMyLocationEnabled(true);
-       GPSUpdateHandler gpsUpdate = new GPSUpdateHandler(this);
-       TreasureUpdateHandler treasureUpdate = new TreasureUpdateHandler(this);
-       gpsUpdate.startHandler();
-       treasureUpdate.startHandler();
-       initMapAndLocations();
+        mMap.setMyLocationEnabled(true);
+        GPSUpdateHandler gpsUpdate = new GPSUpdateHandler(this);
+        TreasureUpdateHandler.getInstance().init(this);
+        // start TreasuresWatcherService:
+        Intent startIntent = new Intent(this, TreasuresWatcherService.class);
+        startIntent.putExtra(TreasuresWatcherService.METHOD, "start");
+        Log.d("blua", "awefwonfo");
+        startService(startIntent);
+        //TreasureUpdateHandler treasureUpdate = new TreasureUpdateHandler(this);
+        gpsUpdate.startHandler();
+        TreasureUpdateHandler.getInstance().startHandler();
+        initMapAndLocations();
     }
 
 
@@ -131,7 +161,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private void initMapAndLocations(){
-        gpsTracker = new GPSTracker(this);
         LocationController.getInstance().setMapAndGps(mMap, gpsTracker);
         LocationController.getInstance().initialSetLocations();
         mMap.setOnMyLocationChangeListener(gpsTracker);
@@ -139,16 +168,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onTreasureInRange(){
         Button b = (Button) findViewById(R.id.btnOpenTreasure);
-        b.setVisibility(View.VISIBLE);
-        b.setBackgroundColor(Color.RED);
-        b.setTextColor(Color.WHITE);
+        if(b.getVisibility() == View.INVISIBLE) {
+            b.setVisibility(View.VISIBLE);
+            //b.setBackgroundColor(Color.RED);
+            b.setTextColor(Color.WHITE);
 
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        Animation blink = AnimationUtils.loadAnimation(this, R.anim.blink);
-        b.startAnimation(shake);
-        b.startAnimation(blink);
+            Animation blink = AnimationUtils.loadAnimation(this, R.anim.blink);
+            b.startAnimation(blink);
 
-        b.setEnabled(true);
+            b.setEnabled(true);
+        }
     }
 
     public void onNoTreasureInRange(){
@@ -260,8 +289,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void loadTreasures(){
-            TreasureChestsProvider.getInstance().loadTreasures(this);
+    public void loadTreasures() {
+        //showProgress(true);
+        LatLng myPos = LocationController.getInstance().getMyPosition();
+        TreasureChestsProvider.getInstance().loadTreasures(myPos, this);
     }
 
 
@@ -275,7 +306,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onTreasuresLoadedSuccess() {
+    public void onTreasuresLoadedSuccess(List<Treasure> treasures) {
         //setUpMapIfNeeded();
         refreshMap();
     }
@@ -285,11 +316,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         AlertHelper.showNewAlertSingleButton(this, "Something went wrong..",
                 "An error occured loading the Treasures!. Please try again.",
                 new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        });
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
     }
 
     @Override
@@ -321,4 +352,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public GoogleMap getMap(){
         return mMap;
     }
-}
+
+public class ResponseReceiver extends BroadcastReceiver {
+   public static final String ACTION_RESP =
+      "at.tba.treasurehunt.action.MESSAGE_PROCESSED";
+
+   @Override
+    public void onReceive(Context context, Intent intent) {
+       switch(intent.getStringExtra(TreasuresWatcherService.METHOD)) {
+           case "onTreasureInRange":
+               onTreasureInRange();
+       }
+    }
+}}

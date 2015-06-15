@@ -26,9 +26,11 @@ public class GPSUpdateHandler {
     private Handler handler;
     private Runnable runnable;
     private MapsActivity mapsActivity;
+    private boolean isRunning;
 
     public GPSUpdateHandler(MapsActivity c){
         this.mapsActivity = c;
+        isRunning = false;
         handler = new Handler();
 
         runnable = new Runnable(){
@@ -43,12 +45,18 @@ public class GPSUpdateHandler {
                 }else{
                     mapsActivity.onNoTreasureInRange();
                 }
-                handler.postDelayed(this, DELAY_TIME);
+                if(isRunning)
+                    handler.postDelayed(this, DELAY_TIME);
             }
         };
     }
 
+    public void stopHandler() {
+        isRunning = false;
+    }
+
     public void startHandler(){
+        isRunning = true;
         handler.postDelayed(runnable, 1000);
     }
 

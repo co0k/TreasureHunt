@@ -1,12 +1,16 @@
 package at.tba.treasurehunt.dataprovider;
 
+import java.util.List;
+
+import data_structures.treasure.Treasure;
+
 /**
  * Created by dAmihl on 01.06.15.
  */
 public interface ITreasureLoadedCallback {
 
-    public void onTreasuresLoadedSuccess();
+    void onTreasuresLoadedSuccess(List<Treasure> treasures);
 
-    public void onTreasureLoadedFailure();
+    void onTreasureLoadedFailure();
 
 }

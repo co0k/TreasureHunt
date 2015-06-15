@@ -8,12 +8,18 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import at.tba.treasurehunt.activities.MapsActivity;
 import at.tba.treasurehunt.controller.LocationController;
@@ -23,8 +29,9 @@ import at.tba.treasurehunt.controller.LocationController;
  */
 public class GPSTracker implements LocationListener, GoogleMap.OnMyLocationChangeListener {
 
+    private static final long serialVersionUID = 726472295622776147L;
 
-    private final MapsActivity mapsActivity;
+    private MapsActivity mapsActivity;
     // Flag for GPS status
     boolean isGPSEnabled = false;
     // Flag for network status
@@ -35,14 +42,33 @@ public class GPSTracker implements LocationListener, GoogleMap.OnMyLocationChang
     double latitude; // Latitude
     double longitude; // Longitude
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 30; // 30 meters
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 20 * 1; // 20 seconds
     // Declaring a Location Manager
     protected LocationManager locationManager;
-    public GPSTracker(MapsActivity maps) {
-        this.mapsActivity = maps;
+    private List<LocationListener> locationListeners;
 
+    // Singleton -- ugly but the damned (unnecessary complex) Android API doesn't deserve anything better --
+    private static class GPSTrackerHolder{
+        private static final GPSTracker INSTANCE = new GPSTracker();
+    }
+
+    public static GPSTracker getInstance() {
+        return GPSTrackerHolder.INSTANCE;
+    }
+    private GPSTracker() {
+        locationListeners = new ArrayList<>();
+    }
+
+    public void init(MapsActivity maps) {
+        this.mapsActivity = maps;
+    }
+    public void registerLocationListener(LocationListener listener) {
+        locationListeners.add(listener);
+    }
+    public void removeLocationListener(LocationListener listener) {
+        locationListeners.remove(listener);
     }
     public Location getLocation() {
         try {
@@ -139,20 +165,24 @@ public class GPSTracker implements LocationListener, GoogleMap.OnMyLocationChang
     }
     @Override
     public void onLocationChanged(Location location) {
-        // not used
+        for(LocationListener listener : locationListeners)
+            listener.onLocationChanged(location);
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        // not used
+        for(LocationListener listener : locationListeners)
+            listener.onProviderDisabled(provider);
     }
     @Override
     public void onProviderEnabled(String provider) {
-        // not used
+        for(LocationListener listener : locationListeners)
+            listener.onProviderDisabled(provider);
     }
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // not used
+        for(LocationListener listener : locationListeners)
+            listener.onStatusChanged(provider, status, extras);
     }
 
     @Override
@@ -183,4 +213,5 @@ public class GPSTracker implements LocationListener, GoogleMap.OnMyLocationChang
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
 }

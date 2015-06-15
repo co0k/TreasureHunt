@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import android.util.Log;
 
-import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.tasks.IResponseCallback;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
@@ -22,7 +21,7 @@ import data_structures.treasure.Treasure;
 public class TreasureChestsProvider implements IResponseCallback {
 
     private static TreasureChestsProvider instance = null;
-    private ITreasureLoadedCallback treasureLoadedCallback;
+    private List<ITreasureLoadedCallback> treasureLoadedCallbacks;
     private ServerCommunication communication;
 
     private static boolean DEBUG_DATA = false;
@@ -31,6 +30,13 @@ public class TreasureChestsProvider implements IResponseCallback {
     public static TreasureChestsProvider getInstance(){
         if (instance == null) instance = new TreasureChestsProvider(ServerCommunication.getInstance());
         return instance;
+    }
+    public void registerListener(ITreasureLoadedCallback treasureLoadedCallback) {
+        treasureLoadedCallbacks.add(treasureLoadedCallback);
+    }
+
+    public void removeListener(ITreasureLoadedCallback treasureLoadedCallback) {
+        treasureLoadedCallbacks.add(treasureLoadedCallback);
     }
 
     private ArrayList<Treasure> treasures = new ArrayList<Treasure>();
@@ -44,22 +50,19 @@ public class TreasureChestsProvider implements IResponseCallback {
             treasures.add(DummyDataProvider.getDummyTreasureData(4));
         }
         this.communication = communication;
+        this.treasureLoadedCallbacks = new ArrayList<>();
     }
 
-    public void loadTreasures(ITreasureLoadedCallback callback){
-        this.treasureLoadedCallback = callback;
+    public void loadTreasures(LatLng pos, ITreasureLoadedCallback callback){
+        registerListener(callback);
         if (!DEBUG_DATA) {
-
-            if (DEBUG_ALL_TREASURES) {
-                communication.getAllTreasuresFromServer(this);
-            }else{
-                LatLng myPos = LocationController.getInstance().getMyPosition();
-                Double lat = myPos.latitude;
-                Double lng = myPos.longitude;
-                communication.getNearTreasuresFromServer(this, lat, lng);
-            }
-        }else{
-            treasureLoadedCallback.onTreasuresLoadedSuccess();
+            if (DEBUG_ALL_TREASURES)
+                ServerCommunication.getInstance().getAllTreasuresFromServer(this);
+            else
+                ServerCommunication.getInstance().getNearTreasuresFromServer(this, pos.latitude, pos.longitude);
+        } else {
+            for (ITreasureLoadedCallback treasureLoadedCallback : treasureLoadedCallbacks)
+                treasureLoadedCallback.onTreasuresLoadedSuccess(this.treasures);
         }
     }
 
@@ -100,11 +103,13 @@ public class TreasureChestsProvider implements IResponseCallback {
         List<Treasure> list = new ArrayList<Treasure>(Arrays.asList(ts));
         treasures.clear();
         treasures.addAll(list);
-        treasureLoadedCallback.onTreasuresLoadedSuccess();
+        for (ITreasureLoadedCallback treasureLoadedCallback : treasureLoadedCallbacks)
+            treasureLoadedCallback.onTreasuresLoadedSuccess(treasures);
     }
 
     @Override
     public void onResponseReceiveError() {
-        treasureLoadedCallback.onTreasureLoadedFailure();
+        for (ITreasureLoadedCallback treasureLoadedCallback : treasureLoadedCallbacks)
+            treasureLoadedCallback.onTreasureLoadedFailure();
     }
 }
