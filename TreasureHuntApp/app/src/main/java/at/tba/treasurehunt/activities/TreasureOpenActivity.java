@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.treasures.TreasureChestHolder;
+import data_structures.treasure.Achievement;
+import data_structures.treasure.Coupon;
 import data_structures.treasure.Treasure;
 
 public class TreasureOpenActivity extends Activity {
@@ -55,9 +57,30 @@ public class TreasureOpenActivity extends Activity {
 
     private void setTreasureInformationToLayout() {
         experienceGainedText.setText("Experience gained: " + openedTreasure.getXP());
+
         if (openedTreasure.getContent() != null){
-            contentGainedText.setText("You received: " + openedTreasure.getContent().getType());
+            contentGainedText.setText("You received: " + getContentDescription(openedTreasure.getContent()));
+        }else{
+            contentGainedText.setText("This treasure has no contents.");
         }
+        TreasureChestHolder.getInstance().setCurrentSelectedTreasure(null);
+    }
+
+    private String getContentDescription(Treasure.Content content){
+        String entryString = "";
+        switch (content.getType()) {
+            case "COUPON":
+                    Coupon c = (Coupon) content;
+                    entryString = "Coupon: " + c.getCompanyName() + ", value: " + c.getValue();
+                break;
+            case "ACHIEVEMENT":
+                Achievement a = (Achievement) content;
+                    entryString = "Achievement: " + a.getName() + ", description: \n      " + a.getDescription();
+                break;
+            default:
+                entryString = content+"x "+content.getType();
+        }
+        return entryString;
     }
 
     public void onButtonFinishClick(View v){

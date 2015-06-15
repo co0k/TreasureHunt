@@ -27,7 +27,7 @@ public class TreasureChestHolder implements IResponseCallback{
 
     private static TreasureChestHolder instance = null;
 
-    private static final int TREASURE_OPEN_RADIUS = 80;
+    private static final int TREASURE_OPEN_RADIUS = 1000;
     private static final boolean DEBUG_DRAW_CHESTS = false;
 
     public static TreasureChestHolder getInstance(){
@@ -70,9 +70,13 @@ public class TreasureChestHolder implements IResponseCallback{
      * @param userPos the current users Position
      */
     public void updateNearestTreasure(LatLng userPos){
-        double dist = -1;
+        double dist = 1000;
         Treasure temp = null;
-        if (treasureList.size() < 1) return;
+        if (treasureList.size() < 1){
+            nearestTreasure = null;
+            distanceToNearestTreasure = 9999;
+            return;
+        }
         else{
             temp = treasureList.get(0);
             LatLng treasurePos = new LatLng(temp.getLocation().getLat(), temp.getLocation().getLon());
@@ -160,13 +164,22 @@ public class TreasureChestHolder implements IResponseCallback{
 
     public void blockTreasureForUser(Treasure t){
         ServerCommunication.getInstance().sendOpenTreasureWrongAnswerEvent(t,this);
+        removeTreasureCompletely(t);
+        TreasureChestsProvider.getInstance().removeTreasureFromList(t);
+    }
+
+    private void removeTreasureCompletely(Treasure t){
         this.treasureList.remove(t);
         TreasureChestsProvider.getInstance().removeTreasureFromList(t);
+        if (this.currentTreasureInRange == t){
+            currentTreasureInRange = null;
+        }
+
     }
 
     public void treasureRightAnswer(Treasure t){
         ServerCommunication.getInstance().sendOpenTreasureRightAnswerEvent(t, this);
-        this.treasureList.remove(t);
+        removeTreasureCompletely(t);
         TreasureChestsProvider.getInstance().removeTreasureFromList(t);
     }
 
