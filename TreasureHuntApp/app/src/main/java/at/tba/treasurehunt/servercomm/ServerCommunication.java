@@ -45,6 +45,11 @@ public class ServerCommunication implements IServerCommunicationDAO{
         this.responseIdCallbackMap = new HashMap<>();
     }
 
+    /**
+     * Getting all Treasures from the server
+     * @param callback, IResponseCallback
+     * @return ArrayList<Treasure>
+     */
     @Override
     public ArrayList<Treasure> getAllTreasuresFromServer(IResponseCallback callback) {
         JSONRPC2Request request;
@@ -58,6 +63,13 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return null;
     }
 
+    /**
+     * Getting Treasures within an range of 1km from the server
+     * @param callback
+     * @param lat
+     * @param lng
+     * @return ArrayList<Treasure>
+     */
     @Override
     public ArrayList<Treasure> getNearTreasuresFromServer(IResponseCallback callback, Double lat, Double lng) {
         JSONRPC2Request request;
@@ -73,6 +85,13 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return null;
     }
 
+    /**
+     * User Login Check
+     * @param uName
+     * @param pwd
+     * @param callback
+     * @return boolean
+     */
     @Override
     public boolean logInToServer(String uName, String pwd, IResponseCallback callback) {
         JSONRPC2Request request;
@@ -86,6 +105,13 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return true;
     }
 
+    /**
+     * Registering the user on the server
+     * @param uName
+     * @param email
+     * @param pwd
+     * @param callback
+     */
     @Override
     public void registerUserOnServer(String uName, String email, String pwd, IResponseCallback callback) {
         JSONRPC2Request request;
@@ -99,6 +125,11 @@ public class ServerCommunication implements IServerCommunicationDAO{
         sendAndRegisterCallback(request, callback, requestId);
     }
 
+    /**
+     * Getting the User from the server, with the help of the userId
+     * @param userId, int
+     * @param callback, IResponseCallback
+     */
     @Override
     public void getUserById(int userId, IResponseCallback callback) {
         JSONRPC2Request request;
@@ -113,6 +144,10 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return;
     }
 
+    /**
+     * Getting the Highscore list from the server
+     * @param callback, IResponseCallback
+     */
     @Override
     public void getHighscoreListFromServer(IResponseCallback callback) {
         JSONRPC2Request request;
@@ -126,6 +161,12 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return;
     }
 
+    /**
+     * Getting a partially Highscore list from the server
+     * @param callback, IResponseCallback
+     * @param low, Integer
+     * @param hi, Integer
+     */
     @Override
     public void getHighscoreListInRangeFromServer(IResponseCallback callback, Integer low, Integer hi) {
         JSONRPC2Request request;
@@ -141,8 +182,11 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return;
     }
 
-
-
+    /**
+     * Sending opening request to the server
+     * @param t, Treasure
+     * @param callback, IResponseCallback
+     */
     @Override
     public void sendOpenTreasureRequest(Treasure t, IResponseCallback callback) {
         JSONRPC2Request request;
@@ -157,6 +201,11 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return;
     }
 
+    /**
+     * Wrong answer event, when opening a Treasure
+     * @param t, Treasure
+     * @param callback, IResponseCallback
+     */
     @Override
     public void sendOpenTreasureWrongAnswerEvent(Treasure t, IResponseCallback callback) {
         JSONRPC2Request request;
@@ -172,6 +221,11 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return;
     }
 
+    /**
+     * Right answer event, when opening a Treasure
+     * @param t, Treasure
+     * @param callback, IResponseCallback
+     */
     @Override
     public void sendOpenTreasureRightAnswerEvent(Treasure t, IResponseCallback callback) {
         JSONRPC2Request request;
@@ -187,6 +241,10 @@ public class ServerCommunication implements IServerCommunicationDAO{
         return;
     }
 
+    /**
+     * JSONRPC2Response on message received
+     * @param payload, String
+     */
     @Override
     public void messageReceived(String payload) {
         JSONRPC2Response response = null;
