@@ -12,6 +12,7 @@ import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
 import data_structures.user.HighscoreList;
 import data_structures.user.User;
+import db.DatabaseController;
 
 import java.util.*;
 import java.util.concurrent.CancellationException;
@@ -26,6 +27,8 @@ public class RequestHandler implements RequestResolver {
     private String[] tokenFree = {"checklogin", "registeruser", "gettesttreasure"};
     private ArrayList<String> neededParams;
     private Integer token;
+    private JsonConstructor jsonC = new JsonConstructor();
+    private Map<String, Object> parameters = null;
 
     /**
      * this Method parses the request
@@ -36,13 +39,12 @@ public class RequestHandler implements RequestResolver {
     @Override
     public JSONRPC2Response handleRequest(JSONRPC2Request request) {
         String methodName;
-        Map<String, Object> parameters = null;
+
         String id;
         int argc = 0;
 
         neededParams = new ArrayList<String>();
 
-        JsonConstructor jsonC = new JsonConstructor();
 
         Object response = null;
 
@@ -191,7 +193,9 @@ public class RequestHandler implements RequestResolver {
             case "gettesttreasure":
                 response = getTestTreasure();
                 break;
-
+            case "addtreasure":
+                response = addTreasure();
+                break;
             default:
 //                String errorMsg = "Could not parse your request";
                 JSONRPC2Error error = JSONRPC2Error.PARSE_ERROR;
@@ -371,6 +375,34 @@ public class RequestHandler implements RequestResolver {
         Treasure.Location testLocation = new Treasure.Location(1, 10, 47.2641234, 11.3451889);
         Treasure t = new Treasure(1, testLocation, quiz1, new Treasure.Size(-1, 20, 1), null);
         return t;
+    }
+
+    public Boolean addTreasure() {
+        if(parameters != null) {
+            Integer qexp = jsonC.fromJson((String) parameters.get("quizexp"), Integer.class);
+            String qq = (String) parameters.get("question");
+            String a1 = (String) parameters.get("answer1");
+            String a2 = (String) parameters.get("answer2");
+            String a3 = (String) parameters.get("answer3");
+            String a4 = (String) parameters.get("answer4");
+
+            Integer lexp = jsonC.fromJson((String) parameters.get("locationexp"), Integer.class);
+            Double lat = jsonC.fromJson((String) parameters.get("locationexp"), Double.class);
+            Double lon = jsonC.fromJson((String) parameters.get("locationexp"), Double.class);
+
+            // Size
+            //request.params.sizeid = sizeid.value;
+            //request.params.sizesize = sizesize.value;
+            //request.params.sizeexperience = sizeexp.value;
+            Integer sid = jsonC.fromJson((String) parameters.get("sizeid"), Integer.class);
+            Integer size = jsonC.fromJson((String) parameters.get("sizesize"), Integer.class);
+            Integer sexp = jsonC.fromJson((String) parameters.get("sizeexperience"), Integer.class);
+
+            Treasure t = new Treasure(new Treasure.Location(lexp,lat, lon), new Quiz(qexp, qq, a1,a2,a3,a4, null, null), new Treasure.Size(sid,sexp, size), null);
+            int retVal = DatabaseController.getInstance().saveTreasure(t);
+            return true;
+        }
+        return false;
     }
 
     private Boolean isTokenFree(String methodName) {
