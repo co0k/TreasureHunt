@@ -168,7 +168,7 @@ public class TreasureChestHolder implements IResponseCallback{
         TreasureChestsProvider.getInstance().removeTreasureFromList(t);
     }
 
-    private void removeTreasureCompletely(Treasure t){
+    public void removeTreasureCompletely(Treasure t){
         this.treasureList.remove(t);
         TreasureChestsProvider.getInstance().removeTreasureFromList(t);
         if (this.currentTreasureInRange == t){
