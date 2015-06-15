@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>
+        <script type="text/javascript" src="./mytreasure.js"></script>
+        <title>JsMyTreasureAdmin</title>
+        <META lang="de" />
+    </head>
+    <body>
+        <script>
+        //window.alert("Script seems to work");
+        
+        /*
+        *   request ids
+        *       -2  TestTreasure
+        *       -1  register
+        *        0  login
+        *        1  editUser
+        *        2  
+        */
+        function getUserCred(mailNeeded) {
+            var email = document.getElementById("email").value;
+            var username = document.getElementById("username").value;
+            var passwd = document.getElementById("passwd").value;
+            var hash = CryptoJS.SHA512(username.concat(passwd)).toString(CryptoJS.enc.Hex);
+            console.log("hash = " + hash.toString(CryptoJS.enc.Hex));
+            var user = {};
+            if( mailNeeded &&  email != null && email.length > 0 ) {
+                user.email = email;
+                user.username = username;
+                user.pwHash = hash;
+                return user;
+            }
+            if( mailNeeded ) {
+                 window.alert("enter an email address and/or username and/or password");
+                 return null;
+            }
+            if( !mailNeeded && username != null && passwd != null && username.length > 0 && passwd.length > 0 ) {
+                user.username = username;
+                user.pwHash = hash;
+                return user;
+            }
+            window.alert("enter a username and/or password");
+            return null;
+        }
+        
+        function login() {
+            var loginRequest = {};
+            var user = getUserCred(false);
+            if( user != null )
+            {
+            loginRequest.method="checklogin";
+            loginRequest.params={};
+            loginRequest.params.username= user.username;
+            loginRequest.params.pwHash= user.pwHash;
+            loginRequest.id="0";
+            loginRequest.jsonrpc="2.0";
+            console.log(JSON.stringify(loginRequest));
+            sendToServer(JSON.stringify(loginRequest));
+//                 window.alert(loginRequest);
+//              window.alert("inside login");
+            }
+        }
+        function register() {
+            var request = {};
+            var user = getUserCred(true);
+            var pwCheck = (passwd.value === passwd2.value);
+            if( !pwCheck )
+                window.alert("pw1 does not equal pw2");
+            if( pwCheck && user != null )
+            {
+            request.method="registerUser";
+            request.params={};
+            request.params.username= user.username;
+            request.params.pwHash= user.pwHash;
+            request.params.email= user.email;
+            request.id="-1";
+            request.jsonrpc="2.0";
+            console.log(JSON.stringify(request));
+            sendToServer(JSON.stringify(request));
+            }
+        }
+        function editUser() {
+            var request = {};
+            var user = getUserCred(true);
+            if( !pwCheck )
+                window.alert("pw1 does not equal pw2");
+            if( pwCheck && user != null )
+            {
+            request.method="editUser";
+            request.params={};
+            request.params.username= user.username;
+            request.params.pwHash= user.pwHash;
+            request.params.email= user.email;
+            request.params.token= myUID;
+            request.id="1";
+            request.jsonrpc="2.0";
+            console.log(JSON.stringify(request));
+            sendToServer(JSON.stringify(request));
+            }
+        }
+        function getTestTreasure() {
+            var request = {};
+            //var token = document.getElementById("token").value;
+            //if( token === null || token.length < 1 )
+            //    window.alert("you must enter a valid token");
+            //else {
+                request.method = ("getTestTreasure");
+                request.params = {};
+                request.id="-2";
+                request.jsonrpc="2.0";
+                console.log(JSON.stringify(request));
+                sendToServer(JSON.stringify(request));
+            //}
+        }
+        function clearLog() {
+            log.value = '';
+        }
+        function addTreasure() {
+            if( myUID < 0 || quizexp.value === null || question.value === null || answer1.value === null || answer2.value === null || answer4.value === null || locationexp.value === null || latitude.value === null || longitude.value === null || sizeid === null || sizesize === null || sizeexp.value === null )
+                window.alert("check your input please");
+            else {
+            var request = {};
+            request.method="addTreasure";
+            request.params = {};
+            // Quiz
+            request.params.quizexp = quizexp.value;
+            request.params.question = question.value;
+            request.params.answer1 = answer1.value;
+            request.params.answer2 = answer2.value;
+            request.params.answer3 = answer3.value;
+            request.params.answer4 = answer4.value;
+            // location
+            request.params.locationexp = locationexp.value;
+            request.params.lat = latitude.value;
+            request.params.lon = longitude.value;
+            // Size
+            request.params.sizeid = sizeid.value;
+            request.params.sizesize = sizesize.value;
+            request.params.sizeexperience = sizeexp.value;
+            // UserCred
+            request.params.token = myUID;
+            // rpc version
+            request.jsonrpc="2.0";
+            console.log(JSON.stringify(request));
+            sendToServer(JSON.stringify(request));
+            }
+        }
+        function addRow() {
+            var tbl = document.getElementById("dataDisplay");
+            var row = tbl.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = "NEW CELL1";
+            cell2.innerHTML = "NEW CELL2";
+        }
+        </script>
+        
+        <label> Email: </label>
+            <input type="text" id="email">
+        <label>Username: </label>
+            <input type="text" id="username">
+        <label>Password:</label>
+            <input type="PASSWORD" id="passwd" />
+        <lable>Password2:</label>
+            <input type="PASSWORD" id="passwd2" /><br />
+        <button onclick="connect()">(Re)Connect</button>    
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+        <button onclick="editUser()">editUser</button>
+        <button onclick="getTestTreasure()">TestTreasure</button>
+        <button onclick="addRow()">addRow</button>
+        <button onclick="clearLog()">clear</button>
+        <br />
+        <table>
+            <tr>
+                <th>Log</th>
+                <th>Treasure</th>
+            </tr>
+            <tr>
+                <td>
+                    <textarea id="log" rows="20" cols="60"></textarea>
+                </td>
+                <td>
+                    <table>
+                    <tr>
+                        <th>Quiz</th>
+                        <th>Location</th>
+                        <th>Size</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Exp: </lable>
+                                <input type="text"  id="quizexp" /><br />
+                            <label>Question: </lable>
+                                <input type="text"  id="question" /><br />
+                            <label>Answer1: </lable>
+                                <input type="text"  id="answer1" /><br />
+                            <label>Answer2: </lable>
+                                <input type="text"  id="answer2" /><br />
+                            <label>Answer3: </lable>
+                                <input type="text"  id="answer3" /><br />
+                            <label>Answer4: </lable>
+                                <input type="text"  id="answer4" /><br />
+                        </td>
+                        <td>
+                            <label>Exp: </lable>
+                                <input type="text"  id="locationexp" /><br />
+                            <label>Latitude: </lable>
+                                <input type="text"  id="latitude" /><br />
+                            <label>Longitude: </lable>
+                                <input type="text"  id="longitude" /><br />
+                        </td>
+                        <td>
+                            <label>Id</label>
+                                <input type="text" id="sizeid"><br />
+                            <label>Exp:</label>
+                                <input type="text" id="sizeexp"><br />
+                            <label>size:</label>
+                                <input type="text" id="sizesize"><br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><button onclick="addTreasure()">addTreasure</button></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </table>
+        </tr>
+        <tr>
+        <td></td>
+        <td>
+        
+        </td>
+        </tr>
+        <table id="dataDisplay">
+        </table>
+    </body>
+</html>
