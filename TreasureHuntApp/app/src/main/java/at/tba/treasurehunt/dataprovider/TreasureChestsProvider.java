@@ -11,6 +11,7 @@ import android.util.Log;
 import at.tba.treasurehunt.controller.LocationController;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
 import at.tba.treasurehunt.tasks.IResponseCallback;
+import at.tba.treasurehunt.treasures.TreasureChestHolder;
 import at.tba.treasurehunt.utils.DummyDataProvider;
 import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Treasure;
@@ -84,6 +85,7 @@ public class TreasureChestsProvider implements IResponseCallback {
 
 
     public void removeTreasureFromList(Treasure t){
+
         this.treasures.remove(t);
     }
 

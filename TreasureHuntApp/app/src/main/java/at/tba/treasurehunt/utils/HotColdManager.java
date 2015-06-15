@@ -2,6 +2,7 @@ package at.tba.treasurehunt.utils;
 
 /**
  * Created by dAmihl on 24.05.15.
+ * Hot Cold Manager to determine the distance to a treasure.
  */
 public class HotColdManager {
 

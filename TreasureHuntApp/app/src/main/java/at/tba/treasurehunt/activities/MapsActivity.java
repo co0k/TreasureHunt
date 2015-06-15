@@ -307,7 +307,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onOpenTreasureFailure() {
         openTreasureButton.setClickable(true);
         showProgress(false);
-        TreasureChestsProvider.getInstance().removeTreasureFromList(TreasureChestHolder.getInstance().getNearestTreasure());
+        TreasureChestHolder.getInstance().removeTreasureCompletely(TreasureChestHolder.getInstance().getNearestTreasure());
         AlertHelper.showNewAlertSingleButton(this, "Something went wrong.."
                 , "You are not allowed to open this treasure at the moment! Maybe another Player is trying to open it. Sorry.",
                 new Runnable() {
