@@ -78,9 +78,9 @@ public class OpenTreasureCommand implements Command<Boolean> {
 					db.insertInInventory(uid, t1000);
 					db.updateScore(uid, t.getXP() + t1000.getContent().getXP());
 				}
-				if (t.getContent() != null)
-					db.insertInInventory(uid, new Inventory.Entry(1, t.getContent()));
 			}
+			if (t.getContent() != null)
+				db.insertInInventory(uid, new Inventory.Entry(1, t.getContent()));
 			db.activateRandomTreasure(1);
 			return true;
 		}
