@@ -47,7 +47,7 @@ public class RectangleDrawView extends View {
         Test fullscreen color overlay with alpha
          */
         paint.setColor(currentColor);
-        paint.setAlpha(60);
+        paint.setAlpha(80);
         paint.setStrokeWidth(3);
 
         int topleftx = 0;
