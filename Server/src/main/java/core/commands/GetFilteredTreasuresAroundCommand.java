@@ -29,10 +29,12 @@ public class GetFilteredTreasuresAroundCommand implements Command<List<Treasure>
     public List<Treasure> execute() throws InterruptedException {
         List<Treasure> treasures = DatabaseController.getInstance().getTreasures(userID, location, radius);
         List<Treasure> retVal = new ArrayList<>();
-        for(Treasure t : treasures) {
-            CoreModel cm = CoreModel.getInstance();
-            if(!cm.isReserved(t.getId()) || cm.isReservedForUser(t.getId(),userID))
-                retVal.add(t);
+        if(treasures != null) {
+            for (Treasure t : treasures) {
+                CoreModel cm = CoreModel.getInstance();
+                if (!cm.isReserved(t.getId()) || cm.isReservedForUser(t.getId(), userID))
+                    retVal.add(t);
+            }
         }
         return retVal;
     }
