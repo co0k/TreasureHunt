@@ -63,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         drawRectView = (RectangleDrawView) findViewById(R.id.rectView);
         drawRectView.setBackgroundColor(Color.TRANSPARENT);
-        //mProgressView = findViewById(R.id.load_treasure_progress);
+        mProgressView = findViewById(R.id.open_progress);
        // mMapsFrameLayout = findViewById(R.id.mapsContent);
         openTreasureButton = (Button) findViewById(R.id.btnOpenTreasure);
         setUpMapIfNeeded();
@@ -228,14 +228,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+         /*   mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
             mMapsFrameLayout.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
-            });
+            });*/
+
+            if (show){
+                openTreasureButton.setVisibility(View.INVISIBLE);
+            }
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -249,12 +253,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+            if (show){
+                openTreasureButton.setVisibility(View.INVISIBLE);
+            }
+            //mMapsFrameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
     public void loadTreasures(){
-            //showProgress(true);
             TreasureChestsProvider.getInstance().loadTreasures(this);
     }
 
@@ -264,13 +270,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //ShowMessageHelper.showSimpleInfoMessagePopUp("You found a treasure bro", this);
         TreasureChestHolder.getInstance().openTreasure(TreasureChestHolder.getInstance().getNearestTreasure(),this);
         openTreasureButton.setClickable(false);
+        showProgress(true);
+        openTreasureButton.clearAnimation();
     }
 
     @Override
     public void onTreasuresLoadedSuccess() {
         //setUpMapIfNeeded();
         refreshMap();
-       // showProgress(false);
     }
 
     @Override
@@ -287,17 +294,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onOpenTreasureSuccess() {
-        openTreasureButton.setClickable(true);
         if (isQuiz(TreasureChestHolder.getInstance().getNearestTreasure().getType())) {
             TreasureChestHolder.getInstance().setCurrentSelectedTreasure(TreasureChestHolder.getInstance().getNearestTreasure());
             Intent actSwitch = new Intent(this, QuizActivity.class);
             startActivity(actSwitch);
+            showProgress(false);
+            openTreasureButton.setClickable(true);
         }
     }
 
     @Override
     public void onOpenTreasureFailure() {
         openTreasureButton.setClickable(true);
+        showProgress(false);
         TreasureChestsProvider.getInstance().removeTreasureFromList(TreasureChestHolder.getInstance().getNearestTreasure());
         AlertHelper.showNewAlertSingleButton(this, "Something went wrong.."
                 , "You are not allowed to open this treasure at the moment! Maybe another Player is trying to open it. Sorry.",
