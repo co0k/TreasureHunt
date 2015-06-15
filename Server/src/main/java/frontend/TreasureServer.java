@@ -36,7 +36,9 @@ public class TreasureServer {
 
             // Add WebSocket endpoint to javax.websocket layer
             wscontainer.addEndpoint(TreasureServerSocket.class);
+            wscontainer.addEndpoint(AdminSocket.class);
 
+            // TODO: this is thought for test purpose only! get rid of it!
             // Activate all treasures
             List<Integer> treasurechests = DatabaseController.getInstance().getallTreasureID(false);
             if (treasurechests == null) {

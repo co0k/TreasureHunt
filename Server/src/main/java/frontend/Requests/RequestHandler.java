@@ -1,6 +1,5 @@
 package frontend.Requests;
 
-import com.google.gson.Gson;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
