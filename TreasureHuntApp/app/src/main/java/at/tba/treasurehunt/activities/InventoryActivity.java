@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import at.tba.treasurehunt.R;
 import at.tba.treasurehunt.controller.UserDataController;
 import at.tba.treasurehunt.utils.DummyDataProvider;
+import data_structures.treasure.Achievement;
+import data_structures.treasure.Coupon;
 import data_structures.user.Inventory;
 
 
@@ -66,7 +68,26 @@ public class InventoryActivity extends Activity {
     private void setInventoryList(Inventory inventory){
         int i = 0;
         for (Inventory.Entry e: inventory.getInventoryList()) {
-            String entryString = e.getCount()+"x "+e.getContent().getType();
+            String entryString;
+            switch (e.getContent().getType()) {
+                case "COUPON":
+                    Coupon c = (Coupon) e.getContent();
+                    if(e.getCount() == 1)
+                        entryString = "Coupon: " + c.getCompanyName() + ", value: " + c.getValue();
+                    else
+                        entryString = e.getCount() + " x " + "Coupon: " + c.getCompanyName() + ", value: " + c.getValue();
+                    break;
+                case "ACHIEVEMENT":
+                    Achievement a = (Achievement) e.getContent();
+                    if(e.getCount() == 1)
+                        entryString = "Achievement: " + a.getName() + ", description: \n      " + a.getDescription();
+                    else
+                        entryString = e.getCount() + " x " + "Achievement: " + a.getName() + ", description: \n      " + a.getDescription();
+                    break;
+                default:
+                    entryString = e.getCount()+"x "+e.getContent().getType();
+
+            }
             arrayAdapter.insert(entryString, i);
             i++;
         }
