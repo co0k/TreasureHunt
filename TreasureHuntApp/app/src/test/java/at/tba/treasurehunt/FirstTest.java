@@ -21,6 +21,11 @@ public class FirstTest extends TestCase {
     public void testUser(){
         User testUser = new User(1, "TestUser", "test111", "test@email", 1, 200, new Inventory(null));
         assertEquals(testUser.getId(), 1);
+        assertEquals(testUser.getName(), "TestUser");
+        assertEquals(testUser.getPasswordHash(), "test111");
+        assertEquals(testUser.getEmail(), "test@email");
+        assertEquals(testUser.getRank(), 200);
+        assertEquals(testUser.getXP(), 1);
     }
 
     @Test
@@ -29,6 +34,7 @@ public class FirstTest extends TestCase {
         Treasure testTreasure = new Treasure(new Treasure.Location(5, 100, 47.232164, 11.441617), testQuiz, new Treasure.Size(1, 20, 1), null);
         assertEquals(testQuiz.getXP(), 1);
         assertEquals(testTreasure.getLocation(), new Treasure.Location(5, 100, 47.232164, 11.441617));
+        assertEquals(testQuiz.getAnswer1(), "Bleach");
     }
 
     @Test
@@ -36,6 +42,8 @@ public class FirstTest extends TestCase {
         HotColdManager.HOT_COLD_STATE testCase = HotColdManager.HOT_COLD_STATE.HOT;
         assertEquals(testCase, HotColdManager.determineHotCold(175));
         assertNotSame(testCase, HotColdManager.determineHotCold(800));
+        HotColdManager.HOT_COLD_STATE testCase2 = HotColdManager.HOT_COLD_STATE.VERY_COLD;
+        assertEquals(testCase2, HotColdManager.determineHotCold(800));
     }
 
     @Test

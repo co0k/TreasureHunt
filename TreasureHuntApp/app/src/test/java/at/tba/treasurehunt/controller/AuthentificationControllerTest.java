@@ -1,32 +1,16 @@
 package at.tba.treasurehunt.controller;
 
-import at.tba.treasurehunt.controller.AuthenticationController;
-import at.tba.treasurehunt.controller.AuthenticationError;
-import at.tba.treasurehunt.controller.IAuthenticationCallback;
-import at.tba.treasurehunt.servercomm.IServerConnectionCallback;
 import at.tba.treasurehunt.servercomm.ServerCommunication;
-import at.tba.treasurehunt.servercomm.ServerConnection;
 import at.tba.treasurehunt.tasks.IResponseCallback;
-import at.tba.treasurehunt.utils.HotColdManager;
-import at.tba.treasurehunt.utils.MapLocationHelper;
 import communication_controller.json.JsonConstructor;
 import data_structures.treasure.Coupon;
 import data_structures.treasure.Quiz;
 import data_structures.treasure.Treasure;
-import data_structures.user.Inventory;
-import data_structures.user.User;
-import data_structures.*;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
-
-//import junit.framework.TestCase;
-
 import org.junit.*;
 import static org.junit.Assert.*;
 
 import java.lang.InterruptedException;
-import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -302,143 +286,4 @@ private class ObjectWrapper<T> {
         }
         fail("timeout");
     }
-
-/*
-    public AuthentificationControllerTest() {
-    }
-
-    List<User> exampleUsers;
-
-    @Before
-    public void initialize() {
-        exampleUsers = new ArrayList<>();
-        List<Inventory.Entry> inventoryEntries = new ArrayList<>();
-
-        Inventory inventory = new Inventory();
-        exampleUsers.add(new User("Jaqueline", "tqewrtsndgfbre", "Jaqueline@Chantal.at", 2234, 1, new Inventory()));
-        exampleUsers.add(new User("Hans", "aasasdadsljaheoh", "hans@franz.at", 1234, 2, new Inventory()));
-        exampleUsers.add(new User("Chantal", "abcdefghijklmnop", "Chantal@Jaqueline.at", 234, 3, new Inventory()));
-        exampleUsers.add(new User("Natalie", "abcdefghijklmnop", "natalie@Jaqueline.at", 234, 3, new Inventory()));
-        exampleUsers.add(new User("Max", "abcdefghijklmnop", "max@Jaqueline.at", 10, 5, new Inventory()));
-        ServerConnectionMockUp.getInstance().connectServer(new IServerConnectionCallback() {
-            @Override
-            public void onServerConnected() {
-
-            }
-
-            @Override
-            public void onServerNotConnected() {
-
-            }
-        });
-    }
-
-
-    @Test
-    public void registerUserTest() {
-        List<AuthentificationCallbackTest> authCallList = new ArrayList<>();
-        for (User u : exampleUsers) {
-            AuthentificationCallbackTest authTest = new AuthentificationCallbackTest(u.getName(), u.getPasswordHash(), u.getEmail(), AuthentificationTestType.REGISTER_USER_TEST1);
-            authCallList.add(authTest);
-            AuthenticationController.getInstance().registerNewUser(u.getName(), u.getEmail(), u.getPasswordHash(), u.getPasswordHash(), authTest);
-            authTest.waitUntilFinished();
-        }
-        for (User u : exampleUsers) {
-            AuthentificationCallbackTest authTest = new AuthentificationCallbackTest(u.getName(), u.getPasswordHash(), u.getEmail(), AuthentificationTestType.REGISTER_USER_TEST2);
-            authCallList.add(authTest);
-            AuthenticationController.getInstance().registerNewUser(u.getName(), u.getEmail(), u.getPasswordHash(), u.getPasswordHash(), authTest);
-            authTest.waitUntilFinished();
-        }
-    }
-
-//    @Test
-//    public void test2() {
-//        AuthentificationCallbackTest acbt = new AuthentificationCallbackTest("name", "passw", 2);
-//
-//    }
-//
-//    @Test
-//    public void test3() {
-//        AuthentificationCallbackTest acbt = new AuthentificationCallbackTest("name", "passw", 3);
-//    }
-
-    private enum AuthentificationTestType {
-        REGISTER_USER_TEST1, REGISTER_USER_TEST2, AUTHENTIFICATION_TEST1, AUTHENTIFICATION_TEST2
-    }
-
-    private static class AuthentificationCallbackTest implements IAuthenticationCallback {
-        private String username;
-        private String password;
-        private String eMail;
-        AuthentificationTestType type;
-        boolean success;
-        boolean isRunning;
-
-        public AuthentificationCallbackTest(String username, String password, String eMail, AuthentificationTestType type) {
-            this.username = username;
-            this.password = password;
-            this.eMail = eMail;
-            this.type = type;
-            this.success = false;
-            this.isRunning = true;
-        }
-
-        public void waitUntilFinished() {
-            for(int i = 0; i < 2000; i++) {
-                if(!isRunning)
-                    return;
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                }
-            }
-            fail("timeout");
-            isRunning = true;
-        }
-
-        public at.tba.treasurehunt.controller.AuthentificationControllerTest.AuthentificationTestType getType() {
-            return type;
-        }
-
-        public void setType(at.tba.treasurehunt.controller.AuthentificationControllerTest.AuthentificationTestType type) {
-            this.type = type;
-        }
-
-        public void onAuthenticationSuccess() {
-            isRunning = false;
-        }
-
-        public void onAuthenticationFailure(AuthenticationError err) {
-            isRunning = false;
-        }
-
-        public void onRegistrationSuccess() {
-            switch (type) {
-                case REGISTER_USER_TEST1:
-                    break;
-                case REGISTER_USER_TEST2:
-                case AUTHENTIFICATION_TEST1:
-                case AUTHENTIFICATION_TEST2:
-                    fail();
-                    break;
-            }
-            isRunning = false;
-
-        }
-
-        public void onRegistrationError(AuthenticationError err) {
-            switch (type) {
-                case REGISTER_USER_TEST2:
-                    break;
-                case REGISTER_USER_TEST1:
-                case AUTHENTIFICATION_TEST1:
-                case AUTHENTIFICATION_TEST2:
-                fail();
-            }
-            isRunning = false;
-
-        }
-    }
-*/
-
 }
