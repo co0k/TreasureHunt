@@ -80,6 +80,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setUpMapIfNeeded();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ActivityManager.setCurrentActivity(this);
+        CameraPosition pos = new CameraPosition.Builder().target(new LatLng(gpsTracker.getLatitude()
+                , gpsTracker.getLongitude())).zoom(15f).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(pos));
         //loadTreasures();
     }
 

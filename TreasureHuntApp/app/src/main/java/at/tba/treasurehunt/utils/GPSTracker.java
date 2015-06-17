@@ -190,8 +190,7 @@ public class GPSTracker implements LocationListener, GoogleMap.OnMyLocationChang
         this.location = location;
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        CameraPosition pos = new CameraPosition.Builder().target(new LatLng(latitude, longitude)).zoom(15f).build();
-        mapsActivity.getMap().animateCamera(CameraUpdateFactory.newCameraPosition(pos));
+
     }
 
     private void buildAlertMessageNoGps() {
